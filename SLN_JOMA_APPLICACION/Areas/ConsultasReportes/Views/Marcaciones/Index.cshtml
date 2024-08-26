@@ -1,0 +1,43 @@
+﻿@using COM.JOMA.EMP.APLICACION.SERVICE.Constants
+@{
+    var Controller = $"{WebSiteConstans.JOMA_WEBSITE_AREA_CONSULTAS_REPORTES}/{WebSiteConstans.JOMA_WEBSITE_AREA_CONTROLLER_MARCACIONES}";
+}
+
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Registro de marcaciones</h5>
+
+                    <div class="alert alert-warning alert-dismissible fade show mb-2 pb-2 pt-2 pe-2 ps-2 col-xl-4 col-md-6 col-sm-12 col-12" id="" role="alert">
+                        <ul class="mb-0">
+                            <!-- Ajuste la clase de margen para eliminar el margen por defecto -->
+                            <li class="fs-13">ME (Marcación de Entrada)</li>
+                            <li class="fs-13">MIA (Marcación Inicio Almuerzo)</li>
+                            <li class="fs-13">MFA (Marcación Fin Almuerzo)</li>
+                            <li class="fs-13">MS (Marcación de Salida)</li>
+                        </ul>
+                    </div>
+                    <!-- Table with stripped rows -->
+                    <table class="table table-striped table-bordered w-100" id="DataTableMarcaciones">
+                    </table>
+
+                    <!-- End Table with stripped rows -->
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<script src="~/js/consultasreportes/marcaciones.js"></script>
+
+<script>
+    URL_BASE_MARACAIONES = '@Url.Content("~/")';
+    CONTROLERNAME_MARACAIONES = "@Controller";
+    Marcaciones.Init();
+
+</script>

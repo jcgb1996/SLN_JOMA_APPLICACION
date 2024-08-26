@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\COM.JOMA.EMP.APLICACION.SERVICE\COM.JOMA.EMP.APLICACION.SERVICE.csproj" />
+    <ProjectReference Include="..\COM.JOMA.EMP.CROSSCUTTING.SERVICE\COM.JOMA.EMP.CROSSCUTTING.SERVICE.csproj" />
+    <ProjectReference Include="..\COM.JOMA.EMP.QUERY.SERVICE\COM.JOMA.EMP.QUERY.SERVICE.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.7" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.4" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+  </ItemGroup>
+</Project>

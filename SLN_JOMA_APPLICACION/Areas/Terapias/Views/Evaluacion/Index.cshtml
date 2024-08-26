@@ -1,0 +1,809 @@
+﻿<!--  start Step wizard with validation -->
+@using COM.JOMA.EMP.APLICACION.SERVICE.Constants
+@{
+    var Controller = $"{WebSiteConstans.JOMA_WEBSITE_AREA_CONSULTAS_TERAPIAS}/{WebSiteConstans.JOMA_WEBSITE_AREA_CONTROLLER_EVALUACION}";
+}
+
+<style>
+    .form-check-input:checked {
+        background-color: #198754; /* Color verde para el estado "Sí" */
+        border-color: #198754;
+    }
+
+
+
+    .table-borderless tbody tr td {
+        border: none; /* Elimina las líneas de la tabla */
+    }
+
+    .table th {
+        border-bottom: none; /* Elimina la línea inferior de los encabezados */
+    }
+
+    .table thead th {
+        border-bottom: 2px solid #dee2e6; /* Puedes ajustar esto si deseas mantener la línea en la cabecera */
+    }
+</style>
+
+<div class="card">
+    <div class="card-body wizard-content">
+        @* <h4 class="card-title">Step wizard with validation</h4>
+        <p class="card-subtitle mb-3"> You can us the validation like what we did </p> *@
+        <form action="#" class="validation-wizard wizard-circle mt-5">
+            <!-- Step 1 -->
+            <h6>Datos Informativos</h6>
+            <section class="row">
+
+                <!-- Campo Nombres y Apellidos -->
+                <div class="col-xl-4 col-md-4 col-sm-4 col-12 mb-3">
+                    <div class="form-floating">
+                        <input type="text" name="floatingNombresApellidos" class="form-control" id="floatingNombresApellidos" placeholder="Nombres y Apellidos" required>
+                        <label for="floatingNombresApellidos">Nombres y Apellidos</label>
+                        <div class="invalid-feedback">Por favor, ingrese los nombres y apellidos!</div>
+                    </div>
+                </div>
+
+                <!-- Campo Fecha de Nacimiento -->
+                <div class="col-xl-4 col-md-4 col-sm-4 col-12 mb-3">
+                    <div class="form-floating">
+                        <input type="date" class="form-control" placeholder="Fecha de Nacimiento" id="floatingFechaNacimiento" required>
+                        <label for="floatingFechaNacimiento">Fecha de Nacimiento</label>
+                        <div class="invalid-feedback">Por favor, seleccione la fecha de nacimiento!</div>
+                    </div>
+                </div>
+
+                <!-- Campo Edad -->
+                <div class="col-xl-4 col-md-4 col-sm-4 col-12 mb-3">
+                    <div class="form-floating">
+                        <input type="number" name="floatingEdad" class="form-control" id="floatingEdad" placeholder="Edad" required>
+                        <label for="floatingEdad">Edad</label>
+                        <div class="invalid-feedback">Por favor, ingrese la edad!</div>
+                    </div>
+                </div>
+
+                <!-- Campo Dirección Domiciliaria -->
+                <div class="col-12">
+                    <div class="form-floating  mb-3">
+                        <input type="text" name="floatingDireccionDomiciliaria" class="form-control" id="floatingDireccionDomiciliaria" placeholder="Dirección Domiciliaria" required>
+                        <label for="floatingDireccionDomiciliaria">Dirección Domiciliaria</label>
+                        <div class="invalid-feedback">Por favor, ingrese la dirección domiciliaria!</div>
+                    </div>
+                </div>
+
+                <!-- Campo Escuela -->
+                <div class="col-xl-4 col-md-4 col-sm-4 col-12 mb-3">
+                    <div class="form-floating">
+                        <input type="text" name="floatingEscuela" class="form-control" id="floatingEscuela" placeholder="Escuela" required>
+                        <label for="floatingEscuela">Escuela</label>
+                        <div class="invalid-feedback">Por favor, ingrese el nombre de la escuela!</div>
+                    </div>
+                </div>
+
+                <!-- Campo Nivel -->
+                <div class="col-xl-4 col-md-4 col-sm-4 col-12 mb-3">
+                    <div class="form-floating">
+                        <input type="text" name="floatingNivel" class="form-control" id="floatingNivel" placeholder="Nivel" required>
+                        <label for="floatingNivel">Nivel</label>
+                        <div class="invalid-feedback">Por favor, ingrese el nivel escolar!</div>
+                    </div>
+                </div>
+
+                <!-- Campo Teléfono de los Representantes -->
+                <div class="col-xl-6 col-md-6 col-sm-6 col-12 mb-3">
+                    <div class="form-floating">
+                        <input type="number" name="floatingTelefonoMadre" class="form-control" id="floatingTelefonoMadre" placeholder="Teléfono de la Madre" required>
+                        <label for="floatingTelefonoMadre">Teléfono de la Madre</label>
+                        <div class="invalid-feedback">Por favor, ingrese el teléfono de la madre!</div>
+                    </div>
+                </div>
+
+                <div class="col-xl-6 col-md-6 col-sm-6 col-12 mb-3">
+                    <div class="form-floating">
+                        <input type="number" name="floatingTelefonoPadre" class="form-control" id="floatingTelefonoPadre" placeholder="Teléfono del Padre" required>
+                        <label for="floatingTelefonoPadre">Teléfono del Padre</label>
+                        <div class="invalid-feedback">Por favor, ingrese el teléfono del padre!</div>
+                    </div>
+                </div>
+
+                <!-- Campo Nombre de la Madre -->
+                <div class="col-xl-6 col-md-6 col-sm-6 col-12 mb-3">
+                    <div class="form-floating">
+                        <input type="text" name="floatingNombreMadre" class="form-control" id="floatingNombreMadre" placeholder="Nombre de la Madre" required>
+                        <label for="floatingNombreMadre">Nombre de la Madre</label>
+                        <div class="invalid-feedback">Por favor, ingrese el nombre de la madre!</div>
+                    </div>
+                </div>
+
+                <!-- Campo Nombre del Padre -->
+                <div class="col-xl-6 col-md-6 col-sm-6 col-12 mb-3">
+                    <div class="form-floating">
+                        <input type="text" name="floatingNombrePadre" class="form-control" id="floatingNombrePadre" placeholder="Nombre del Padre" required>
+                        <label for="floatingNombrePadre">Nombre del Padre</label>
+                        <div class="invalid-feedback">Por favor, ingrese el nombre del padre!</div>
+                    </div>
+                </div>
+
+                <!-- Campo Representante Legal -->
+                <div class="col-xl-4 col-md-4 col-sm-4 col-12 mb-3">
+                    <div class="form-floating">
+                        <input type="text" name="floatingRepresentanteLegal" class="form-control" id="floatingRepresentanteLegal" placeholder="Representante Legal" required>
+                        <label for="floatingRepresentanteLegal">Representante Legal</label>
+                        <div class="invalid-feedback">Por favor, ingrese el nombre del representante legal!</div>
+                    </div>
+                </div>
+
+                <!-- Campo Edad del Representante Legal -->
+                <div class="col-xl-4 col-md-4 col-sm-4 col-12 mb-3">
+                    <div class="form-floating">
+                        <input type="number" name="floatingEdadRepresentante" class="form-control" id="floatingEdadRepresentante" placeholder="Edad del Representante Legal" required>
+                        <label for="floatingEdadRepresentante">Edad del Representante Legal</label>
+                        <div class="invalid-feedback">Por favor, ingrese la edad del representante legal!</div>
+                    </div>
+                </div>
+
+                <!-- Campo Cédula del Niño -->
+                <div class="col-xl-4 col-md-4 col-sm-4 col-12 mb-3">
+                    <div class="form-floating">
+                        <input type="text" name="floatingCedulaNino" class="form-control" id="floatingCedulaNino" placeholder="Cédula del Niño" required>
+                        <label for="floatingCedulaNino">Cédula del Niño</label>
+                        <div class="invalid-feedback">Por favor, ingrese la cédula del niño!</div>
+                    </div>
+                </div>
+
+                <!-- Campo Cédula del Representante Legal -->
+                <div class="col-xl-4 col-md-4 col-sm-4 col-12 mb-3">
+                    <div class="form-floating">
+                        <input type="text" name="floatingCedulaRepresentante" class="form-control" id="floatingCedulaRepresentante" placeholder="Cédula del Representante Legal" required>
+                        <label for="floatingCedulaRepresentante">Cédula del Representante Legal</label>
+                        <div class="invalid-feedback">Por favor, ingrese la cédula del representante legal!</div>
+                    </div>
+                </div>
+
+
+            </section>
+            <!-- Step 2 -->
+            <h6>Motivo de Consulta</h6>
+            <section class="row">
+                <!-- Campo Motivo de Consulta -->
+                <div class="col-xl-12 col-md-12 col-sm-12 col-12 mb-3">
+                    <div class="form-floating">
+                        <textarea class="form-control" name="floatingMotivoConsulta" id="floatingMotivoConsulta" placeholder="Motivo de Consulta" required></textarea>
+                        <label for="floatingMotivoConsulta">Motivo de Consulta</label>
+                        <div class="invalid-feedback">Por favor, ingrese el motivo de consulta!</div>
+                    </div>
+                </div>
+
+                <!-- Campo Antecedentes Generales -->
+                <div class="col-xl-12 col-md-12 col-sm-12 col-12 mb-3">
+                    <div class="form-floating">
+                        <textarea class="form-control" name="floatingAntecedentesGenerales" id="floatingAntecedentesGenerales" placeholder="Antecedentes Generales" required></textarea>
+                        <label for="floatingAntecedentesGenerales">Antecedentes Generales</label>
+                        <div class="invalid-feedback">Por favor, ingrese los antecedentes generales!</div>
+                    </div>
+                </div>
+
+                <!-- Campo Antecedentes Prenatales -->
+                <div class="col-xl-12 col-md-12 col-sm-12 col-12 mb-3">
+                    <div class="form-floating">
+                        <textarea class="form-control" name="floatingAntecedentesPrenatales" id="floatingAntecedentesPrenatales" placeholder="Antecedentes Prenatales" required></textarea>
+                        <label for="floatingAntecedentesPrenatales">Antecedentes Prenatales</label>
+                        <div class="invalid-feedback">Por favor, ingrese los antecedentes prenatales!</div>
+                    </div>
+                </div>
+
+                <!-- Campo Desarrollo Inicial -->
+                <div class="col-xl-12 col-md-12 col-sm-12 col-12 mb-3">
+                    <label>Desarrollo Inicial:</label>
+                </div>
+
+                <!-- Balbuceo -->
+                <div class="col-xl-6 col-md-6 col-sm-12 col-12 mb-3">
+                    <div class="d-flex align-items-center">
+                        <label for="balbuceoCheckbox" class="me-3 flex-grow-1">Balbuceo:</label>
+                        <div class="form-check form-switch me-3">
+                            <input class="form-check-input" type="checkbox" id="balbuceoCheckbox">
+                            <label class="form-check-label" for="balbuceoCheckbox"></label>
+                        </div>
+                        <div class="flex-grow-1">
+                            <input type="text" class="form-control" id="floatingBalbuceoText" placeholder="Detalles">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gateo -->
+                <div class="col-xl-6 col-md-6 col-sm-12 col-12 mb-3">
+                    <div class="d-flex align-items-center">
+                        <label for="gateoCheckbox" class="me-3 flex-grow-1">Gateo:</label>
+                        <div class="form-check form-switch me-3">
+                            <input class="form-check-input" type="checkbox" id="gateoCheckbox">
+                            <label class="form-check-label" for="gateoCheckbox"></label>
+                        </div>
+                        <div class="flex-grow-1">
+                            <input type="text" class="form-control" id="floatingGateoText" placeholder="Detalles">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Caminó -->
+                <div class="col-xl-6 col-md-6 col-sm-12 col-12 mb-3">
+                    <div class="d-flex align-items-center">
+                        <label for="caminoCheckbox" class="me-3 flex-grow-1">Caminó:</label>
+                        <div class="form-check form-switch me-3">
+                            <input class="form-check-input" type="checkbox" id="caminoCheckbox">
+                            <label class="form-check-label" for="caminoCheckbox"></label>
+                        </div>
+                        <div class="flex-grow-1">
+                            <input type="text" class="form-control" id="floatingCaminoText" placeholder="Detalles">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Control de esfínteres -->
+                <div class="col-xl-6 col-md-6 col-sm-12 col-12 mb-3">
+                    <div class="d-flex align-items-center">
+                        <label for="esfinteresCheckbox" class="me-3 flex-grow-1">Control de esfínteres:</label>
+                        <div class="form-check form-switch me-3">
+                            <input class="form-check-input" type="checkbox" id="esfinteresCheckbox">
+                            <label class="form-check-label" for="esfinteresCheckbox"></label>
+                        </div>
+                        <div class="flex-grow-1">
+                            <input type="text" class="form-control" id="floatingEsfinteresText" placeholder="Detalles">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sus primeras palabras -->
+                <div class="col-xl-6 col-md-6 col-sm-12 col-12 mb-3">
+                    <div class="d-flex align-items-center">
+                        <label for="primerasPalabrasCheckbox" class="me-3 flex-grow-1">Sus primeras palabras:</label>
+                        <div class="form-check form-switch me-3">
+                            <input class="form-check-input" type="checkbox" id="primerasPalabrasCheckbox">
+                            <label class="form-check-label" for="primerasPalabrasCheckbox"></label>
+                        </div>
+                        <div class="flex-grow-1">
+                            <input type="text" class="form-control" id="floatingPrimerasPalabrasText" placeholder="Detalles">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Campo Antecedentes Familiares -->
+                <div class="col-xl-12 col-md-12 col-sm-12 col-12 mb-3">
+                    <div class="form-floating">
+                        <textarea class="form-control" name="floatingAntecedentesFamiliares" id="floatingAntecedentesFamiliares" placeholder="Antecedentes Familiares" required></textarea>
+                        <label for="floatingAntecedentesFamiliares">Antecedentes Familiares</label>
+                        <div class="invalid-feedback">Por favor, ingrese los antecedentes familiares!</div>
+                    </div>
+                </div>
+
+                <!-- Campo Antecedentes Médicos -->
+                <div class="col-xl-12 col-md-12 col-sm-12 col-12 mb-3">
+                    <div class="form-floating">
+                        <textarea class="form-control" name="floatingAntecedentesMedicos" placeholder="Antecedentes Médicos" id="floatingAntecedentesMedicos" required></textarea>
+                        <label for="floatingAntecedentesMedicos">Antecedentes Médicos</label>
+                        <div class="invalid-feedback">Por favor, ingrese los antecedentes médicos!</div>
+                    </div>
+                </div>
+
+            </section>
+
+
+            <!-- Step 3 -->
+            <h6>Análisis</h6>
+            <section class="row">
+
+                <!-- Campo Técnicas Utilizadas -->
+                <div class="col-xl-12 col-md-12 col-sm-12 col-12 mb-3">
+                    <div class="form-floating">
+                        <textarea class="form-control" name="floatingTecnicasUtilizadas" placeholder="Técnicas Utilizadas" id="floatingTecnicasUtilizadas" required></textarea>
+                        <label for="floatingTecnicasUtilizadas">Técnicas Utilizadas</label>
+                        <div class="invalid-feedback">Por favor, ingrese las técnicas utilizadas!</div>
+                    </div>
+                </div>
+
+                <!-- Campo Observaciones Generales de la Conducta -->
+                <div class="col-xl-12 col-md-12 col-sm-12 col-12 mb-3">
+                    <div class="form-floating">
+                        <textarea class="form-control" name="floatingObservacionesConducta" placeholder="Observaciones Generales de la Conducta" id="floatingObservacionesConducta" required></textarea>
+                        <label for="floatingObservacionesConducta">Observaciones Generales de la Conducta</label>
+                        <div class="invalid-feedback">Por favor, ingrese las observaciones generales de la conducta!</div>
+                    </div>
+                </div>
+
+                <!-- Campo Análisis e Interpretación de los Resultados -->
+                <div class="col-xl-12 col-md-12 col-sm-12 col-12 mb-3">
+                    <div class="form-floating">
+                        <textarea class="form-control" name="floatingAnalisisResultados" placeholder="Análisis e Interpretación de los Resultados" id="floatingAnalisisResultados" required></textarea>
+                        <label for="floatingAnalisisResultados">Análisis e Interpretación de los Resultados</label>
+                        <div class="invalid-feedback">Por favor, ingrese el análisis e interpretación de los resultados!</div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Step 4 -->
+            <h6>Test Cumanin</h6>
+            <section class="row">
+
+                <!-- Título Principal -->
+                <div class="col-xl-12 col-md-12 col-sm-12 col-12 mb-4 text-center">
+                    <h2>Aplicación del Cuestionario CUMANIN</h2>
+                    <p>Cuestionario de Madurez Neuropsicológica Infantil (3 a 13 años)</p>
+                </div>
+
+                <!-- Psicomotricidad y Lateralidad -->
+                <div class="col-xl-12 col-md-12 col-sm-12 col-12 mb-3">
+                    <div class="form-floating">
+                        <textarea class="form-control" name="floatingPsicomotricidadLateralidad" placeholder="Psicomotricidad y lateralidad" id="floatingPsicomotricidadLateralidad" required></textarea>
+                        <label for="floatingPsicomotricidadLateralidad">Psicomotricidad y lateralidad</label>
+                        <div class="invalid-feedback">Por favor, ingrese la información sobre psicomotricidad y lateralidad!</div>
+                    </div>
+                </div>
+
+                <!-- Lenguaje Articulatorio -->
+                <div class="col-xl-12 col-md-12 col-sm-12 col-12 mb-3">
+                    <div class="form-floating">
+                        <textarea class="form-control" name="floatingLenguajeArticulatorio" placeholder="Lenguaje articulatorio" id="floatingLenguajeArticulatorio" required></textarea>
+                        <label for="floatingLenguajeArticulatorio">Lenguaje articulatorio</label>
+                        <div class="invalid-feedback">Por favor, ingrese la información sobre lenguaje articulatorio!</div>
+                    </div>
+                </div>
+
+                <!-- Lenguaje Expresivo -->
+                <div class="col-xl-12 col-md-12 col-sm-12 col-12 mb-3">
+                    <div class="form-floating">
+                        <textarea class="form-control" name="floatingLenguajeExpresivo" placeholder="Lenguaje expresivo" id="floatingLenguajeExpresivo" required></textarea>
+                        <label for="floatingLenguajeExpresivo">Lenguaje expresivo</label>
+                        <div class="invalid-feedback">Por favor, ingrese la información sobre lenguaje expresivo!</div>
+                    </div>
+                </div>
+
+                <!-- Lenguaje Compresivo -->
+                <div class="col-xl-12 col-md-12 col-sm-12 col-12 mb-3">
+                    <div class="form-floating">
+                        <textarea class="form-control" name="floatingLenguajeCompresivo" placeholder="Lenguaje compresivo" id="floatingLenguajeCompresivo" required></textarea>
+                        <label for="floatingLenguajeCompresivo">Lenguaje compresivo</label>
+                        <div class="invalid-feedback">Por favor, ingrese la información sobre lenguaje compresivo!</div>
+                    </div>
+                </div>
+
+                <!-- Estructuración Espacial -->
+                <div class="col-xl-12 col-md-12 col-sm-12 col-12 mb-3">
+                    <div class="form-floating">
+                        <textarea class="form-control" name="floatingEstructuracionEspacial" placeholder="Estructuración espacial" id="floatingEstructuracionEspacial" required></textarea>
+                        <label for="floatingEstructuracionEspacial">Estructuración espacial</label>
+                        <div class="invalid-feedback">Por favor, ingrese la información sobre estructuración espacial!</div>
+                    </div>
+                </div>
+
+            </section>
+            <!-- Step 4 -->
+            <h6>Evaluación Psicopedagógica</h6>
+            <section class="row">
+                <div class="card">
+                    <div class="card-body wizard-content">
+                        <h4 class="card-title mb-0">Ficha de evaluación psicopedagócia</h4>
+                        <h6 class="card-subtitle mb-3"></h6>
+                        <div action="#" class="validation-wizard2 wizard-circle mt-5">
+                            <!-- Step 1 -->
+                            <h6>Autonomía</h6>
+                            <section>
+                                <div class="table-responsive">
+                                    <table class="table table-borderless">
+                                        <thead>
+                                            <tr>
+                                                <th>Autonomía</th>
+                                                <th class="text-center" style="width: 80px;"></th>
+                                                <th>Observaciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Mira la cara -->
+                                            <tr>
+                                                <td>Mira la cara</td>
+                                                <td class="text-center">
+                                                    <div class="form-check form-switch d-flex justify-content-center">
+                                                        <input type="checkbox" class="form-check-input" id="miraCara">
+                                                    </div>
+                                                </td>
+                                                <td><input type="text" class="form-control" id="observacionesMiraCara"></td>
+                                            </tr>
+                                            <!-- Trabajó solo -->
+                                            <tr>
+                                                <td>Trabajó solo</td>
+                                                <td class="text-center">
+                                                    <div class="form-check form-switch d-flex justify-content-center">
+                                                        <input type="checkbox" class="form-check-input" id="trabajoSolo">
+                                                    </div>
+                                                </td>
+                                                <td><input type="text" class="form-control" id="observacionesTrabajoSolo"></td>
+                                            </tr>
+                                            <!-- Predisposición para el trabajo -->
+                                            <tr>
+                                                <td>Predisposición para el trabajo</td>
+                                                <td class="text-center">
+                                                    <div class="form-check form-switch d-flex justify-content-center">
+                                                        <input type="checkbox" class="form-check-input" id="predisposicionTrabajo">
+                                                    </div>
+                                                </td>
+                                                <td><input type="text" class="form-control" id="observacionesPredisposicionTrabajo"></td>
+                                            </tr>
+                                            <!-- Sigue consignas -->
+                                            <tr>
+                                                <td>Sigue consignas</td>
+                                                <td class="text-center">
+                                                    <div class="form-check form-switch d-flex justify-content-center">
+                                                        <input type="checkbox" class="form-check-input" id="sigueConsignas">
+                                                    </div>
+                                                </td>
+                                                <td><input type="text" class="form-control" id="observacionesSigueConsignas"></td>
+                                            </tr>
+                                            <!-- Responde a su nombre -->
+                                            <tr>
+                                                <td>Responde a su nombre</td>
+                                                <td class="text-center">
+                                                    <div class="form-check form-switch d-flex justify-content-center">
+                                                        <input type="checkbox" class="form-check-input" id="respondeNombre">
+                                                    </div>
+                                                </td>
+                                                <td><input type="text" class="form-control" id="observacionesRespondeNombre"></td>
+                                            </tr>
+                                            <!-- Señala las partes de su cuerpo -->
+                                            <tr>
+                                                <td>Señala las partes de su cuerpo</td>
+                                                <td class="text-center">
+                                                    <div class="form-check form-switch d-flex justify-content-center">
+                                                        <input type="checkbox" class="form-check-input" id="senalaPartesCuerpo">
+                                                    </div>
+                                                </td>
+                                                <td><input type="text" class="form-control" id="observacionesSenalaPartesCuerpo"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+                            <!-- Step 2 -->
+                            <h6>Aspecto de Comunicación</h6>
+                            <section>
+                                <div class="table-responsive">
+                                    <table class="table table-borderless">
+                                        <thead>
+                                            <tr>
+                                                <th>Aspecto de Comunicación</th>
+                                                <th class="text-center" style="width: 80px;"></th>
+                                                <th>Observaciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Abre y cierra la boca -->
+                                            <tr>
+                                                <td>Abre y cierra la boca</td>
+                                                <td class="text-center">
+                                                    <div class="form-check form-switch d-flex justify-content-center">
+                                                        <input type="checkbox" class="form-check-input" id="abreCierraBoca">
+                                                    </div>
+                                                </td>
+                                                <td><input type="text" class="form-control" id="observacionesAbreCierraBoca"></td>
+                                            </tr>
+                                            <!-- Balbucea -->
+                                            <tr>
+                                                <td>Balbucea</td>
+                                                <td class="text-center">
+                                                    <div class="form-check form-switch d-flex justify-content-center">
+                                                        <input type="checkbox" class="form-check-input" id="balbucea">
+                                                    </div>
+                                                </td>
+                                                <td><input type="text" class="form-control" id="observacionesBalbucea"></td>
+                                            </tr>
+                                            <!-- Imita sonidos -->
+                                            <tr>
+                                                <td>Imita sonidos</td>
+                                                <td class="text-center">
+                                                    <div class="form-check form-switch d-flex justify-content-center">
+                                                        <input type="checkbox" class="form-check-input" id="imitaSonidos">
+                                                    </div>
+                                                </td>
+                                                <td><input type="text" class="form-control" id="observacionesImitaSonidos"></td>
+                                            </tr>
+                                            <!-- Sopla -->
+                                            <tr>
+                                                <td>Sopla</td>
+                                                <td class="text-center">
+                                                    <div class="form-check form-switch d-flex justify-content-center">
+                                                        <input type="checkbox" class="form-check-input" id="sopla">
+                                                    </div>
+                                                </td>
+                                                <td><input type="text" class="form-control" id="observacionesSopla"></td>
+                                            </tr>
+                                            <!-- Absorbe -->
+                                            <tr>
+                                                <td>Absorbe</td>
+                                                <td class="text-center">
+                                                    <div class="form-check form-switch d-flex justify-content-center">
+                                                        <input type="checkbox" class="form-check-input" id="absorbe">
+                                                    </div>
+                                                </td>
+                                                <td><input type="text" class="form-control" id="observacionesAbsorbe"></td>
+                                            </tr>
+                                            <!-- Realiza sonidos onomatopéyicos -->
+                                            <tr>
+                                                <td>Realiza sonidos onomatopéyicos</td>
+                                                <td class="text-center">
+                                                    <div class="form-check form-switch d-flex justify-content-center">
+                                                        <input type="checkbox" class="form-check-input" id="sonidosOnomatpeyicos">
+                                                    </div>
+                                                </td>
+                                                <td><input type="text" class="form-control" id="observacionesSonidosOnomatpeyicos"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+                            <!-- Step 3 -->
+                            <h6>Aspecto Motor</h6>
+                            <section>
+                                <div class="table-responsive">
+                                    <table class="table table-borderless">
+                                        <thead>
+                                            <tr>
+                                                <th>Aspecto Motor</th>
+                                                <th class="text-center" style="width: 80px;"></th>
+                                                <th>Observaciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Lanza y patea pelota -->
+                                            <tr>
+                                                <td>Lanza y patea pelota</td>
+                                                <td class="text-center">
+                                                    <div class="form-check form-switch d-flex justify-content-center">
+                                                        <input type="checkbox" class="form-check-input" id="lanzaPateaPelota">
+                                                    </div>
+                                                </td>
+                                                <td><input type="text" class="form-control" id="observacionesLanzaPateaPelota"></td>
+                                            </tr>
+                                            <!-- Aparea figuras iguales -->
+                                            <tr>
+                                                <td>Aparea figuras iguales</td>
+                                                <td class="text-center">
+                                                    <div class="form-check form-switch d-flex justify-content-center">
+                                                        <input type="checkbox" class="form-check-input" id="apareaFigurasIguales">
+                                                    </div>
+                                                </td>
+                                                <td><input type="text" class="form-control" id="observacionesApareaFigurasIguales"></td>
+                                            </tr>
+                                            <!-- Realiza el movimiento de pinza digital -->
+                                            <tr>
+                                                <td>Realiza el movimiento de pinza digital</td>
+                                                <td class="text-center">
+                                                    <div class="form-check form-switch d-flex justify-content-center">
+                                                        <input type="checkbox" class="form-check-input" id="pinzaDigital">
+                                                    </div>
+                                                </td>
+                                                <td><input type="text" class="form-control" id="observacionesPinzaDigital"></td>
+                                            </tr>
+                                            <!-- Encaja bloques -->
+                                            <tr>
+                                                <td>Encaja bloques</td>
+                                                <td class="text-center">
+                                                    <div class="form-check form-switch d-flex justify-content-center">
+                                                        <input type="checkbox" class="form-check-input" id="encajaBloques">
+                                                    </div>
+                                                </td>
+                                                <td><input type="text" class="form-control" id="observacionesEncajaBloques"></td>
+                                            </tr>
+                                            <!-- Encaja figuras -->
+                                            <tr>
+                                                <td>Encaja figuras</td>
+                                                <td class="text-center">
+                                                    <div class="form-check form-switch d-flex justify-content-center">
+                                                        <input type="checkbox" class="form-check-input" id="encajaFiguras">
+                                                    </div>
+                                                </td>
+                                                <td><input type="text" class="form-control" id="observacionesEncajaFiguras"></td>
+                                            </tr>
+                                            <!-- Arma rompecabezas -->
+                                            <tr>
+                                                <td>Arma rompecabezas</td>
+                                                <td class="text-center">
+                                                    <div class="form-check form-switch d-flex justify-content-center">
+                                                        <input type="checkbox" class="form-check-input" id="armaRompecabezas">
+                                                    </div>
+                                                </td>
+                                                <td><input type="text" class="form-control" id="observacionesArmaRompecabezas"></td>
+                                            </tr>
+                                            <!-- Sigue la mirada de los objetos que se enseña -->
+                                            <tr>
+                                                <td>Sigue la mirada de los objetos que se enseña</td>
+                                                <td class="text-center">
+                                                    <div class="form-check form-switch d-flex justify-content-center">
+                                                        <input type="checkbox" class="form-check-input" id="sigueMiradaObjetos">
+                                                    </div>
+                                                </td>
+                                                <td><input type="text" class="form-control" id="observacionesSigueMiradaObjetos"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </section>
+                            <!-- Step 4 -->
+                            <h6></h6><section>
+                                <div class="accordion" id="accordionExample">
+                                    <!-- DISCRIMINACIÓN VISUAL -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingOne">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                DISCRIMINACIÓN VISUAL
+                                            </button>
+                                        </h2>
+                                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-borderless">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>Reconoce colores:</td>
+                                                                <td class="text-center">
+                                                                    <div class="form-check form-switch d-flex justify-content-center">
+                                                                        <input type="checkbox" class="form-check-input" id="reconoceColores">
+                                                                    </div>
+                                                                </td>
+                                                                <td><input type="text" class="form-control" id="observacionesReconoceColores"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Reconoce las figuras geométricas:</td>
+                                                                <td class="text-center">
+                                                                    <div class="form-check form-switch d-flex justify-content-center">
+                                                                        <input type="checkbox" class="form-check-input" id="reconoceFigurasGeometricas">
+                                                                    </div>
+                                                                </td>
+                                                                <td><input type="text" class="form-control" id="observacionesReconoceFigurasGeometricas"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Reconoce números y cantidades:</td>
+                                                                <td class="text-center">
+                                                                    <div class="form-check form-switch d-flex justify-content-center">
+                                                                        <input type="checkbox" class="form-check-input" id="reconoceNumerosCantidades">
+                                                                    </div>
+                                                                </td>
+                                                                <td><input type="text" class="form-control" id="observacionesReconoceNumerosCantidades"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3"><strong>OBSERVACIONES:</strong></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3"><textarea class="form-control" id="observacionesDiscriminacionVisual"></textarea></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- RECONOCE NOCIONES -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingTwo">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                RECONOCE NOCIONES
+                                            </button>
+                                        </h2>
+                                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-borderless">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="2">
+                                                                    <select class="form-select select2 select2-with-menu-bg"
+                                                                            id="reconoceNociones"
+                                                                            multiple="multiple"
+                                                                            data-bgcolor="blue"
+                                                                            data-bgcolor-variation="light">
+                                                                        <option value="Arriba">Arriba</option>
+                                                                        <option value="Abajo">Abajo</option>
+                                                                        <option value="Adentro">Adentro</option>
+                                                                        <option value="Afuera">Afuera</option>
+                                                                        <option value="Cerca">Cerca</option>
+                                                                        <option value="Lejos">Lejos</option>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2"><strong>Observaciones:</strong></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2"><textarea class="form-control" id="observacionesReconoceNociones"></textarea></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- NIVEL DE ATENCIÓN -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingThree">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                NIVEL DE ATENCIÓN
+                                            </button>
+                                        </h2>
+                                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-borderless">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-center">Alto</th>
+                                                                <th class="text-center">Medio</th>
+                                                                <th class="text-center">Bajo</th>
+                                                                <th class="text-center">Muy bajo</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="text-center"><input type="radio" name="nivelAtencion" value="Alto"></td>
+                                                                <td class="text-center"><input type="radio" name="nivelAtencion" value="Medio"></td>
+                                                                <td class="text-center"><input type="radio" name="nivelAtencion" value="Bajo"></td>
+                                                                <td class="text-center"><input type="radio" name="nivelAtencion" value="MuyBajo"></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- NIVEL DE MEMORIA -->
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingFour">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                                NIVEL DE MEMORIA
+                                            </button>
+                                        </h2>
+                                        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-borderless">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-center">Alto</th>
+                                                                <th class="text-center">Medio</th>
+                                                                <th class="text-center">Bajo</th>
+                                                                <th class="text-center">Muy bajo</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="text-center"><input type="radio" name="nivelMemoria" value="Alto"></td>
+                                                                <td class="text-center"><input type="radio" name="nivelMemoria" value="Medio"></td>
+                                                                <td class="text-center"><input type="radio" name="nivelMemoria" value="Bajo"></td>
+                                                                <td class="text-center"><input type="radio" name="nivelMemoria" value="MuyBajo"></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </form>
+    </div>
+</div>
+
+<!--  end Step wizard with validation -->
+<script src="~/js/terapias/evaluacion.js"></script>
+<script>
+    Evaluacion.Init('@Url.Content("~/")', '@Controller');
+
+
+
+</script>

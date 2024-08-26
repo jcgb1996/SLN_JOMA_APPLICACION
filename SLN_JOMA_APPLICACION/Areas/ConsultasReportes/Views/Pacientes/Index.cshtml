@@ -1,0 +1,40 @@
+﻿@using COM.JOMA.EMP.APLICACION.SERVICE.Constants
+@{
+    var Controller = $"{WebSiteConstans.JOMA_WEBSITE_AREA_CONSULTAS_REPORTES}/{WebSiteConstans.JOMA_WEBSITE_AREA_CONTROLLER_PACIENTES}";
+}
+<style>
+    .table td {
+        padding: 5px !important; /* Elimina el padding de las celdas */
+    }
+</style>
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Pacientes Registrados</h5>
+
+
+                    <!-- Table with stripped rows -->
+                    <table class="table table-striped table-bordered w-100" id="DataTablePacientes">
+                    </table>
+
+                    <!-- End Table with stripped rows -->
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script src="~/assets/libs/datatables.net/js/jquery.datatables.min.js"></script>
+<script src="~/assets/libs/datatables.net-bs5/js/datatables.bootstrap5.min.js"></script>
+<script src="~/js/consultasreportes/paciente.js"></script>
+<script>
+    Pacientes.Init('@Url.Content("~/")', '@Controller');
+
+
+
+</script>

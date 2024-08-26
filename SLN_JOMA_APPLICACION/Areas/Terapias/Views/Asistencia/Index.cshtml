@@ -1,0 +1,73 @@
+﻿@using COM.JOMA.EMP.APLICACION.SERVICE.Constants
+@{
+    var Controller = $"{WebSiteConstans.JOMA_WEBSITE_AREA_CONSULTAS_TERAPIAS}/{WebSiteConstans.JOMA_WEBSITE_AREA_CONTROLLER_ASISTENCIA}";
+}
+
+
+<style>
+    .table td {
+        padding: 5px !important; /* Elimina el padding de las celdas */
+    }
+</style>
+
+<!-- Modal -->
+<div class="modal fade" id="modalRegistroActividad" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Registrar Actividad</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formRegistroActividad">
+                    <input type="hidden" id="modalCedula" name="cedula">
+                    <div class="mb-3">
+                        <label for="modalNombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="modalNombre" name="nombre" readonly>
+                    </div>
+                    <!-- Agrega aquí los campos necesarios para registrar la actividad -->
+                    <div class="mb-3">
+                        <label for="actividad" class="form-label">Actividad</label>
+                        <textarea class="form-control" id="actividad" name="actividad" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="guardarActividad">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Pacientes Registrados</h5>
+
+
+                    <!-- Table with stripped rows -->
+                    <table class="table table-striped table-bordered w-100" id="DataTableAsistencia">
+                    </table>
+
+                    <!-- End Table with stripped rows -->
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<script src="~/assets/libs/datatables.net/js/jquery.datatables.min.js"></script>
+<script src="~/assets/libs/datatables.net-bs5/js/datatables.bootstrap5.min.js"></script>
+<script src="~/js/terapias/asistencia.js"></script>
+<script>
+    Asistencia.Init('@Url.Content("~/")', '@Controller');
+
+
+
+</script>

@@ -1,0 +1,22 @@
+﻿@using COM.JOMA.EMP.APLICACION.Dto
+@using COM.JOMA.EMP.APLICACION.SERVICE.Constants
+@{
+    var UsuarioLogin = (LoginAppResultDto?)ViewData["UsuarioSession"];
+}
+
+
+
+
+<header class="topbar">
+    <div class="with-vertical">
+
+
+        @await Html.PartialAsync("./Header/_Header")
+        @await Html.PartialAsync("./Header/_HeaderMobil")
+    </div>
+
+
+
+
+   
+</header>

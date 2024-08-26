@@ -1,0 +1,88 @@
+﻿@using COM.JOMA.EMP.APLICACION.Dto
+@using COM.JOMA.EMP.APLICACION.SERVICE.Constants
+@{
+    var UsuarioLogin = (LoginAppResultDto?)ViewData["UsuarioSession"];
+    var Controller = $"{WebSiteConstans.JOMA_WEBSITE_AREA_INICIO}/{WebSiteConstans.JOMA_WEBSITE_AREA_CONTROLLER_LOGIN}";
+    string? url = ViewBag.Url as string;
+}
+
+<aside id="sidebar" class="left-sidebar with-vertical">
+    <div>
+        <!-- ---------------------------------- -->
+        <!-- Start Vertical Layout Sidebar -->
+        <!-- ---------------------------------- -->
+        <div class="brand-logo d-flex align-items-center justify-content-between">
+            <a href="#" onclick="Site.RenderContent('@url');" class="text-nowrap logo-img">
+                <img src="~/assets/images/logos/dark-logo.svg" class="dark-logo" alt="Logo-Dark" />
+            </a>
+            <a href="#" onclick="Site.RenderContent('@url');" class="sidebartoggler ms-auto text-decoration-none fs-5 d-block d-xl-none">
+                <i class="ti ti-x"></i>
+            </a>
+        </div>
+        <nav class="sidebar-nav scroll-sidebar simplebar-scrollable-y" data-simplebar>
+            <ul id="sidebarnav">
+                @{
+                    <!-- ---------------------------------- -->
+                    <!-- Home -->
+                    <!-- ---------------------------------- -->
+                    <li class="nav-small-cap">
+                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                        <span class="hide-menu">Inicio</span>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="#" onclick="Site.RenderContent('@url');" id="get-url" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-chart-pie"></i>
+                            </span>
+                            <span class="hide-menu">Dashboard</span>
+                        </a>
+                    </li>
+
+                    int i = 1;
+                    foreach (var item in UsuarioLogin.OpcionesMenu)
+                    {
+                        string selected = i == 1 ? "selected" : string.Empty;
+                        var Id2 = $"#components-nav_{item.Controller}";
+                        <li class="sidebar-item ">
+                            <a class="sidebar-link has-arrow" href="#" aria-expanded="false">
+                                <span class="d-flex">
+                                    <i class="ti ti-app-window"></i>
+                                </span>
+                                <span class="hide-menu">@item.Title</span>
+                            </a>
+                            @if (item.Children.Any())
+                            {
+                                var Id = $"components-nav_{item.Controller}";
+                                <ul aria-expanded="false" class="collapse first-level">
+                                    @foreach (var subItem in item.Children)
+                                    {
+                                        var Accion = $"../{subItem.Area}/{subItem.Controller}/{subItem.Action}";
+                                        <li class="sidebar-item">
+                                            <a href="#" class="sidebar-link" onclick="Site.RenderContent('@Accion');">
+                                                <div class="round-16 d-flex align-items-center justify-content-center">
+                                                    <i class="ti ti-circle"></i>
+                                                </div>
+                                                <span class="hide-menu">@subItem.Title</span>
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                        </li>
+                        i++;
+                    }
+
+                }
+
+            </ul>
+        </nav>
+
+
+    </div>
+</aside>
+
+
+
+<!-- Sidebar Start -->
+<!--  Sidebar End -->

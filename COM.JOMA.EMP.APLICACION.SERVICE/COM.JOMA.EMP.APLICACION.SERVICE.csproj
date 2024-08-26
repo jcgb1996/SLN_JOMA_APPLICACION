@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\COM.JOMA.EMP.APLICACION\COM.JOMA.EMP.APLICACION.csproj" />
+    <ProjectReference Include="..\COM.JOMA.EMP.CROSSCUTTING\COM.JOMA.EMP.CROSSCUTTING.csproj" />
+    <ProjectReference Include="..\COM.JOMA.EMP.DOMAIN\COM.JOMA.EMP.DOMAIN.csproj" />
+    <ProjectReference Include="..\COM.JOMA.EMP.QUERY\COM.JOMA.EMP.QUERY.csproj" />
+  </ItemGroup>
+</Project>
