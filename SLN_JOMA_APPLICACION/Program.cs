@@ -17,11 +17,6 @@ using SLN_COM_JOMA_APPLICACION.Extensions;
 using SLN_COM_JOMA_APPLICACION.Settings;
 using System.Globalization;
 
-// Configurar Serilog antes de crear el host builder
-Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Error()
-    .WriteTo.Console()
-    .CreateLogger();
 
 try
 {
@@ -36,8 +31,7 @@ try
     LoadSettings(ref settings);
     #endregion
 
-    // Desactivar los proveedores de log predeterminados y usar Serilog
-    builder.Logging.ClearProviders();
+    
     builder.Host.UseSerilog();
 
     #region INJECT DATABASE
