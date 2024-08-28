@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using COM.JOMA.EMP.APLICACION.SERVICE.Constants
+@{
+    string ACCION_FORZARCAMBIOCLAVE = WebSiteConstans.JOMA_WEBSITE_ACCION_FORZARCAMBIOCLAVE;
+}
+
+<!DOCTYPE html>
 <html lang="en" dir="ltr" data-bs-theme="light" data-color-theme="Blue_Theme" data-layout="vertical">
 
 <head>
@@ -18,10 +23,10 @@
 
 <body>
     <div id="loading-spinner" class="d-none justify-content-center align-items-center position-fixed top-0 start-0 w-100 h-100 bg-light bg-opacity-75" style="z-index: 1050;">
-            <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Cargando...</span>
-            </div>
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
         </div>
+    </div>
     <!-- Modal -->
     <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-md">
@@ -29,7 +34,7 @@
                 <div class="modal-header pt-2 pb-2">
                     <h5 class="modal-title card-title text-center p-0 fs-4" id="TitleOlvidasteContrasenia">¿Olvidaste tu contraseña?</h5>
                     <h5 class="modal-title card-title text-center p-0 fs-4" id="ForzarCambioContrasenia">Forzar cambio de clave</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" id="CerrarModal" data-bs-dismiss="modal" onclick="" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="card-body">
@@ -63,7 +68,7 @@
                                     <span class="input-group-text" id="txtCompaniaRecuperacion">
                                         <i class="ti ti-building"></i>
                                     </span>
-                                    <input type="text" name="txtCompania" minlength="3" placeholder="Ruc" class="form-control" id="txtCompaniaRecuperacion" required>
+                                    <input type="text" name="Compania" minlength="3" placeholder="Ruc" class="form-control" id="txtCompaniaRecuperacion" required>
                                     <div class="invalid-feedback">
                                         ¡Por favor, introduzca el ruc de la compania!
                                     </div>
@@ -74,8 +79,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" onclick="Login.RecuperarContrasenia();" class="btn btn-primary">Recuperar</button>
+                    <button type="button" class="btn btn-secondary" id="CerrarForm" onclick="" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" onclick="Login.RecuperarContrasenia(FrmRecuperacion, event);" class="btn btn-primary">Recuperar</button>
                 </div>
             </div>
         </div>
@@ -97,20 +102,6 @@
                                 <a href="#" class="text-nowrap logo-img text-center d-block mb-5 w-100">
                                     <img src="~/assets/images/logos/dark-logo.svg" class="dark-logo" alt="Logo-Dark" />
                                 </a>
-                                @* <div class="row">
-                                <div class="col-6 mb-2 mb-sm-0">
-                                <a class="btn text-dark border fw-normal d-flex align-items-center justify-content-center rounded-2 py-8" href="javascript:void(0)" role="button">
-                                <img src="~/assets/images/svgs/google-icon.svg" alt="modernize-img" class="img-fluid me-2" width="18" height="18">
-                                <span class="flex-shrink-0">with Google</span>
-                                </a>
-                                </div>
-                                <div class="col-6">
-                                <a class="btn text-dark border fw-normal d-flex align-items-center justify-content-center rounded-2 py-8" href="javascript:void(0)" role="button">
-                                <img src="~/assets/images/svgs/facebook-icon.svg" alt="modernize-img" class="img-fluid me-2" width="18" height="18">
-                                <span class="flex-shrink-0">with FB</span>
-                                </a>
-                                </div>
-                                </div> *@
                                 <div class="position-relative text-center my-4">
                                     <p class="mb-0 fs-4 px-3 d-inline-block bg-body text-dark z-index-5 position-relative">
                                         Inciar sesión
@@ -119,12 +110,12 @@
                                 </div>
                                 <form class="row g-3 needs-validation" id="FrmLogin" novalidate>
                                     <div class="col-12">
-                                        <label for="txtUser" class="form-label">Usuario</label>
+                                        <label for="Usuario" class="form-label">Usuario</label>
                                         <div class="input-group has-validation">
                                             <span class="input-group-text" id="inputGroupPrepend">
                                                 <i class="ti ti-user-circle"></i>
                                             </span>
-                                            <input type="text" name="txtUser" minlength="3" placeholder="Usuario" class="form-control" id="txtUser" required>
+                                            <input type="text" name="Usuario" minlength="3" placeholder="Usuario" class="form-control" id="Usuario" required>
                                             <div class="invalid-feedback">
                                                 Por favor, introduzca su nombre de usuario.
                                             </div>
@@ -132,12 +123,12 @@
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="txtPassword" class="form-label">Contraseña</label>
+                                        <label for="Clave" class="form-label">Contraseña</label>
                                         <div class="input-group has-validation">
                                             <span class="input-group-text" id="inputGroupPassword">
                                                 <i class="ti ti-lock"></i>
                                             </span>
-                                            <input type="password" name="txtPassword" minlength="3" placeholder="****" class="form-control" id="txtPassword" required>
+                                            <input type="password" name="Clave" minlength="3" placeholder="****" class="form-control" id="Clave" required>
                                             <div class="invalid-feedback">
                                                 ¡Por favor, introduzca su contraseña!
                                             </div>
@@ -148,12 +139,12 @@
 
 
                                     <div class="col-12">
-                                        <label for="txtCompania" class="form-label">Compania</label>
+                                        <label for="Compania" class="form-label">Compania</label>
                                         <div class="input-group has-validation">
                                             <span class="input-group-text" id="inputGroupCompania">
                                                 <i class="ti ti-building"></i>
                                             </span>
-                                            <input type="text" name="txtCompania" minlength="3" placeholder="Ruc" class="form-control" id="txtCompania" required>
+                                            <input type="text" name="Compania" minlength="3" placeholder="Ruc" class="form-control" id="Compania" required>
                                             <div class="invalid-feedback">
                                                 ¡Por favor, introduzca el ruc de la compania!
                                             </div>
@@ -175,7 +166,7 @@
                                     </div>
 
                                     <div class="col-12">
-                                        <button class="btn btn-primary w-100" type="button" onclick="Login.RealizarLogin();">Inicio Sesión</button>
+                                        <button class="btn btn-primary w-100" type="button" onclick='Login.RealizarLogin("FrmLogin",event);'>Inicio Sesión</button>
                                     </div>
                                 </form>
                             </div>
@@ -198,11 +189,13 @@
 
     <!-- solar icons -->
     <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+    <script src="~/assets/js/plugins/toastr-init.js"></script>
 
     <script src="~/js/site.js"></script>
     <script src="~/js/inicio/login.js"></script>
 
     <script>
+        Login.ACCION_FORZARCAMBIOCLAVE = "@ACCION_FORZARCAMBIOCLAVE";
         URL_BASE = '@Url.Content("~/")';
         CONTROLERNAME = "@ViewBag.ControlerName";
         Login.Init();

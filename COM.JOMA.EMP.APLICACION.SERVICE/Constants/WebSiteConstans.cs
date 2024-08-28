@@ -16,6 +16,8 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.Constants
 
 
         public const string JOMA_WEBSITE_AREA_ADMINISTRACION = "Administracion";
+        public const string JOMA_WEBSITE_AREA_CONTROLLER_GUARDARPACIENTE_ACCION = "GuardarPaciente";
+
         public const string JOMA_WEBSITE_AREA_CONSULTAS_TERAPIAS = "Terapias";
         public const string JOMA_WEBSITE_AREA_CONTROLLER_ASISTENCIA = "Asistencia";
         public const string JOMA_WEBSITE_AREA_CONTROLLER_EVALUACION = "Evaluacion";
@@ -25,7 +27,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.Constants
         public const string JOMA_WEBSITE_AREA_CONTROLLER_INTERESADOS = "Interesados";
         public const string JOMA_WEBSITE_AREA_CONTROLLER_MARCACIONES = "Marcaciones";
         public const string JOMA_WEBSITE_AREA_CONTROLLER_NOTIFICACIONES = "Notificaciones";
-        public const string JOMA_WEBSITE_AREA_CONTROLLER_PACIENTES = "Pacientes";
+        public const string JOMA_WEBSITE_AREA_CONTROLLER_PACIENTES = "Paciente";
         public const string JOMA_WEBSITE_AREA_CONTROLLER_TERAPISTAS = "Terapistas";
 
 

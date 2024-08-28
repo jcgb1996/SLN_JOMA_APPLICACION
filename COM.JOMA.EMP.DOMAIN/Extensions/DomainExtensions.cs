@@ -1,12 +1,6 @@
 ﻿using COM.JOMA.EMP.DOMAIN.Attributes;
 using COM.JOMA.EMP.DOMAIN.Constants;
 using COM.JOMA.EMP.DOMAIN.JomaExtensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace COM.JOMA.EMP.DOMAIN.Extensions
 {

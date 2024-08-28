@@ -30,7 +30,7 @@ namespace SLN_JOMA_APPLICACION.Areas.Terapias.Controllers
                 var MarcacionesDto = await trabajadorAppServices.GetPacientes(Usuario.IdCompania);
                 return StatusCode(StatusCodes.Status200OK, MarcacionesDto);
             }
-            catch (JOMAUException ex)
+            catch (JOMAException ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message.ToString());
             }

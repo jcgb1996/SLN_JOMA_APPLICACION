@@ -9,7 +9,11 @@ namespace COM.JOMA.EMP.DOMAIN.Constants
     public class DomainConstants
     {
         public const string JOMA_KEY_GLOBAL_DICT_NOMBRELOG = "NombreLog";
+        public const string EDOC_KEY_GLOBAL_DICT_CODIGOSEGUIMIENTO = "CodigoSeguimiento";
+
         public const string JOMA_FAULTSTRING = "Ha ocurrido una excepción durante el proceso, el cual ha sido identificado con el código {0}. Por favor comuniquese con soporte";
+        public const string JOMA_MESSAGE = "La operación se completó con éxito";
+        public const bool JOMA_SUCCESS = true;
         #region KEY ENCRIPTACION EDOC
         public const string JOMA_KEYENCRIPTA = "P@ssw0rd!Ex@mple";
         public const string JOMA_SALTO = "s@ltV@lu3Ex@mple!";

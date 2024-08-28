@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
 {
-    internal class ConsultasAppServices : BaseAppServices
+    public class ConsultasAppServices : BaseAppServices
     {
         public ConsultasAppServices(ILogCrossCuttingService? logService, GlobalDictionaryDto globalDictionary) : base(logService, globalDictionary)
         {

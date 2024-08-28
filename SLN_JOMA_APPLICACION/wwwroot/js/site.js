@@ -1,26 +1,30 @@
 ﻿const KEY_ENTER = 13
 
 var Site = {
-
     IniciarLoading: function () {
         $('#loading-spinner').removeClass('d-none').addClass('d-flex');
     },
-
     CerrarLoading: function () {
         $('#loading-spinner').removeClass('d-flex').addClass('d-none');
     },
-
     limpiarFormularioById: function (IdFormulario) {
         // Selecciona el formulario por su ID y resetea todos los campos de texto
         $('#' + IdFormulario)[ 0 ].reset();
         // Remover clases de validación en todos los inputs, selects y textareas
-        $('#'+ IdFormulario).find('.form-control').each(function () {
+        $('#' + IdFormulario).find('.form-control').each(function () {
             $(this).removeClass('is-invalid is-valid'); // Remover las clases de Bootstrap 5
             $(this).closest('.form-group').find('.invalid-feedback').hide(); // Ocultar el mensaje de error
         });
 
         // Remover la clase `was-validated` del formulario si está presente
-        $('#'+ IdFormulario).removeClass('was-validated');
+        $('#' + IdFormulario).removeClass('was-validated');
+    },
+    GetObjetoFormularioById: function (IdFormulario) {
+        var formDataObj = $('#' + IdFormulario).serializeArray().reduce(function (obj, item) {
+            obj[ item.name ] = item.value;
+            return obj;
+        }, {});
+        return formDataObj;
     },
     ValidarForumarioById: function (IdFormulario, event) {
         var $form = $('#' + IdFormulario);
@@ -35,19 +39,27 @@ var Site = {
 
         return true;
     },
-    mostrarNotificacion: function (mensaje, tipo = 1, Milisegundos) {
-        $.jGrowl(mensaje, {
-            //header: 'Notificación',
-            theme: tipo == 1 ? 'growl-success' : 'growl-error',
-            life: (Milisegundos === undefined || Milisegundos === null) ? 10000 : Milisegundos,
-            position: 'top-right'
-        });
-    },
+    mostrarNotificacion: function (Mensaje, tipo = 1, Milisegundos) {
+        switch (tipo) {
+            case 1: {
+                toastr.success(Mensaje, "", {
+                    closeButton: true,
+                    timeOut: (Milisegundos === undefined || Milisegundos === null) ? 10000 : Milisegundos,
+                });
+            } break;
+            case 2: {
+                toastr.error(Mensaje, "", {
+                    closeButton: true,
+                    timeOut: (Milisegundos === undefined || Milisegundos === null) ? 10000 : Milisegundos,
+                });
 
+            } break;
+            default:
+        }
+    },
     createUrl: function (baseUrl, controller, action) {
         return baseUrl + controller + action;
     },
-
     RenderContent: function (Url) {
         Site.IniciarLoading();
         $.ajax({
@@ -66,6 +78,42 @@ var Site = {
                 Site.CerrarLoading();
             }
         });
+    },
+
+    AjaxError: function (result) {
+        var errorResponse;
+        try {
+            errorResponse = JSON.parse(result.responseText);
+        } catch (e) {
+            errorResponse = { message: "An unexpected error occurred." };
+        }
+
+        switch (result.status) {
+            case 400:
+                // Bad Request
+                Site.mostrarNotificacion(errorResponse.message || "Bad request. Please check the data and try again.", 2);
+                break;
+            case 401:
+                // Unauthorized
+                Site.mostrarNotificacion(errorResponse.message || "You are not authorized to perform this action. Please log in.", 2);
+                break;
+            case 403:
+                // Forbidden
+                Site.mostrarNotificacion(errorResponse.message || "You do not have permission to access this resource.", 2);
+                break;
+            case 404:
+                // Not Found
+                Site.mostrarNotificacion(errorResponse.message || "The requested resource was not found.", 2);
+                break;
+            case 500:
+                // Internal Server Error
+                Site.mostrarNotificacion(errorResponse.message || "An internal server error occurred. Please try again later.", 2);
+                break;
+            default:
+                // Other status codes
+                Site.mostrarNotificacion(errorResponse.message || "An unexpected error occurred.", 2);
+                break;
+        }
     }
 
 }

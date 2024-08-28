@@ -1,4 +1,5 @@
 ﻿using COM.JOMA.EMP.APLICACION.Dto;
+using COM.JOMA.EMP.APLICACION.Dto.Response;
 using COM.JOMA.EMP.CROSSCUTTING.ICrossCuttingServices;
 using COM.JOMA.EMP.DOMAIN;
 using COM.JOMA.EMP.DOMAIN.Tools;

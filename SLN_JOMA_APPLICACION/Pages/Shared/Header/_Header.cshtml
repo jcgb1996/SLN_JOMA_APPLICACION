@@ -1,4 +1,4 @@
-﻿@using COM.JOMA.EMP.APLICACION.Dto
+﻿@using COM.JOMA.EMP.APLICACION.Dto.Response
 @using COM.JOMA.EMP.APLICACION.SERVICE.Constants
 @{
     var UsuarioLogin = (LoginAppResultDto?)ViewData["UsuarioSession"];
@@ -17,10 +17,10 @@
     <ul class="navbar-nav quick-links d-none d-lg-flex align-items-center">
 
         <li class="nav-item dropdown-hover d-none d-lg-block">
-            <a class="nav-link" href="#">Chat</a>
+            <a class="nav-link" href="#">Asistencia</a>
         </li>
         <li class="nav-item dropdown-hover d-none d-lg-block">
-            <a class="nav-link" href="#">Calendatrio</a>
+            <a class="nav-link" href="#">Agenda</a>
         </li>
     </ul>
 
@@ -131,12 +131,12 @@
                     <div class="dropdown-menu content-dd dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop1">
                         <div class="profile-dropdown position-relative" data-simplebar>
                             <div class="py-3 px-7 pb-0">
-                                <h5 class="mb-0 fs-5 fw-semibold">User Profile</h5>
+                                <h5 class="mb-0 fs-5 fw-semibold">Perfil de Usuario</h5>
                             </div>
                             <div class="d-flex align-items-center py-9 mx-7 border-bottom">
                                 <img src="~/assets/images/profile/user-1.jpg" class="rounded-circle" width="80" height="80" alt="modernize-img" />
                                 <div class="ms-3">
-                                    <h5 class="mb-1 fs-3">Mathew Anderson</h5>
+                                    <h5 class="mb-1 fs-3">@UsuarioLogin.Nombre</h5>
                                     <span class="mb-1 d-block">Designer</span>
                                     <p class="mb-0 d-flex align-items-center gap-2">
                                         <i class="ti ti-mail fs-4"></i> info@modernize.com

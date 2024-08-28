@@ -1,4 +1,6 @@
 ﻿using COM.JOMA.EMP.APLICACION.Dto;
+using COM.JOMA.EMP.APLICACION.Dto.Request;
+using COM.JOMA.EMP.APLICACION.Dto.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;

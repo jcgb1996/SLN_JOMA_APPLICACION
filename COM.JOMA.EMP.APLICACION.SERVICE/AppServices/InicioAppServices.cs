@@ -1,6 +1,9 @@
 ﻿using COM.JOMA.EMP.APLICACION.Dto;
+using COM.JOMA.EMP.APLICACION.Dto.Request;
+using COM.JOMA.EMP.APLICACION.Dto.Response;
 using COM.JOMA.EMP.APLICACION.Interfaces;
 using COM.JOMA.EMP.APLICACION.SERVICE.Extensions;
+using COM.JOMA.EMP.CROSSCUTTING.Contants;
 using COM.JOMA.EMP.CROSSCUTTING.ICrossCuttingServices;
 using COM.JOMA.EMP.DOMAIN;
 using COM.JOMA.EMP.DOMAIN.Constants;
@@ -33,7 +36,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 List<MenuAppDto> menuAppDtos = ListMenuQueryDtos.MapToMenuAppDto();
                 return menuAppDtos;
             }
-            catch (JOMAUException)
+            catch (JOMAException)
             {
                 throw;
             }
@@ -55,7 +58,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 seccion = "REALIZAR LOGIN";
                 var RealizoLogin = await LoginQueryServices.Login(login.Usuario, login.Clave, login.Compania);
 
-                if (RealizoLogin is null || RealizoLogin.Count == 0) throw new JOMAUException($"No se encontro datos para la compañia {login.Compania}");
+                if (RealizoLogin is null || RealizoLogin.Count == 0) throw new JOMAException($"No se encontro datos para la compañia {login.Compania}");
 
                 seccion = "REALIZAR MAP";
                 var loginDto = RealizoLogin.First().MapToLoginAppDto();
@@ -89,13 +92,13 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 //}
                 return loginDto;
             }
-            catch (JOMAUException)
+            catch (JOMAException)
             {
                 throw;
             }
             catch (Exception ex)
             {
-                var CodigoSeguimiento = logService.AddLog(this.GetCaller(), $"{DomainParameters.APP_NOMBRE}", $"{seccion}: {JOMAUtilities.ExceptionToString(ex)}");
+                var CodigoSeguimiento = logService.AddLog(this.GetCaller(), $"{DomainParameters.APP_NOMBRE}", $"{seccion}: {JOMAUtilities.ExceptionToString(ex)}", CrossCuttingLogLevel.Error);
                 var Mensaje = globalDictionary.GenerarMensajeErrorGenerico(CodigoSeguimiento);
                 throw new Exception(Mensaje);
             }

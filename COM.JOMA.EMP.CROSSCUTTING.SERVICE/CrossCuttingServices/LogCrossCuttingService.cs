@@ -1,30 +1,39 @@
-﻿using COM.JOMA.EMP.CROSSCUTTING.ICrossCuttingServices;
+﻿using COM.JOMA.EMP.CROSSCUTTING.Contants;
+using COM.JOMA.EMP.CROSSCUTTING.DTOs;
+using COM.JOMA.EMP.CROSSCUTTING.ICrossCuttingServices;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace COM.JOMA.EMP.CROSSCUTTING.SERVICE.CrossCuttingServices
 {
     public class LogCrossCuttingService : ILogCrossCuttingService
     {
-        private readonly List<string> _logMessages; // Almacena los mensajes de log en memoria
+        private readonly List<LogDiskCrossCuttingDto> _logMessages;
         private readonly string _baseLogPath = @"C:\JOMA\Logs";
         private string _nombreLog = "default";
 
         public LogCrossCuttingService()
         {
-            _logMessages = new List<string>();
+            _logMessages = new List<LogDiskCrossCuttingDto>();
         }
 
-        public string? AddLog(string caller, string? nombreLog, Exception ex)
+        public string? AddLog(string caller, string? nombreLog, Exception ex, CrossCuttingLogLevel level = CrossCuttingLogLevel.Info)
         {
             try
             {
                 string logId = Guid.NewGuid().ToString();
                 string logMessage = $"Error en {caller} con LogId {logId} y LogName {nombreLog ?? _nombreLog}: {ex.Message}";
-                _logMessages.Add(logMessage); // Agrega el mensaje de log en memoria
+                _logMessages.Add(new LogDiskCrossCuttingDto
+                {
+                    FechaHora = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                    mensaje = logMessage,
+                    path = nombreLog ?? _nombreLog,
+                    isSubPath = true,
+                    fileName = $"{nombreLog ?? _nombreLog}.txt",
+                    codigoSeguimiento = logId,
+                    Level = level
+                });
                 return logId;
             }
             catch (Exception)
@@ -33,13 +42,22 @@ namespace COM.JOMA.EMP.CROSSCUTTING.SERVICE.CrossCuttingServices
             }
         }
 
-        public string? AddLog(string caller, string? nombreLog, string mensaje)
+        public string? AddLog(string caller, string? nombreLog, string mensaje, CrossCuttingLogLevel level = CrossCuttingLogLevel.Info)
         {
             try
             {
                 string logId = Guid.NewGuid().ToString();
                 string logMessage = $"Mensaje en {caller} con LogId {logId} y LogName : {mensaje}";
-                _logMessages.Add(logMessage); // Agrega el mensaje de log en memoria
+                _logMessages.Add(new LogDiskCrossCuttingDto
+                {
+                    FechaHora = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                    mensaje = logMessage,
+                    path = nombreLog ?? _nombreLog,
+                    isSubPath = true,
+                    fileName = $"{nombreLog ?? _nombreLog}.txt",
+                    codigoSeguimiento = logId,
+                    Level = level
+                });
                 return logId;
             }
             catch (Exception)
@@ -48,14 +66,14 @@ namespace COM.JOMA.EMP.CROSSCUTTING.SERVICE.CrossCuttingServices
             }
         }
 
-        public string? AddLog(string caller, string mensaje)
+        public string? AddLog(string caller, string mensaje, CrossCuttingLogLevel level = CrossCuttingLogLevel.Info)
         {
-            return AddLog(caller, _nombreLog, mensaje);
+            return AddLog(caller, _nombreLog, mensaje, level);
         }
 
-        public string? AddLog(string caller, Exception ex)
+        public string? AddLog(string caller, Exception ex, CrossCuttingLogLevel level = CrossCuttingLogLevel.Info)
         {
-            return AddLog(caller, _nombreLog, ex);
+            return AddLog(caller, _nombreLog, ex, level);
         }
 
         public void CambiarNombreLog(string nombreLog)
@@ -66,10 +84,7 @@ namespace COM.JOMA.EMP.CROSSCUTTING.SERVICE.CrossCuttingServices
         public void GuardarLogs(string? rutalog = null)
         {
             if (_logMessages.Count == 0)
-            {
-                // Si no hay logs acumulados, no hacer nada
                 return;
-            }
 
             string logFilePath = rutalog ?? GetRutaLog();
 
@@ -82,10 +97,15 @@ namespace COM.JOMA.EMP.CROSSCUTTING.SERVICE.CrossCuttingServices
                     Directory.CreateDirectory(logDirectory);
                 }
 
-                File.AppendAllLines(logFilePath, _logMessages);
+                foreach (var log in _logMessages)
+                {
+                    string fullPath = Path.Combine(logDirectory ?? string.Empty, log.fileName);
+                    File.AppendAllText(fullPath, $"{log.FechaHora} [{log.Level}] {log.mensaje}{Environment.NewLine}");
+                }
+
                 _logMessages.Clear();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -104,3 +124,4 @@ namespace COM.JOMA.EMP.CROSSCUTTING.SERVICE.CrossCuttingServices
         }
     }
 }
+

@@ -28,7 +28,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 var LstMarcaciones = await trabajadorQueryService.GetInteresados(IdCompania);
                 return LstMarcaciones;
             }
-            catch (JOMAUException)
+            catch (JOMAException)
             {
                 throw;
             }
@@ -49,7 +49,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 var LstMarcaciones = await trabajadorQueryService.GetMarcacionesCompania(IdCompania);
                 return LstMarcaciones;
             }
-            catch (JOMAUException)
+            catch (JOMAException)
             {
                 throw;
             }
@@ -71,7 +71,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 var LstNotificaciones = await trabajadorQueryService.GetNotificaciones(IdCompania);
                 return LstNotificaciones;
             }
-            catch (JOMAUException)
+            catch (JOMAException)
             {
                 throw;
             }
@@ -92,7 +92,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 var LstNotificaciones = await trabajadorQueryService.GetPacientes(IdCompania);
                 return LstNotificaciones;
             }
-            catch (JOMAUException)
+            catch (JOMAException)
             {
                 throw;
             }

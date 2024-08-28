@@ -1,30 +1,25 @@
-﻿using System.Globalization;
+﻿using COM.JOMA.EMP.APLICACION.Interfaces;
+using COM.JOMA.EMP.APLICACION.SERVICE.AppServices;
+using COM.JOMA.EMP.APLICACION.SERVICE.Constants;
 using COM.JOMA.EMP.CROSSCUTTING.ICrossCuttingServices;
 using COM.JOMA.EMP.CROSSCUTTING.SERVICE.CrossCuttingServices;
+using COM.JOMA.EMP.DOMAIN;
 using COM.JOMA.EMP.DOMAIN.Constants;
-using COM.JOMA.EMP.DOMAIN.Parameters;
 using COM.JOMA.EMP.DOMAIN.Extensions;
-using Serilog;
-using SLN_COM_JOMA_APPLICACION.Extensions;
-using COM.JOMA.EMP.APLICACION.SERVICE.Constants;
+using COM.JOMA.EMP.DOMAIN.Parameters;
+using COM.JOMA.EMP.DOMAIN.Tools;
+using COM.JOMA.EMP.DOMAIN.Utilities;
 using COM.JOMA.EMP.QUERY.Interfaces;
 using COM.JOMA.EMP.QUERY.SERVICE.QueryService;
-using COM.JOMA.EMP.APLICACION.SERVICE.AppServices;
-using COM.JOMA.EMP.APLICACION.Interfaces;
-using COM.JOMA.EMP.DOMAIN.Utilities;
-using COM.JOMA.EMP.DOMAIN;
-using SLN_COM_JOMA_APPLICACION.Settings;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using COM.JOMA.EMP.DOMAIN.Tools;
 using Microsoft.AspNetCore.Localization;
-using SLN_COM_JOMA_APPLICACION.Middleware;
+using Serilog;
+using SLN_COM_JOMA_APPLICACION.Extensions;
+using SLN_COM_JOMA_APPLICACION.Settings;
+using System.Globalization;
 
 // Configurar Serilog antes de crear el host builder
 Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Debug()
+    .MinimumLevel.Error()
     .WriteTo.Console()
     .CreateLogger();
 
@@ -75,6 +70,10 @@ try
     builder.Services.AddScoped<IInicioQueryServices, InicioQueryServices>();
     builder.Services.AddScoped<IAdministracionAppServices, AdministracionAppServices>();
     builder.Services.AddScoped<IAdministracionQueryService, AdministracionQueryService>();
+    builder.Services.AddScoped<IPacienteAppServices, PacienteAppServices>();
+    builder.Services.AddScoped<IPacienteQueryServices, PacienteQueryServices>();
+    builder.Services.AddScoped<ITerapistaAppServices, TerapistaAppServices>();
+    builder.Services.AddScoped<ITerapistaQueryServices, TerapistaQueryServices>();
     builder.Services.AddSingleton<LogCrossCuttingService>();
     builder.Services.AddScoped<GlobalDictionaryDto>();
 

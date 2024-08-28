@@ -1,4 +1,5 @@
-﻿using COM.JOMA.EMP.APLICACION.Utilities;
+﻿using COM.JOMA.EMP.APLICACION.Dto;
+using COM.JOMA.EMP.APLICACION.Utilities;
 using COM.JOMA.EMP.CROSSCUTTING.ICrossCuttingServices;
 using COM.JOMA.EMP.DOMAIN.Constants;
 using COM.JOMA.EMP.DOMAIN.Parameters;
@@ -6,6 +7,7 @@ using COM.JOMA.EMP.DOMAIN.Tools;
 using COM.JOMA.EMP.DOMAIN.Utilities;
 using COM.JOMA.EMP.QUERY.Parameters;
 using COM.JOMA.EMP.QUERY.SERVICE.Model;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Reflection;
@@ -67,6 +69,25 @@ namespace SLN_COM_JOMA_APPLICACION.Extensions
             services.AddScoped<JomaQueryContext>();
             QueryParameters.TipoORM = (JOMATipoORM)JOMAConversions.DBNullToByte(TipoOrm);
             return services;
+        }
+
+        public static IActionResult CrearRespuestaExitosa(this ControllerBase controller, string message, JOMAStatusCode statusCode = JOMAStatusCode.Success)
+        {
+            return controller.Ok(new JOMAResponse
+            {
+                Message = message,
+                StatusCode = statusCode
+            });
+        }
+
+        public static IActionResult CrearRespuestaError(this ControllerBase controller, string errorMessage, JOMAStatusCode statusCode = JOMAStatusCode.InternalServerError, string? errorDetails = null)
+        {
+            return controller.StatusCode((int)statusCode, new JOMAErrorResponse(errorMessage, statusCode, errorDetails));
+        }
+
+        public static IActionResult CrearRespuestaExitosa(this ControllerBase controller, JOMAResponse jOMAResponse)
+        {
+            return controller.StatusCode((int)jOMAResponse.StatusCode, jOMAResponse);
         }
 
 

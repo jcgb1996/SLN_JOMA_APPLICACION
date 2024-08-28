@@ -109,18 +109,18 @@ namespace COM.JOMA.EMP.DOMAIN.Utilities
 
         public static string GetFileNameAppSettings()
         {
-            var edocAmbiente = GetEDOCAmbiente();
-            return $"Settings/appsettings-{edocAmbiente.EnumtoString()}.json";
+            var JomaAmbiente = GetJOMAAmbiente();
+            return $"Settings/appsettings-{JomaAmbiente.EnumtoString()}.json";
         }
-        private static JOMAAmbiente GetEDOCAmbiente()
+        private static JOMAAmbiente GetJOMAAmbiente()
         {
-            var nombreVarEDOCAmbiente = "PA_EDOC_EMP_AMBIENTE";
-            var strEDOCAmbiente = Environment.GetEnvironmentVariable(nombreVarEDOCAmbiente, EnvironmentVariableTarget.Machine);
-            if (string.IsNullOrEmpty(strEDOCAmbiente))
-                strEDOCAmbiente = Environment.GetEnvironmentVariable(nombreVarEDOCAmbiente, EnvironmentVariableTarget.User);
-            if (string.IsNullOrEmpty(strEDOCAmbiente)) throw new Exception($"Variable de entorno \"{nombreVarEDOCAmbiente}\" no encontrada");
-            if (!byte.TryParse(strEDOCAmbiente, out byte byteEDOCAmbiente)) throw new Exception($"Valor de la variable de entorno \"{nombreVarEDOCAmbiente}\" no válido: {strEDOCAmbiente}");
-            if (!Enum.IsDefined(typeof(JOMAAmbiente), byteEDOCAmbiente)) throw new Exception($"Valor de la variable de entorno \"{nombreVarEDOCAmbiente}\" no válido: {strEDOCAmbiente}");
+            var nombreVarJOMAAmbiente = "JOMA_AMBIENTE";
+            var strJomaAmbiente = Environment.GetEnvironmentVariable(nombreVarJOMAAmbiente, EnvironmentVariableTarget.Machine);
+            if (string.IsNullOrEmpty(strJomaAmbiente))
+                strJomaAmbiente = Environment.GetEnvironmentVariable(nombreVarJOMAAmbiente, EnvironmentVariableTarget.User);
+            if (string.IsNullOrEmpty(strJomaAmbiente)) throw new Exception($"Variable de entorno \"{nombreVarJOMAAmbiente}\" no encontrada");
+            if (!byte.TryParse(strJomaAmbiente, out byte byteEDOCAmbiente)) throw new Exception($"Valor de la variable de entorno \"{nombreVarJOMAAmbiente}\" no válido: {strJomaAmbiente}");
+            if (!Enum.IsDefined(typeof(JOMAAmbiente), byteEDOCAmbiente)) throw new Exception($"Valor de la variable de entorno \"{nombreVarJOMAAmbiente}\" no válido: {strJomaAmbiente}");
             return (JOMAAmbiente)byteEDOCAmbiente;
         }
 

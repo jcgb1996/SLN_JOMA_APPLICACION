@@ -60,7 +60,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
                                 Title = "Registro Terapista",
                                 Icon = "fas fa-users",
                                 Action = "Index",
-                                Controller = "Terapista",
+                                Controller = "Terapistas",
                                 Area = "Administracion"
                             },
                             new MenuQueryDto

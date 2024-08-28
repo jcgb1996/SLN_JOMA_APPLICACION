@@ -20,13 +20,34 @@ var Pacientes = {
                     columns: [
 
                         {
-                            data: 'nombre', title: 'Nombre', className: '', render: function (data, type, row) {
+                            data: 'nombres', title: 'Nombre', className: '', render: function (data, type, row) {
                                 return '<img src="../assets/images/profile/user-5.jpg" width="45" class="rounded-circle">  ' + data;
                             }
                         },
-                        { data: 'apellido', title: 'Apellido' },
-                        { data: 'terapista', title: 'Terapista' },
-                        { data: 'contacto', title: 'Contacto' }
+                        {
+                            data: 'contacto',
+                            title: 'Contacto'
+                        },
+                        {
+                            data: 'cantidadFaltas',
+                            title: 'Faltas',
+                        },
+                        {
+                            data: 'cantidadAsistentencias',
+                            title: 'Asistencias',
+                        },
+                        {
+                            data: 'terapiasTomadas',
+                            title: 'Terapias Tomadas',
+                        },
+                        {
+                            data: 'terapiasDisponibles',
+                            title: 'Terapias Disponibles',
+                        },
+                        {
+                            data: 'tipoPlan',
+                            title: 'Plan',
+                        }
                     ],
                     dom: 'Bfrtip',
                     select: {

@@ -5,6 +5,8 @@ using COM.JOMA.EMP.DOMAIN;
 using Microsoft.AspNetCore.Mvc;
 using SLN_COM_JOMA_APPLICACION.Controllers;
 using COM.JOMA.EMP.APLICACION.SERVICE.Constants;
+using COM.JOMA.EMP.DOMAIN.Constants;
+using SLN_COM_JOMA_APPLICACION.Extensions;
 
 namespace SLN_COM_JOMA_APPLICACION.Areas.ConsultasReportes.Controllers
 {
@@ -30,13 +32,13 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.ConsultasReportes.Controllers
                 var MarcacionesDto = await trabajadorAppServices.GetMarcacionesCompania(Usuario.IdCompania);
                 return StatusCode(StatusCodes.Status200OK, MarcacionesDto);
             }
-            catch (JOMAUException ex)
+            catch (JOMAException ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message.ToString());
+                return this.CrearRespuestaError(ex.Message, JOMAStatusCode.BadRequest);
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message.ToString());
+                return this.CrearRespuestaError(ex.Message.ToString(), JOMAStatusCode.InternalServerError, ex.Message);
             }
             finally
             {

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace COM.JOMA.EMP.DOMAIN.JomaExtensions
 {
 
-    public static class GSExtensions
+    public static class JOMAExtensions
     {
         public static string GetCaller(this object obj, [CallerMemberName] string memberName = "")
         {

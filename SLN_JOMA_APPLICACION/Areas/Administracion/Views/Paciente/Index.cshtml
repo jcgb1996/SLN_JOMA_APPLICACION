@@ -1,6 +1,6 @@
 ﻿@using COM.JOMA.EMP.APLICACION.SERVICE.Constants
 @{
-    var Controller = $"{WebSiteConstans.JOMA_WEBSITE_AREA_ADMINISTRACION}/{WebSiteConstans.JOMA_WEBSITE_AREA_CONTROLLER_LOGIN}";
+    var Controller = $"{WebSiteConstans.JOMA_WEBSITE_AREA_ADMINISTRACION}/{WebSiteConstans.JOMA_WEBSITE_AREA_CONTROLLER_PACIENTES}";
 }
 
 <section class="section">
@@ -10,143 +10,150 @@
             <div class="card">
                 <div class="card-body">
                     <div class="pt-4 pb-2">
-                        <h5 class="card-title text-center pb-0 fs-4">Crea un Paciente</h5>
-                        <p class="text-center small">Ingrese los datos del paciente</p>
+                        <h5 class="card-title text-center pb-0 fs-8">Paciente</h5>
+                        <p class="text-center fw-medium">Ingrese los datos del paciente</p>
                     </div>
+                    <div class="alert customize-alert alert-dismissible border-warning text-warning rounded-pill fade show remove-close-icon" role="alert">
+                        <div class="d-flex align-items-center  me-3 me-md-0">
+                            <i class="ti ti-info-circle fs-5 me-2 text-warning"></i> Para editar un paciente, ingrese la cédula.
+                        </div>
+                    </div>
+                    <form class="row g-3 needs-validation" id="RegistrarPaciente" novalidate="">
 
-                    <form class="row g-3 needs-validation" id="RegistrarTrabajador" novalidate>
+                        <!-- Campo Cédula del Paciente -->
+                        <div class="col-xl-4 col-md-4 col-sm-6 col-12">
+                            <div class="form-floating">
+                                <input type="text" name="CedulaNino" class="form-control" id="CedulaNino" placeholder="Cédula del Paciente" required="">
+                                <label for="CedulaNino">Cédula del Paciente</label>
+                                <div class="invalid-feedback">Por favor, ingrese la cédula del Paciente!</div>
+                            </div>
+                        </div>
 
                         <!-- Campo Nombres y Apellidos -->
-                        <div class="col-xl-4 col-md-4 col-sm-4 col-12">
+                        <div class="col-xl-4 col-md-8 col-sm-6 col-12">
                             <div class="form-floating">
-                                <input type="text" name="floatingNombresApellidos" class="form-control" id="floatingNombresApellidos" placeholder="Nombres y Apellidos" required>
-                                <label for="floatingNombresApellidos">Nombres y Apellidos</label>
+                                <input type="text" name="NombresApellidos" class="form-control" id="NombresApellidos" placeholder="Nombres y Apellidos" required="">
+                                <label for="NombresApellidos">Nombres y Apellidos</label>
                                 <div class="invalid-feedback">Por favor, ingrese los nombres y apellidos!</div>
                             </div>
                         </div>
 
                         <!-- Campo Fecha de Nacimiento -->
-                        <div class="col-xl-4 col-md-4 col-sm-4 col-12">
+                        <div class="col-xl-4 col-md-3 col-sm-6 col-12">
                             <div class="form-floating">
-                                <input type="date" class="form-control" placeholder="Fecha de Nacimiento" id="floatingFechaNacimiento" required>
-                                <label for="floatingFechaNacimiento">Fecha de Nacimiento</label>
+                                <input type="date" name="FechaNacimiento" class="form-control" id="FechaNacimiento" placeholder="Fecha de Nacimiento" required="">
+                                <label for="FechaNacimiento">Fecha de Nacimiento</label>
                                 <div class="invalid-feedback">Por favor, seleccione la fecha de nacimiento!</div>
                             </div>
                         </div>
 
                         <!-- Campo Edad -->
-                        <div class="col-xl-4 col-md-4 col-sm-4 col-12">
+                        <div class="col-xl-4 col-md-3 col-sm-6 col-12">
                             <div class="form-floating">
-                                <input type="number" class="form-control" placeholder="Edad" id="floatingEdad" required>
-                                <label for="floatingEdad">Edad</label>
+                                <input type="number" name="Edad" class="form-control" id="Edad" placeholder="Edad" required="">
+                                <label for="Edad">Edad</label>
                                 <div class="invalid-feedback">Por favor, ingrese la edad!</div>
                             </div>
                         </div>
 
                         <!-- Campo Dirección Domiciliaria -->
-                        <div class="col-12">
+                        <div class="col-xl-8 col-md-6 col-sm-12 col-12">
                             <div class="form-floating">
-                                <input type="text" name="floatingDireccionDomiciliaria" class="form-control" id="floatingDireccionDomiciliaria" placeholder="Dirección Domiciliaria" required>
-                                <label for="floatingDireccionDomiciliaria">Dirección Domiciliaria</label>
+                                <input type="text" name="DireccionDomiciliaria" class="form-control" id="DireccionDomiciliaria" placeholder="Dirección Domiciliaria" required="">
+                                <label for="DireccionDomiciliaria">Dirección Domiciliaria</label>
                                 <div class="invalid-feedback">Por favor, ingrese la dirección domiciliaria!</div>
                             </div>
                         </div>
 
                         <!-- Campo Escuela -->
-                        <div class="col-xl-4 col-md-4 col-sm-4 col-12">
+                        <div class="col-xl-4 col-md-3 col-sm-6 col-12">
                             <div class="form-floating">
-                                <input type="text" name="floatingEscuela" class="form-control" id="floatingEscuela" placeholder="Escuela" required>
-                                <label for="floatingEscuela">Escuela</label>
+                                <input type="text" name="Escuela" class="form-control" id="Escuela" placeholder="Escuela" required="">
+                                <label for="Escuela">Escuela</label>
                                 <div class="invalid-feedback">Por favor, ingrese el nombre de la escuela!</div>
                             </div>
                         </div>
 
                         <!-- Campo Nivel -->
-                        <div class="col-xl-4 col-md-4 col-sm-4 col-12">
+                        <div class="col-xl-4 col-md-3 col-sm-6 col-12">
                             <div class="form-floating">
-                                <input type="text" name="floatingNivel" class="form-control" id="floatingNivel" placeholder="Nivel" required>
-                                <label for="floatingNivel">Nivel</label>
+                                <input type="text" name="Nivel" class="form-control" id="Nivel" placeholder="Nivel" required="">
+                                <label for="Nivel">Nivel</label>
                                 <div class="invalid-feedback">Por favor, ingrese el nivel escolar!</div>
                             </div>
                         </div>
 
                         <!-- Campo Teléfono de los Representantes -->
-                        <div class="col-xl-6 col-md-6 col-sm-6 col-12">
+                        <div class="col-xl-4 col-md-3 col-sm-6 col-12">
                             <div class="form-floating">
-                                <input type="number" name="floatingTelefonoMadre" class="form-control" id="floatingTelefonoMadre" placeholder="Teléfono de la Madre" required>
-                                <label for="floatingTelefonoMadre">Teléfono de la Madre</label>
+                                <input type="number" name="TelefonoMadre" class="form-control" id="TelefonoMadre" placeholder="Teléfono de la Madre" required="">
+                                <label for="TelefonoMadre">Teléfono de la Madre</label>
                                 <div class="invalid-feedback">Por favor, ingrese el teléfono de la madre!</div>
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-md-6 col-sm-6 col-12">
+                        <div class="col-xl-4 col-md-3 col-sm-6 col-12">
                             <div class="form-floating">
-                                <input type="number" name="floatingTelefonoPadre" class="form-control" id="floatingTelefonoPadre" placeholder="Teléfono del Padre" required>
-                                <label for="floatingTelefonoPadre">Teléfono del Padre</label>
+                                <input type="number" name="TelefonoPadre" class="form-control" id="TelefonoPadre" placeholder="Teléfono del Padre" required="">
+                                <label for="TelefonoPadre">Teléfono del Padre</label>
                                 <div class="invalid-feedback">Por favor, ingrese el teléfono del padre!</div>
                             </div>
                         </div>
 
                         <!-- Campo Nombre de la Madre -->
-                        <div class="col-xl-6 col-md-6 col-sm-6 col-12">
+                        <div class="col-xl-4 col-md-6 col-sm-6 col-12">
                             <div class="form-floating">
-                                <input type="text" name="floatingNombreMadre" class="form-control" id="floatingNombreMadre" placeholder="Nombre de la Madre" required>
-                                <label for="floatingNombreMadre">Nombre de la Madre</label>
+                                <input type="text" name="NombreMadre" class="form-control" id="NombreMadre" placeholder="Nombre de la Madre" required="">
+                                <label for="NombreMadre">Nombre de la Madre</label>
                                 <div class="invalid-feedback">Por favor, ingrese el nombre de la madre!</div>
                             </div>
                         </div>
 
                         <!-- Campo Nombre del Padre -->
-                        <div class="col-xl-6 col-md-6 col-sm-6 col-12">
+                        <div class="col-xl-4 col-md-6 col-sm-6 col-12">
                             <div class="form-floating">
-                                <input type="text" name="floatingNombrePadre" class="form-control" id="floatingNombrePadre" placeholder="Nombre del Padre" required>
-                                <label for="floatingNombrePadre">Nombre del Padre</label>
+                                <input type="text" name="NombrePadre" class="form-control" id="NombrePadre" placeholder="Nombre del Padre" required="">
+                                <label for="NombrePadre">Nombre del Padre</label>
                                 <div class="invalid-feedback">Por favor, ingrese el nombre del padre!</div>
                             </div>
                         </div>
 
                         <!-- Campo Representante Legal -->
-                        <div class="col-xl-4 col-md-4 col-sm-4 col-12">
+                        <div class="col-xl-4 col-md-4 col-sm-6 col-12">
                             <div class="form-floating">
-                                <input type="text" name="floatingRepresentanteLegal" class="form-control" id="floatingRepresentanteLegal" placeholder="Representante Legal" required>
-                                <label for="floatingRepresentanteLegal">Representante Legal</label>
+                                <input type="text" name="RepresentanteLegal" class="form-control" id="RepresentanteLegal" placeholder="Representante Legal" required="">
+                                <label for="RepresentanteLegal">Representante Legal</label>
                                 <div class="invalid-feedback">Por favor, ingrese el nombre del representante legal!</div>
                             </div>
                         </div>
 
                         <!-- Campo Edad del Representante Legal -->
-                        <div class="col-xl-4 col-md-4 col-sm-4 col-12">
+                        <div class="col-xl-4 col-md-4 col-sm-6 col-12">
                             <div class="form-floating">
-                                <input type="number" name="floatingEdadRepresentante" class="form-control" id="floatingEdadRepresentante" placeholder="Edad del Representante Legal" required>
-                                <label for="floatingEdadRepresentante">Edad del Representante Legal</label>
+                                <input type="number" name="EdadRepresentante" class="form-control" id="EdadRepresentante" placeholder="Edad del Representante Legal" required="">
+                                <label for="EdadRepresentante">Edad del Representante Legal</label>
                                 <div class="invalid-feedback">Por favor, ingrese la edad del representante legal!</div>
                             </div>
                         </div>
 
-                        <!-- Campo Cédula del Niño -->
-                        <div class="col-xl-4 col-md-4 col-sm-4 col-12">
-                            <div class="form-floating">
-                                <input type="text" name="floatingCedulaNino" class="form-control" id="floatingCedulaNino" placeholder="Cédula del Niño" required>
-                                <label for="floatingCedulaNino">Cédula del Niño</label>
-                                <div class="invalid-feedback">Por favor, ingrese la cédula del niño!</div>
-                            </div>
-                        </div>
+
 
                         <!-- Campo Cédula del Representante Legal -->
-                        <div class="col-xl-4 col-md-4 col-sm-4 col-12">
+                        <div class="col-xl-4 col-md-4 col-sm-6 col-12">
                             <div class="form-floating">
-                                <input type="text" name="floatingCedulaRepresentante" class="form-control" id="floatingCedulaRepresentante" placeholder="Cédula del Representante Legal" required>
-                                <label for="floatingCedulaRepresentante">Cédula del Representante Legal</label>
+                                <input type="text" name="CedulaRepresentante" class="form-control" id="CedulaRepresentante" placeholder="Cédula del Representante Legal" required="">
+                                <label for="CedulaRepresentante">Cédula del Representante Legal</label>
                                 <div class="invalid-feedback">Por favor, ingrese la cédula del representante legal!</div>
                             </div>
                         </div>
 
                         <div class="text-center">
-                            <button type="button" onclick='Site.limpiarFormularioById("RegistrarTrabajador");' class="btn btn-secondary">Cancelar</button>
-                            <button type="button" onclick="Paciente.GuardarDatos(event);" class="btn btn-primary">Guardar</button>
+                            <button type="button" onclick="Site.limpiarFormularioById(&quot;RegistrarPaciente&quot;);" class="btn btn-secondary">Cancelar</button>
+                            <button type="button" onclick="Paciente.GuardarDatos(event, &quot;RegistrarPaciente&quot;);" class="btn btn-primary">Guardar</button>
                         </div>
 
                     </form>
+
 
                 </div>
             </div>

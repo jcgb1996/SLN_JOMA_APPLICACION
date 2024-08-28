@@ -2,16 +2,18 @@
 let CONTROLERNAME = ""
 
 var Login = {
+    ACCION_FORZARCAMBIOCLAVE: "",
+    ONCLICK_CERRAR_SESION: "Login.CerrarSesion();",
     Init: function () {
 
         $("#txtUser").on("keyup", (event) => {
-            if (event.key === ENTER_KEY) {
+            if (event.key === KEY_ENTER) {
                 //$("#txtPassword").focus();
             }
         });
 
         $("#txtPassword").on("keyup", (event) => {
-            if (event.key === ENTER_KEY) {
+            if (event.key === KEY_ENTER) {
                 $("#BtnLogin").trigger("click");
             }
         });
@@ -22,25 +24,17 @@ var Login = {
         });
     },
 
-    RealizarLogin: function () {
-
-        if (!Site.ValidarForumarioById("FrmLogin"))
+    RealizarLogin: function (id, event) {
+        debugger;
+        if (!Site.ValidarForumarioById(id, event))
             return;
 
 
-        var txtCompania = $("#txtCompania").val();
-        var txtUser = $("#txtUser").val();
-        var txtPassword = $("#txtPassword").val();
+        // Serializar los datos del formulario y convertirlos a un objeto clave-valor
 
+        var loginData = Site.GetObjetoFormularioById(id);
 
         Site.IniciarLoading();
-
-
-        var loginData = {
-            Usuario: txtUser,
-            Clave: txtPassword,
-            Compania: txtCompania
-        };
 
         $.ajax({
             type: 'POST',
@@ -48,16 +42,20 @@ var Login = {
             data: JSON.stringify(loginData),
             contentType: 'application/json; charset=utf-8',
             success: function (result) {
-                if (result == 'ForzarCambioClave') {
-                    Site.CerrarLoading();
-                    Login.OpenModalRecuperarContrasenia(result, true);
-                    return;
+                if (result.success) {
+                    if (result.message === Login.ACCION_FORZARCAMBIOCLAVE) {
+                        Site.CerrarLoading();
+                        Login.OpenModalRecuperarContrasenia(result.message, true);
+                        return;
+                    }
+                    window.location.href = result.message;
+                } else {
+                    // Manejar casos en los que success es false
+                    Site.mostrarNotificacion(result.message, 2);
                 }
-                window.location.href = result;
             },
             error: function (result) {
-                if (result.status == 500)
-                    Site.mostrarNotificacion(result.responseText, 2);
+                Site.AjaxError(result);
             },
             complete: function () {
                 Site.CerrarLoading();
@@ -67,6 +65,8 @@ var Login = {
 
     OpenModalRecuperarContrasenia: function (ForzarCambioClave = false) {
         if (ForzarCambioClave) {
+            $("#CerrarModal").attr('onclick', Login.ONCLICK_CERRAR_SESION);
+            $("#CerrarForm").attr('onclick', Login.ONCLICK_CERRAR_SESION);
             $("#TitleOlvidasteContrasenia").addClass('d-none');
             $("#ForzarCambioContrasenia").removeClass('d-none');
             $("#ContenteReestablecerContrasenia").addClass('d-none');
@@ -77,6 +77,8 @@ var Login = {
             $("#ForzarCambioContrasenia").addClass('d-none');
             $("#ContenteReestablecerContrasenia").removeClass('d-none');
             $("#ContenteForzarCambiosDeClave").addClass('d-none');
+            $("#CerrarModal").attr('onclick', '');
+            $("#CerrarForm").attr('onclick', '');
         }
 
         $('#forgotPasswordModal').modal('show');
@@ -89,6 +91,33 @@ var Login = {
         $('#forgotPasswordModal').modal('hide');
         Site.mostrarNotificacion("Correo enviado exitosamente", 1, 5000);
     },
+
+    CerrarSesion: function () {
+        $.ajax({
+            type: 'Get',
+            url: Site.createUrl(URL_BASE, CONTROLERNAME, "/CerrarSesion"),
+            contentType: 'application/json; charset=utf-8',
+            success: function (result) {
+                if (result.success) {
+                    if (result.message === Login.ACCION_FORZARCAMBIOCLAVE) {
+                        Site.CerrarLoading();
+                        Login.OpenModalRecuperarContrasenia(result.message, true);
+                        return;
+                    }
+                    window.location.href = result.message;
+                } else {
+                    // Manejar casos en los que success es false
+                    Site.mostrarNotificacion(result.message, 2);
+                }
+            },
+            error: function (result) {
+                Site.AjaxError(result);
+            },
+            complete: function () {
+                Site.CerrarLoading();
+            }
+        });
+    }
 
 
 }

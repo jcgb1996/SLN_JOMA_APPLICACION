@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace COM.JOMA.EMP.APLICACION.Dto
+namespace COM.JOMA.EMP.APLICACION.Dto.Response
 {
     public sealed class LoginAppResultDto
     {

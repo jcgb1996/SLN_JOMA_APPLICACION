@@ -2,10 +2,12 @@
 using COM.JOMA.EMP.APLICACION.SERVICE.Constants;
 using COM.JOMA.EMP.CROSSCUTTING.ICrossCuttingServices;
 using COM.JOMA.EMP.DOMAIN;
+using COM.JOMA.EMP.DOMAIN.Constants;
 using COM.JOMA.EMP.DOMAIN.JomaExtensions;
 using COM.JOMA.EMP.DOMAIN.Tools;
 using Microsoft.AspNetCore.Mvc;
 using SLN_COM_JOMA_APPLICACION.Controllers;
+using SLN_COM_JOMA_APPLICACION.Extensions;
 
 namespace SLN_COM_JOMA_APPLICACION.Areas.Inicio.Controllers
 {
@@ -18,7 +20,6 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Inicio.Controllers
 
         public IActionResult Index()
         {
-            string mensajelogin = "";
             ViewData["UsuarioSession"] = GetUsuarioSesion();
             return View();
         }
@@ -27,14 +28,15 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Inicio.Controllers
         {
             try
             {
-                logService.AddLog(this.GetCaller(), "llego al controlador");
                 return PartialView("Dashboard");
+            }
+            catch (JOMAException ex)
+            {
+                return this.CrearRespuestaError(ex.Message, JOMAStatusCode.BadRequest);
             }
             catch (Exception ex)
             {
-                string mensaje = string.Empty;
-                logService.AddLog(this.GetCaller(), $"Error: {ex.Message}");
-                return StatusCode(500, JOMAConversions.SerializeJson(ex, ref mensaje));
+                return this.CrearRespuestaError(ex.Message.ToString(), JOMAStatusCode.InternalServerError, ex.Message);
             }
             finally
             {

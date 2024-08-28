@@ -517,7 +517,7 @@ namespace COM.JOMA.EMP.DOMAIN.Tools
             if (excepcion.Contains("ERUSER:"))
             {
                 excepcion = excepcion.Replace("ERUSER:", null);
-                return new JOMAUException(excepcion);
+                return new JOMAException(excepcion);
             }
 
             excepcion = excepcion.Replace("EREDOC:", null);
