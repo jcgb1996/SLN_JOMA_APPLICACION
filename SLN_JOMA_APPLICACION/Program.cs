@@ -20,6 +20,7 @@ using System.Globalization;
 
 try
 {
+
     var builder = WebApplication.CreateBuilder(args);
 
     // Configuración de servicios de la aplicación
