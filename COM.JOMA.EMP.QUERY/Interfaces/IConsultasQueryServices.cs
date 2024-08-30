@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace COM.JOMA.EMP.APLICACION.Interfaces
+namespace COM.JOMA.EMP.QUERY.Interfaces
 {
-    public interface IConsultasAppServices
+    public interface IConsultasQueryServices
     {
-        public void GetPacientes(long IdCompania);
         public Task<List<TerapistaQueryDto>> GetTerapistasPorIdCompania(long IdCompania);
         public Task<TerapistaQueryDto> GetTerapistasPorId(long IdTerapista);
     }

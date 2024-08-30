@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Reflection;
+using System.Text.Json;
 
 namespace SLN_COM_JOMA_APPLICACION.Extensions
 {
@@ -25,26 +26,6 @@ namespace SLN_COM_JOMA_APPLICACION.Extensions
                 logService.GuardarLogs();
             }
         }
-
-
-        //public static IServiceCollection AddDatabaseWrite(this IServiceCollection services, string? DataSource, string? InitialCatalog, string? UserId, string? Password, long? Timeout)
-        //{
-        //    string mensaje = string.Empty;
-
-        //    var BW_DataSource = JOMACrypto.DescifrarClave(JOMAConversions.DBNullToString(DataSource), DomainConstants.JOMA_KEYENCRIPTA, DomainConstants.JOMA_SALTO);
-        //    var BW_InitialCatalog = JOMACrypto.DescifrarClave(JOMAConversions.DBNullToString(InitialCatalog), DomainConstants.JOMA_KEYENCRIPTA, DomainConstants.JOMA_SALTO);
-        //    var BW_UserId = JOMACrypto.DescifrarClave(JOMAConversions.DBNullToString(UserId), DomainConstants.JOMA_KEYENCRIPTA, DomainConstants.JOMA_SALTO);
-        //    var BW_Timeout = Timeout == null || Timeout == 0 ? 120 : AppUtilities.DBNullToLong(Timeout);
-        //    var BWCadenaConexionEDOC = JOMAUtilities.CadenaConexion(BW_DataSource,
-        //                BW_InitialCatalog,
-        //                BW_UserId,
-        //                Password,
-        //                DomainConstants.JOMA_KEYENCRIPTA,
-        //                ref mensaje, BW_Timeout);
-        //    if (BWCadenaConexionEDOC == null) throw new Exception("Cadena de conexión GSEDOC BW inválida");
-        //    services.AddDbContext<JomaCmdContext>(options => options.UseSqlServer(BWCadenaConexionEDOC));
-        //    return services;
-        //}
 
         public static IServiceCollection AddDatabase(this IServiceCollection services, string? DataSource, string? InitialCatalog, string? UserId, string? Password, long? Timeout, byte TipoOrm)
         {
@@ -80,16 +61,45 @@ namespace SLN_COM_JOMA_APPLICACION.Extensions
             });
         }
 
+        public static IActionResult CrearRespuestaExitosa(this ControllerBase controller, string message, object ObjetoRespuesta, JOMAStatusCode statusCode = JOMAStatusCode.Success)
+        {
+            return controller.Ok(new JOMAResponse
+            {
+                Message = message,
+                StatusCode = statusCode,
+                Response = ObjetoRespuesta
+            });
+        }
+        public static IActionResult CrearRespuestaExitosa(this ControllerBase controller, JOMAResponse jOMAResponse)
+        {
+            return controller.StatusCode((int)jOMAResponse.StatusCode, jOMAResponse);
+        }
+        public static IActionResult CrearRespuestaExitosa(this ControllerBase controller, JOMAStatusCode statusCode = JOMAStatusCode.Success)
+        {
+            return controller.StatusCode((int)statusCode, new JOMAResponse());
+        }
+
+
         public static IActionResult CrearRespuestaError(this ControllerBase controller, string errorMessage, JOMAStatusCode statusCode = JOMAStatusCode.InternalServerError, string? errorDetails = null)
         {
             return controller.StatusCode((int)statusCode, new JOMAErrorResponse(errorMessage, statusCode, errorDetails));
         }
 
-        public static IActionResult CrearRespuestaExitosa(this ControllerBase controller, JOMAResponse jOMAResponse)
-        {
-            return controller.StatusCode((int)jOMAResponse.StatusCode, jOMAResponse);
-        }
 
+        public static Task CrearRespuestaError(this HttpContext context, string errorMessage, JOMAStatusCode statusCode = JOMAStatusCode.InternalServerError, string? errorDetails = null)
+        {
+            var response = new JOMAErrorResponse(errorMessage, statusCode, errorDetails);
+
+            // Configurar la respuesta HTTP
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = (int)statusCode;
+
+            // Serializar la respuesta a JSON
+            var jsonResponse = JsonSerializer.Serialize(response);
+
+            // Escribir la respuesta al flujo de respuesta HTTP
+            return context.Response.WriteAsync(jsonResponse);
+        }
 
     }
 }

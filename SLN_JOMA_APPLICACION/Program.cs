@@ -12,9 +12,12 @@ using COM.JOMA.EMP.DOMAIN.Utilities;
 using COM.JOMA.EMP.QUERY.Interfaces;
 using COM.JOMA.EMP.QUERY.SERVICE.QueryService;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
 using Serilog;
 using SLN_COM_JOMA_APPLICACION.Extensions;
 using SLN_COM_JOMA_APPLICACION.Settings;
+using SLN_JOMA_APPLICACION.Middleware;
 using System.Globalization;
 
 
@@ -31,7 +34,7 @@ try
     LoadSettings(ref settings);
     #endregion
 
-    
+
     builder.Host.UseSerilog();
 
     #region INJECT DATABASE
@@ -59,6 +62,7 @@ try
     builder.Services.AddRazorPages()
         .AddRazorRuntimeCompilation();
 
+    builder.Services.AddMemoryCache();
     builder.Services.AddScoped<ILogCrossCuttingService, LogCrossCuttingService>();
     builder.Services.AddScoped<IInicioAppServices, InicioAppServices>();
     builder.Services.AddScoped<IInicioQueryServices, InicioQueryServices>();
@@ -68,8 +72,16 @@ try
     builder.Services.AddScoped<IPacienteQueryServices, PacienteQueryServices>();
     builder.Services.AddScoped<ITerapistaAppServices, TerapistaAppServices>();
     builder.Services.AddScoped<ITerapistaQueryServices, TerapistaQueryServices>();
+    builder.Services.AddScoped<IConsultasAppServices, ConsultasAppServices>();
+    builder.Services.AddScoped<IConsultasQueryServices, ConsultasQueryServices>();
+    builder.Services.AddScoped<ICacheCrossCuttingService, CacheCrossCuttingService>();
+    CacheParameters.PREFIJO = $"{DomainConstants.JOMA_PREFIJO_CACHE}_";
+    CacheParameters.ENABLE = true; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial
+    DomainParameters.CACHE_TIEMPO_EXP_TERAPISTA_COMPANIA = 600; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial (tiempo en segundos)
+    DomainParameters.CACHE_ENABLE_TERAPISTAS_COMPANIA = true; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial
     builder.Services.AddSingleton<LogCrossCuttingService>();
     builder.Services.AddScoped<GlobalDictionaryDto>();
+
 
     var app = builder.Build();
 
@@ -106,6 +118,7 @@ try
     // Uso de sesión
     app.UseSession();
     //app.UseMiddleware<SessionManagementMiddleware>();
+    app.UseMiddleware<GlobalExceptionMiddleware>();
 
     // Configurar la localización
     var supportedCultures = new[] { new CultureInfo("en-US"), new CultureInfo("es-EC") };

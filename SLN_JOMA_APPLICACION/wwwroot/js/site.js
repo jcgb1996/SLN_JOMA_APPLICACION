@@ -71,15 +71,13 @@ var Site = {
                 $("#Content").empty().html(result);
             },
             error: function (result) {
-                if (result.status == 500)
-                    Site.mostrarNotificacion(result.responseText, 2);
+                Site.AjaxError(result);
             },
             complete: function () {
                 Site.CerrarLoading();
             }
         });
     },
-
     AjaxError: function (result) {
         var errorResponse;
         try {
@@ -91,29 +89,40 @@ var Site = {
         switch (result.status) {
             case 400:
                 // Bad Request
-                Site.mostrarNotificacion(errorResponse.message || "Bad request. Please check the data and try again.", 2);
+                Site.mostrarNotificacion(Site.getErrorMessage(errorResponse) || "Bad request. Please check the data and try again.", 2);
                 break;
             case 401:
                 // Unauthorized
-                Site.mostrarNotificacion(errorResponse.message || "You are not authorized to perform this action. Please log in.", 2);
+                Site.mostrarNotificacion(Site.getErrorMessage(errorResponse) || "You are not authorized to perform this action. Please log in.", 2);
                 break;
             case 403:
                 // Forbidden
-                Site.mostrarNotificacion(errorResponse.message || "You do not have permission to access this resource.", 2);
+                Site.mostrarNotificacion(Site.getErrorMessage(errorResponse) || "You do not have permission to access this resource.", 2);
                 break;
             case 404:
                 // Not Found
-                Site.mostrarNotificacion(errorResponse.message || "The requested resource was not found.", 2);
+                Site.mostrarNotificacion(Site.getErrorMessage(errorResponse) || "The requested resource was not found.", 2);
                 break;
             case 500:
                 // Internal Server Error
-                Site.mostrarNotificacion(errorResponse.message || "An internal server error occurred. Please try again later.", 2);
+                Site.mostrarNotificacion(Site.getErrorMessage(errorResponse) || "An internal server error occurred. Please try again later.", 2);
                 break;
             default:
                 // Other status codes
-                Site.mostrarNotificacion(errorResponse.message || "An unexpected error occurred.", 2);
+                Site.mostrarNotificacion(Site.getErrorMessage(errorResponse) || "An unexpected error occurred.", 2);
                 break;
         }
+    },
+    getErrorMessage: function (errorResponse) {
+        if (errorResponse.message && errorResponse.message.trim() !== "") {
+            return errorResponse.message;
+        }
+
+        if (errorResponse.Message && errorResponse.Message.trim() !== "") {
+            return errorResponse.Message;
+        }
+
+        return "Bad request. Please check the input.";
     }
 
 }
