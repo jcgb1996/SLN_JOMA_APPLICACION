@@ -161,3 +161,6 @@ void LoadSettings(ref Settings settings)
     settings = JOMAConversions.DeserializeJsonObject<Settings>(jsonSettings, ref mensaje)!;
     if (settings == null) throw new Exception(mensaje);
 }
+
+
+
