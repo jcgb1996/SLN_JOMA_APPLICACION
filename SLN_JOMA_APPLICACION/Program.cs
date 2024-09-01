@@ -21,6 +21,7 @@ using SLN_JOMA_APPLICACION.Middleware;
 using System.Globalization;
 
 
+
 try
 {
     var builder = WebApplication.CreateBuilder(args);
