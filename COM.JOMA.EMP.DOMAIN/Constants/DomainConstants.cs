@@ -21,6 +21,8 @@ namespace COM.JOMA.EMP.DOMAIN.Constants
 
 
         public const string EDOC_CULTUREINFO = "es-EC";
+        public const string JOMA_PREFIJO_CACHE = "JOMA_";
+        public const string JOMA_CACHE_KEY_TERAPISTAS = "CACHE_KEY_TERAPISTAS_";
 
 
     }

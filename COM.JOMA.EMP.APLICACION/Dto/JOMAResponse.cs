@@ -13,12 +13,14 @@ namespace COM.JOMA.EMP.APLICACION.Dto
         public bool Success { get; set; }
         public string Message { get; set; }
         public JOMAStatusCode StatusCode { get; set; }
+        public object? Response { get; set; }
 
         public JOMAResponse()
         {
             Success = DomainConstants.JOMA_SUCCESS;
             Message = DomainConstants.JOMA_MESSAGE;
             StatusCode = JOMAStatusCode.Success;
+            Response = null;
         }
     }
 

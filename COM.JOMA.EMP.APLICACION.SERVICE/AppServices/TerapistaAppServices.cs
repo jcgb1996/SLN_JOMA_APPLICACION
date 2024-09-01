@@ -5,11 +5,13 @@ using COM.JOMA.EMP.APLICACION.SERVICE.Extensions;
 using COM.JOMA.EMP.CROSSCUTTING.Contants;
 using COM.JOMA.EMP.CROSSCUTTING.ICrossCuttingServices;
 using COM.JOMA.EMP.DOMAIN;
+using COM.JOMA.EMP.DOMAIN.Constants;
 using COM.JOMA.EMP.DOMAIN.Extensions;
 using COM.JOMA.EMP.DOMAIN.JomaExtensions;
 using COM.JOMA.EMP.DOMAIN.Parameters;
 using COM.JOMA.EMP.DOMAIN.Tools;
 using COM.JOMA.EMP.DOMAIN.Utilities;
+using COM.JOMA.EMP.QUERY.Dtos;
 using COM.JOMA.EMP.QUERY.Interfaces;
 
 namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
@@ -17,9 +19,11 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
     public class TerapistaAppServices : BaseAppServices, ITerapistaAppServices
     {
         protected ITerapistaQueryServices terapistaQueryServices;
-        public TerapistaAppServices(ILogCrossCuttingService? logService, GlobalDictionaryDto globalDictionary, ITerapistaQueryServices terapistaQueryServices) : base(logService, globalDictionary)
+        protected ICacheCrossCuttingService cacheCrossCuttingService;
+        public TerapistaAppServices(ILogCrossCuttingService logService, GlobalDictionaryDto globalDictionary, ITerapistaQueryServices terapistaQueryServices, ICacheCrossCuttingService cacheCrossCuttingService) : base(logService, globalDictionary)
         {
             this.terapistaQueryServices = terapistaQueryServices;
+            this.cacheCrossCuttingService = cacheCrossCuttingService;
         }
 
 
@@ -30,9 +34,9 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
             {
                 seccion = "REALIZAR MAP";
                 var terapista = TerapistaReqtDto.MapToTerapistaReqDto();
-
                 seccion = "REGISTRAR PACIENTE";
                 var Registrado = terapistaQueryServices.RegistrarTerapista(terapista);
+
                 if (!Registrado) new JOMAException($"No se pudo registrar al Terpista con cédula: {terapista.Cedula}");
 
 
@@ -51,5 +55,6 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 throw new Exception(Mensaje);
             }
         }
+
     }
 }
