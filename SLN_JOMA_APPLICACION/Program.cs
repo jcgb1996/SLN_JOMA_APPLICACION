@@ -36,6 +36,8 @@ try
     #endregion
 
 
+
+
     builder.Host.UseSerilog();
 
     #region INJECT DATABASE
