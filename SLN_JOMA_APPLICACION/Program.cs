@@ -29,6 +29,7 @@ try
     DomainParameters.APP_COMPONENTE_JOMA = JOMAComponente.JomaPortalWeb;
     DomainParameters.APP_NOMBRE = $"{DomainParameters.APP_COMPONENTE_JOMA.GetNombre()} v{AppConstants.Version}";
 
+
     #region LOAD SETTINGS
     Settings settings = new Settings();
     LoadSettings(ref settings);
