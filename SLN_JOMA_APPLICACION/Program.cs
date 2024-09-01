@@ -27,6 +27,7 @@ try
 
     // Configuración de servicios de la aplicación
     DomainParameters.APP_COMPONENTE_JOMA = JOMAComponente.JomaPortalWeb;
+
     DomainParameters.APP_NOMBRE = $"{DomainParameters.APP_COMPONENTE_JOMA.GetNombre()} v{AppConstants.Version}";
 
     #region LOAD SETTINGS
