@@ -10,6 +10,6 @@ namespace COM.JOMA.EMP.QUERY.Interfaces
     public interface IInicioQueryServices
     {
         Task<List<LoginQueryDto>> Login(string Usuario, string Clave, string Compania);
-        Task<List<MenuQueryDto>> GetOpcionesMenuPorIdUsuario(long IdUsuario, byte Sitio);
+        Task<List<MenuQueryDto>> GetOpcionesMenuPorIdUsuario(long IdUsuario);
     }
 }

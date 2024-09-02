@@ -33,11 +33,11 @@ namespace COM.JOMA.EMP.DOMAIN.Constants
         Desarrollo = 3
     }
 
-    public enum SitiosWebJUMA
-    {
-        Administrador = 1,
-        Trabajador = 2,
-    }
+    //public enum SitiosWebJOMA
+    //{
+    //    Administrador = 1,
+    //    Trabajador = 2,
+    //}
 
     /// <summary>
     /// StatusCodes.Status200OK: Usado cuando la operación se completa correctamente.En los ejemplos, esto se usa para indicar que un ítem fue obtenido, creado, actualizado o eliminado con éxito.

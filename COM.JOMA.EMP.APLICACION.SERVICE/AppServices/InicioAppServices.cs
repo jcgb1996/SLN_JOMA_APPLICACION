@@ -12,7 +12,9 @@ using COM.JOMA.EMP.DOMAIN.JomaExtensions;
 using COM.JOMA.EMP.DOMAIN.Parameters;
 using COM.JOMA.EMP.DOMAIN.Tools;
 using COM.JOMA.EMP.DOMAIN.Utilities;
+using COM.JOMA.EMP.QUERY.Dtos;
 using COM.JOMA.EMP.QUERY.Interfaces;
+using System;
 
 namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
 {
@@ -26,14 +28,15 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
             this.LoginQueryServices = LoginQueryServices;
         }
 
-        public async Task<List<MenuAppDto>> GetOpcionesMenuPorIdUsuario(long IdUsuario, byte Sitio)
+        public async Task<List<MenuAppDto>> GetOpcionesMenuPorIdUsuario(long IdUsuario)
         {
             string seccion = string.Empty;
             try
             {
                 seccion = "CONSULTAR MENU POR ID USUARIO";
-                var ListMenuQueryDtos = await LoginQueryServices.GetOpcionesMenuPorIdUsuario(IdUsuario, Sitio);
-                List<MenuAppDto> menuAppDtos = ListMenuQueryDtos.MapToMenuAppDto();
+                var ListMenuQueryDtos = await LoginQueryServices.GetOpcionesMenuPorIdUsuario(IdUsuario);
+                var menus = BuildMenuHierarchy(ListMenuQueryDtos);
+                List<MenuAppDto> menuAppDtos = menus.MapToMenuAppDto();
                 return menuAppDtos;
             }
             catch (JOMAException)
@@ -57,14 +60,15 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
             {
                 seccion = "REALIZAR LOGIN";
                 var RealizoLogin = await LoginQueryServices.Login(login.Usuario, login.Clave, login.Compania);
-
                 if (RealizoLogin is null || RealizoLogin.Count == 0) throw new JOMAException($"No se encontro datos para la compañia {login.Compania}");
+
 
                 seccion = "REALIZAR MAP";
                 var loginDto = RealizoLogin.First().MapToLoginAppDto();
+                if (loginDto.Error) throw new JOMAException(loginDto.MensajeError);
 
                 seccion = "CONSULTAR MENU POR ID USUARIO";
-                var MenuAppDto = await GetOpcionesMenuPorIdUsuario(loginDto.Id, (byte)SitiosWebJUMA.Administrador);
+                var MenuAppDto = await GetOpcionesMenuPorIdUsuario(loginDto.Id);
                 loginDto.OpcionesMenu = MenuAppDto;
                 //if (loginDto.Id > 0)
                 //{
@@ -103,5 +107,47 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 throw new Exception(Mensaje);
             }
         }
+
+        #region METODOS AYUDANTES
+        private List<MenuQueryDto> BuildMenuHierarchy(List<MenuQueryDto> flatMenuList)
+        {
+            var menuHierarchy = flatMenuList
+                .Where(x => x.MenuPadreId == null)
+                .Select(x => new MenuQueryDto
+                {
+                    Id = x.Id,
+                    MenuPadreId = x.MenuPadreId,
+                    IdUario = x.IdUario,
+                    Title = x.Title,
+                    Icon = x.Icon,
+                    Action = x.Action,
+                    Controller = x.Controller,
+                    Area = x.Area,
+                    Children = GetChildren(flatMenuList, x.Id)
+                })
+                .ToList();
+
+            return menuHierarchy;
+        }
+
+        private List<MenuQueryDto> GetChildren(List<MenuQueryDto> flatMenuList, int parentId)
+        {
+            return flatMenuList
+                .Where(x => x.MenuPadreId == parentId)
+                .Select(x => new MenuQueryDto
+                {
+                    Id = x.Id,
+                    MenuPadreId = x.MenuPadreId,
+                    IdUario = x.IdUario,
+                    Title = x.Title,
+                    Icon = x.Icon,
+                    Action = x.Action,
+                    Controller = x.Controller,
+                    Area = x.Area,
+                    Children = GetChildren(flatMenuList, x.Id)
+                })
+                .ToList();
+        }
+        #endregion
     }
 }

@@ -18,6 +18,7 @@ using Serilog;
 using SLN_COM_JOMA_APPLICACION.Extensions;
 using SLN_COM_JOMA_APPLICACION.Settings;
 using SLN_JOMA_APPLICACION.Middleware;
+using System.Data.Common;
 using System.Globalization;
 
 
@@ -39,6 +40,13 @@ try
     builder.Host.UseSerilog();
 
     #region INJECT DATABASE
+
+
+    //var BR_DataSource = JOMACrypto.CifrarClave(JOMAConversions.DBNullToString(settings.GSEDOC_BR.DataSource), DomainConstants.JOMA_KEYENCRIPTA, DomainConstants.JOMA_SALTO);
+    //var BR_InitialCatalog = JOMACrypto.CifrarClave(JOMAConversions.DBNullToString(settings.GSEDOC_BR.InitialCatalog), DomainConstants.JOMA_KEYENCRIPTA, DomainConstants.JOMA_SALTO);
+    //var BR_UserId = JOMACrypto.CifrarClave(JOMAConversions.DBNullToString(settings.GSEDOC_BR.UserId), DomainConstants.JOMA_KEYENCRIPTA, DomainConstants.JOMA_SALTO);
+    //var password = JOMACrypto.CifrarClave(settings.GSEDOC_BR.Password, DomainConstants.JOMA_KEYENCRIPTA, DomainConstants.JOMA_SALTO);
+
     builder.Services.AddDatabase(
         settings.GSEDOC_BR.DataSource,
         settings.GSEDOC_BR.InitialCatalog,

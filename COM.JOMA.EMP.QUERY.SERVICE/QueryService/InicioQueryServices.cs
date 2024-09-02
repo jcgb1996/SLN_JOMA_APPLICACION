@@ -17,7 +17,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
         {
         }
 
-        public async Task<List<MenuQueryDto>> GetOpcionesMenuPorIdUsuario(long IdUsuario, byte Sitio)
+        public async Task<List<MenuQueryDto>> GetOpcionesMenuPorIdUsuario(long IdUsuario)
         {
             try
             {
@@ -25,7 +25,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 {
                     using (var edocQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
                     {
-                        return await edocQueryContext.QRY_OpcionesManuPorIdUsuario(IdUsuario, Sitio);
+                        return await edocQueryContext.QRY_OpcionesManuPorIdUsuario(IdUsuario);
                         //return new LoginQueryDto();
                     };
                 };

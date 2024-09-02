@@ -11,10 +11,12 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
     public partial class JomaQueryContextEF
     {
         public DbSet<LoginQueryDto> LoginQueryDto { get; set; }
+        public DbSet<MenuQueryDto> VentanaLoginQueryDto { get; set; }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<LoginQueryDto>().HasNoKey().ToView(null);
+            modelBuilder.Entity<MenuQueryDto>().HasNoKey().ToView(null);
         }
     }
 }

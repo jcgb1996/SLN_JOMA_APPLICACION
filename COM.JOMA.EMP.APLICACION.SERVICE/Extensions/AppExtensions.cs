@@ -72,5 +72,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.Extensions
 
             return mapper.Map<Terapista>(obj);
         }
+
+
     }
 }
