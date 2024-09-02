@@ -70,30 +70,6 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 seccion = "CONSULTAR MENU POR ID USUARIO";
                 var MenuAppDto = await GetOpcionesMenuPorIdUsuario(loginDto.Id);
                 loginDto.OpcionesMenu = MenuAppDto;
-                //if (loginDto.Id > 0)
-                //{
-                //
-                //    #region CONSULTAR VENTANAS Y GENERAR MENU
-                //    seccion = "CONSULTAR VENTANAS Y GENERAR MENU";
-                //    var resultVentana = await loginQueryService.ConsultarVentana(loginDto.Id, (byte)SitiosWebEDOC.Consulta);
-                //    if (resultVentana == null) throw new Exception(DomainConstants.EDOC_WEBSITE_ERROR_VENTANA_ASOCIADA);
-                //    loginDto.MenuPersonalizado = GenerarMenuPersonalizado(resultVentana);
-                //    loginDto.VentanasActivasConcat = GenerarVentanaHabilitadasConcat(resultVentana);
-                //    #endregion
-                //
-                //    #region CONSULTAR CREDENCIALES   
-                //    seccion = "CONSULTAR CREDENCIALES";
-                //    var query = await ConsultarCredencialesCompania(loginDto.IdCompania);
-                //    if (query == null) throw new Exception(DomainConstants.EDOC_WEBSITE_ERROR_CREDENCIALES_VACIAS, null);
-                //
-                //    loginDto.EdocUsuarioInterno = query.EdocUsuarioInterno;
-                //    loginDto.EdocClaveInterno = query.EdocClaveInterno;
-                //
-                //    loginDto.AuthUsuario = query.EdocUsuario;
-                //    loginDto.AuthClave = query.EdocClaveEncriptada;
-                //    #endregion
-                //
-                //}
                 return loginDto;
             }
             catch (JOMAException)
