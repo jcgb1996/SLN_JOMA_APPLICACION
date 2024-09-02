@@ -21,6 +21,8 @@ using SLN_JOMA_APPLICACION.Middleware;
 using System.Globalization;
 
 
+
+//Cambio de alan a prueba
 try
 {
     var builder = WebApplication.CreateBuilder(args);
