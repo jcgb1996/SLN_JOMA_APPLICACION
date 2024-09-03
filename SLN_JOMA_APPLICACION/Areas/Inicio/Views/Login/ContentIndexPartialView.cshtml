@@ -1,0 +1,42 @@
+﻿<div class="modal-body">
+    <div class="card-body">
+        <div class="alert alert-primary alert-dismissible fade show mb-2 pt-2 pe-2 ps-2" id="ContenteReestablecerContrasenia" role="alert">
+            Ingresa tu usuario y Ruc compania y te enviaremos instrucciones para restablecer tu contraseña
+        </div>
+        <div class="alert alert-warning alert-dismissible fade show mb-2 pt-2 pe-2 ps-2 d-none" id="ContenteForzarCambiosDeClave" role="alert">
+            Estimado cliente su contraseña ha expirado por favor realice el cambio de contraseña
+        </div>
+        <form class="row g-3 needs-validation" id="FrmRecuperacion" novalidate>
+            <div class="col-12">
+                <label for="UsuarioRecuperacion" class="form-label">Usuario</label>
+                <div class="input-group has-validation">
+                    <span class="input-group-text" id="inputGroupPrepend">
+                        <i class="ti ti-user-circle"></i>
+                    </span>
+                    <input type="text" name="UsuarioRecuperacion" placeholder="Usuario" minlength="3" class="form-control" id="UsuarioRecuperacion" required>
+                    <div class="invalid-feedback">
+                        ¡Por favor, introduzca su nombre de usuario!
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-12">
+                <label for="CedulaRecuperacion" class="form-label">Compania</label>
+                <div class="input-group has-validation">
+                    <span class="input-group-text" id="CedulaRecuperacion">
+                        <i class="ti ti-building"></i>
+                    </span>
+                    <input type="text" name="CedulaRecuperacion" minlength="3" placeholder="Cedula" class="form-control" id="CedulaRecuperacion" required>
+                    <div class="invalid-feedback">
+                        ¡Por favor, introduzca su número de cédula!
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" id="CerrarForm" onclick="" data-bs-dismiss="modal">Cerrar</button>
+    <button type="button" onclick="Login.RecuperarContrasenia('FrmRecuperacion', event);" class="btn btn-primary">Recuperar</button>
+</div>

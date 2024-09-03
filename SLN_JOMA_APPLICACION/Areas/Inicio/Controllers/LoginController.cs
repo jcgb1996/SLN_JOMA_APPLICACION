@@ -1,4 +1,4 @@
-﻿using COM.JOMA.EMP.APLICACION.Dto.Request;
+﻿using COM.JOMA.EMP.APLICACION.Dto.Request.Inicio;
 using COM.JOMA.EMP.APLICACION.Interfaces;
 using COM.JOMA.EMP.APLICACION.SERVICE.Constants;
 using COM.JOMA.EMP.CROSSCUTTING.ICrossCuttingServices;
@@ -67,8 +67,8 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Inicio.Controllers
             string redirectUrl = Url.Action(WebSiteConstans.JOMA_WEBSITE_ACCION_INDEX, WebSiteConstans.JOMA_WEBSITE_AREA_CONTROLLER_LOGIN, new { area = WebSiteConstans.JOMA_WEBSITE_AREA_INICIO })!;
             return this.CrearRespuestaExitosa(redirectUrl);
         }
-
-        public IActionResult RecuperarContrasena()
+        [HttpPost]
+        public IActionResult RecuperarContrasena(RecuperacionReqAppDto recuperacionReqAppDto)
         {
             return Ok();
         }

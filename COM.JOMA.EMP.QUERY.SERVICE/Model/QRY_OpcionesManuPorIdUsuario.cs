@@ -18,7 +18,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
             switch (QueryParameters.TipoORM)
             {
                 case JOMATipoORM.EntityFramework:
-                    Result = VentanaLoginQueryDto.FromSqlRaw($"[{SP_NAME}] @p0", JOMAConversions.NothingToDBNULL(IdUsuario)).ToList();
+                    Result = ventanaLoginQueryDto.FromSqlRaw($"[{SP_NAME}] @p0", JOMAConversions.NothingToDBNULL(IdUsuario)).ToList();
 
                     break;
                 case JOMATipoORM.Dapper:

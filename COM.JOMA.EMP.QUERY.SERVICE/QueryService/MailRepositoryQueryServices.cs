@@ -11,24 +11,21 @@ using System.Threading.Tasks;
 
 namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
 {
-    public class TerapistaQueryServices : BaseQueryService, ITerapistaQueryServices
+    public class MailRepositoryQueryServices : BaseQueryService, IMailRepositoryQueryServices
     {
-        public TerapistaQueryServices(IServiceScopeFactory serviceProvider) : base(serviceProvider)
+        public MailRepositoryQueryServices(IServiceScopeFactory serviceProvider) : base(serviceProvider)
         {
         }
 
-        public bool RegistrarTerapista(Terapista terapista)
+        public bool? ActualizarMail(Mail mail, ref string mensaje)
         {
             try
             {
                 using (var scope = serviceProvider.CreateScope())
                 {
-                    using (var jomaQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
-                    {
-                        return jomaQueryContext.InsertarTerapista(terapista);
-                        //return new LoginQueryDto();
-                    };
-                };
+                    var edocCmdContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>();
+                    return edocCmdContext.ActualizarMail(mail);
+                }
             }
             catch (SqlException sqlEx)
             {
@@ -43,7 +40,5 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 throw;
             }
         }
-
-       
     }
 }

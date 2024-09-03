@@ -9,8 +9,6 @@ using COM.JOMA.EMP.DOMAIN.Tools;
 using COM.JOMA.EMP.DOMAIN.Utilities;
 using COM.JOMA.EMP.QUERY.Dtos;
 using COM.JOMA.EMP.QUERY.Interfaces;
-using System;
-using System.Security.Cryptography.X509Certificates;
 
 namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
 {

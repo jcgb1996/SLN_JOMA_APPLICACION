@@ -1,6 +1,8 @@
 ﻿using COM.JOMA.EMP.APLICACION.Dto;
 using COM.JOMA.EMP.APLICACION.Dto.Request;
+using COM.JOMA.EMP.APLICACION.Dto.Request.Inicio;
 using COM.JOMA.EMP.APLICACION.Dto.Response;
+using COM.JOMA.EMP.APLICACION.Dto.Response.Inicio;
 using COM.JOMA.EMP.APLICACION.Interfaces;
 using COM.JOMA.EMP.APLICACION.SERVICE.Extensions;
 using COM.JOMA.EMP.CROSSCUTTING.Contants;
@@ -15,6 +17,7 @@ using COM.JOMA.EMP.DOMAIN.Utilities;
 using COM.JOMA.EMP.QUERY.Dtos;
 using COM.JOMA.EMP.QUERY.Interfaces;
 using System;
+using System.Security.Cryptography;
 
 namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
 {
@@ -84,6 +87,26 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
             }
         }
 
+        public async Task<LoginAppResultDto> RecuperarContrasena(RecuperacionReqAppDto recuperacionReqAppDto)
+        {
+            LoginAppResultDto? loginAppResultDto = new();
+            string seccion = string.Empty;
+            try
+            {
+                return new LoginAppResultDto();
+            }
+            catch (JOMAException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                var CodigoSeguimiento = logService.AddLog(this.GetCaller(), $"{DomainParameters.APP_NOMBRE}", $"{seccion}: {JOMAUtilities.ExceptionToString(ex)}", CrossCuttingLogLevel.Error);
+                var Mensaje = globalDictionary.GenerarMensajeErrorGenerico(CodigoSeguimiento);
+                throw new Exception(Mensaje);
+            }
+        }
+
         #region METODOS AYUDANTES
         private List<MenuQueryDto> BuildMenuHierarchy(List<MenuQueryDto> flatMenuList)
         {
@@ -105,7 +128,6 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
 
             return menuHierarchy;
         }
-
         private List<MenuQueryDto> GetChildren(List<MenuQueryDto> flatMenuList, int parentId)
         {
             return flatMenuList
@@ -124,6 +146,8 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 })
                 .ToList();
         }
+
+
         #endregion
     }
 }

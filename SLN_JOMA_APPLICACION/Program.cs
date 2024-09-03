@@ -85,9 +85,13 @@ try
     builder.Services.AddScoped<IConsultasQueryServices, ConsultasQueryServices>();
     builder.Services.AddScoped<ICacheCrossCuttingService, CacheCrossCuttingService>();
     CacheParameters.PREFIJO = $"{DomainConstants.JOMA_PREFIJO_CACHE}_";
-    CacheParameters.ENABLE = true; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial
-    DomainParameters.CACHE_TIEMPO_EXP_TERAPISTA_COMPANIA = 600; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial (tiempo en segundos)
-    DomainParameters.CACHE_ENABLE_TERAPISTAS_COMPANIA = true; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial
+    CacheParameters.ENABLE = true; //cambiar este valor, por el valor que se va a traer desde la configuración inicial
+    DomainParameters.CACHE_TIEMPO_EXP_TERAPISTA_COMPANIA = 600; //cambiar este valor, por el valor que se va a traer desde la configuración inicial (tiempo en segundos)
+    DomainParameters.CACHE_ENABLE_TERAPISTAS_COMPANIA = true; //cambiar este valor, por el que se va a traer desde la configuración inicial
+    DomainParameters.JOMA_OTP_LENGTH = 4;//cambiar este valor, por el que se va a traer desde la configuración inicial
+    DomainParameters.JOMA_OTP_TIEMPO_EXP_MINUTOS = 5;//cambiar este valor, por el que se va a traer desde la configuración inicial
+    DomainParameters.JOMA_OTP_INTENTOS_MAXIMOS = 3;//cambiar este valor, por el que se va a traer desde la configuración inicial
+
     builder.Services.AddSingleton<LogCrossCuttingService>();
     builder.Services.AddScoped<GlobalDictionaryDto>();
 

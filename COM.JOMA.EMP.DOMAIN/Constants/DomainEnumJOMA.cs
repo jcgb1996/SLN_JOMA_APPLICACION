@@ -33,12 +33,6 @@ namespace COM.JOMA.EMP.DOMAIN.Constants
         Desarrollo = 3
     }
 
-    //public enum SitiosWebJOMA
-    //{
-    //    Administrador = 1,
-    //    Trabajador = 2,
-    //}
-
     /// <summary>
     /// StatusCodes.Status200OK: Usado cuando la operación se completa correctamente.En los ejemplos, esto se usa para indicar que un ítem fue obtenido, creado, actualizado o eliminado con éxito.
     ///StatusCodes.Status400BadRequest: Usado cuando la solicitud es inválida, ya sea por un ID negativo o porque los datos enviados no son válidos. Esto se maneja a través de validaciones como id <= 0 o !ModelState.IsValid.
@@ -61,5 +55,68 @@ namespace COM.JOMA.EMP.DOMAIN.Constants
     {
         Memory = 1,
         Distributed
-    }   
+    }
+
+    public enum JOMATipoMail
+    {
+        [Description("Recuperar contraseña usuario")]
+        RecuperacionContrasena,
+        [Description("Correo bienvenida usuario")]
+        CorreoBienvenida,
+        [Description("Cuando se tenga agendada una cita")]
+        NotificacionCitas
+    }
+
+    public enum JOMATipoEnvioMail : byte
+    {
+        [Description("SMTP")]
+        Smtp,
+        [Description("AMAZON")]
+        Amazon,
+        [Description("GOOGLE")]
+        Google,
+        [Description("MICROSOFT")]
+        Microsoft
+    }
+
+    public enum JOMATipoConsultaMail : byte
+    {
+        [Description("NO ENVIADOS")]
+        NoEnviados = 1,
+        [Description("NO CONFIRMADOS")]
+        NoConfirmados = 2,
+        //[Description("RESPONSABLE")]
+        //Responsable = 3,
+        [Description("REENVIO")]
+        Reenvio = 10
+    }
+
+    public enum JOMATipoCopiaMail : byte
+    {
+        [Description("CON COPIA")]
+        CCopia,
+        [Description("CON COPIA OCULTA")]
+        CCopiaOculta,
+        [Description("PARA DESTINATARIO")]
+        ParaDestinatario
+    }
+
+
+    public enum JOMAEstadoMail
+    {
+        [Description("Error Joma")]
+        ErrorJoma = -4,
+        [Description("Error Joma NA")]
+        ErrorJomaNa,
+        [Description("Error de conexión")]
+        ErrorDeConexion,
+        [Description("Correo no válido")]
+        CorreoNoValido,
+        [Description("No enviado")]
+        NoEnviado,
+        [Description("Enviado")]
+        Enviado,
+        [Description("Enviado parcialmente")]
+        EnviadoParcialmente
+    }
 }

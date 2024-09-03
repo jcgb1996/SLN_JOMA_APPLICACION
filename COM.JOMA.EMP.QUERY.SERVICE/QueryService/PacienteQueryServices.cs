@@ -23,9 +23,9 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
             {
                 using (var scope = serviceProvider.CreateScope())
                 {
-                    using (var edocQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
+                    using (var jomaQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
                     {
-                        return edocQueryContext.InsertarPaciente(paciente);
+                        return jomaQueryContext.InsertarPaciente(paciente);
                         //return new LoginQueryDto();
                     };
                 };
@@ -50,9 +50,9 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
             {
                 using (var scope = serviceProvider.CreateScope())
                 {
-                    using (var edocQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
+                    using (var jomaQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
                     {
-                        return edocQueryContext.ActualizarPaciente(paciente);
+                        return jomaQueryContext.ActualizarPaciente(paciente);
                     };
                 };
             }

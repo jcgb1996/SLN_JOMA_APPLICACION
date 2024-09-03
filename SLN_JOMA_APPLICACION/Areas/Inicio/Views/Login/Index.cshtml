@@ -36,51 +36,8 @@
                     <h5 class="modal-title card-title text-center p-0 fs-4" id="ForzarCambioContrasenia">Forzar cambio de clave</h5>
                     <button type="button" class="btn-close" id="CerrarModal" data-bs-dismiss="modal" onclick="" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="card-body">
-
-                        <div class="alert alert-primary alert-dismissible fade show mb-2 pt-2 pe-2 ps-2" id="ContenteReestablecerContrasenia" role="alert">
-                            Ingresa tu usuario y Ruc compania y te enviaremos instrucciones para restablecer tu contraseña
-                        </div>
-
-
-                        <div class="alert alert-warning alert-dismissible fade show mb-2 pt-2 pe-2 ps-2 d-none" id="ContenteForzarCambiosDeClave" role="alert">
-                            Estimado cliente su contraseña ha expirado por favor realice el cambio de contraseña
-                        </div>
-
-                        <form class="row g-3 needs-validation" id="FrmRecuperacion" novalidate>
-                            <div class="col-12">
-                                <label for="txtUserRecuperacion" class="form-label">Usuario</label>
-                                <div class="input-group has-validation">
-                                    <span class="input-group-text" id="inputGroupPrepend">
-                                        <i class="ti ti-user-circle"></i>
-                                    </span>
-                                    <input type="text" name="txtUserRecuperacion" placeholder="Usuario" minlength="3" class="form-control" id="txtUserRecuperacion" required>
-                                    <div class="invalid-feedback">
-                                        Por favor, introduzca su nombre de usuario.
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="col-12">
-                                <label for="txtCompaniaRecuperacion" class="form-label">Compania</label>
-                                <div class="input-group has-validation">
-                                    <span class="input-group-text" id="txtCompaniaRecuperacion">
-                                        <i class="ti ti-building"></i>
-                                    </span>
-                                    <input type="text" name="Compania" minlength="3" placeholder="Ruc" class="form-control" id="txtCompaniaRecuperacion" required>
-                                    <div class="invalid-feedback">
-                                        ¡Por favor, introduzca el ruc de la compania!
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="CerrarForm" onclick="" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" onclick="Login.RecuperarContrasenia(FrmRecuperacion, event);" class="btn btn-primary">Recuperar</button>
+                <div id="ContentModalRecuperar">
+                    @await Html.PartialAsync("ContentIndexPartialView")
                 </div>
             </div>
         </div>

@@ -29,9 +29,6 @@ var Login = {
         if (!Site.ValidarForumarioById(id, event))
             return;
 
-
-        // Serializar los datos del formulario y convertirlos a un objeto clave-valor
-
         var loginData = Site.GetObjetoFormularioById(id);
 
         Site.IniciarLoading();
@@ -50,7 +47,6 @@ var Login = {
                     }
                     window.location.href = result.message;
                 } else {
-                    // Manejar casos en los que success es false
                     Site.mostrarNotificacion(result.message, 2);
                 }
             },
@@ -84,12 +80,41 @@ var Login = {
         $('#forgotPasswordModal').modal('show');
     },
 
-    RecuperarContrasenia: function myfunction() {
-        if (!Site.ValidarForumarioById("FrmRecuperacion"))
+    RecuperarContrasenia: function myfunction(id, event) {
+        if (!Site.ValidarForumarioById(id, event))
             return;
 
-        $('#forgotPasswordModal').modal('hide');
-        Site.mostrarNotificacion("Correo enviado exitosamente", 1, 5000);
+        var RecuperarData = Site.GetObjetoFormularioById(id);
+
+        Site.IniciarLoading();
+
+        $.ajax({
+            type: 'POST',
+            url: Site.createUrl(URL_BASE, CONTROLERNAME, "/RealizarLogin"),
+            data: JSON.stringify(loginData),
+            contentType: 'application/json; charset=utf-8',
+            success: function (result) {
+                if (result.success) {
+                    if (result.message === Login.ACCION_FORZARCAMBIOCLAVE) {
+                        Site.CerrarLoading();
+                        Login.OpenModalRecuperarContrasenia(result.message, true);
+                        return;
+                    }
+                    window.location.href = result.message;
+                } else {
+                    Site.mostrarNotificacion(result.message, 2);
+                }
+            },
+            error: function (result) {
+                Site.AjaxError(result);
+            },
+            complete: function () {
+                Site.CerrarLoading();
+            }
+        });
+
+        //$('#forgotPasswordModal').modal('hide');
+        //Site.mostrarNotificacion("Correo enviado exitosamente", 1, 5000);
     },
 
     CerrarSesion: function () {

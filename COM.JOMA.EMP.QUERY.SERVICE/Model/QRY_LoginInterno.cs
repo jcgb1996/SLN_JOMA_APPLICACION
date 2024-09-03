@@ -3,7 +3,6 @@ using COM.JOMA.EMP.DOMAIN.Tools;
 using COM.JOMA.EMP.QUERY.Dtos;
 using COM.JOMA.EMP.QUERY.Parameters;
 using Dapper;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 
@@ -13,16 +12,12 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
     {
         internal async Task<List<LoginQueryDto>> QRY_LoginInterno(string Usuario, string ClaveEncriptada, string Compania, string IPLogin)
         {
-
-
-
-            #region Descomentar
             var SP_NAME = "[dbo].[QRY_Login]";
             List<LoginQueryDto>? Result = new();
             switch (QueryParameters.TipoORM)
             {
                 case JOMATipoORM.EntityFramework:
-                    Result = LoginQueryDto?.FromSqlRaw($"[{SP_NAME}] @p0,@p1,@p2,@p3",
+                    Result = loginQueryDto?.FromSqlRaw($"[{SP_NAME}] @p0,@p1,@p2,@p3",
                         JOMAConversions.NothingToDBNULL(Usuario), JOMAConversions.NothingToDBNULL(ClaveEncriptada),
                         JOMAConversions.NothingToDBNULL(Compania), JOMAConversions.NothingToDBNULL(IPLogin)).ToList();
 
@@ -41,7 +36,6 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
 
 
             }
-            #endregion
 
             return Result != null ? Result : new List<LoginQueryDto>();
         }

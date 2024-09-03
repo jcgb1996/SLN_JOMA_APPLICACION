@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace COM.JOMA.EMP.APLICACION.Dto.Request
+namespace COM.JOMA.EMP.APLICACION.Dto.Request.Inicio
 {
     public sealed class LoginReqAppDto
     {
