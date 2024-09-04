@@ -74,7 +74,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 throw;
             }
         }
-        public async Task<SucursalQueryDto> GetSucursalesXIdCompañia(long IdSucursal)
+        public async Task<List<SucursalQueryDto>> GetSucursalesXId(long IdSucursal)
         {
             try
             {
@@ -82,10 +82,14 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 {
                     using (var edocQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
                     {
-                        return await edocQueryContext.GetSucursalesXIdCompañia(IdSucursal);
+                        return await edocQueryContext.GetSucursales(IdSucursal);
                         //return new LoginQueryDto();
                     };
                 };
+
+
+
+
             }
             catch (SqlException sqlEx)
             {
@@ -100,5 +104,63 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 throw;
             }
         }
+
+        //public async Task<SucursalQueryDto> GetSucursalesXIdCompañia(long IdSucursal)
+        //{
+        //    try
+        //    {
+        //        using (var scope = serviceProvider.CreateScope())
+        //        {
+        //            using (var edocQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
+        //            {
+        //                return await edocQueryContext.GetSucursales(IdSucursal);
+        //                //return new LoginQueryDto();
+        //            };
+        //        };
+
+
+
+
+        //    }
+        //    catch (SqlException sqlEx)
+        //    {
+        //        throw new Exception($"SQL Error: {sqlEx.Message} Error Number: {sqlEx.Number}");
+        //    }
+        //    catch (TimeoutException timeoutEx)
+        //    {
+        //        throw new Exception($"Timeout Error: {timeoutEx.Message}");
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
+        public async Task<SucursalQueryDto> GetSucursalesXIdCompañia(long IdSucursal)
+        {
+            try
+            {
+                using (var scope = serviceProvider.CreateScope())
+                {
+                    using (var edocQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
+                    {
+                        var sucursales = await edocQueryContext.GetSucursales(IdSucursal);
+                        return sucursales.FirstOrDefault(); // O manejar la selección de otra forma según el caso
+                    }
+                }
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception($"SQL Error: {sqlEx.Message} Error Number: {sqlEx.Number}");
+            }
+            catch (TimeoutException timeoutEx)
+            {
+                throw new Exception($"Timeout Error: {timeoutEx.Message}");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
     }
 }
