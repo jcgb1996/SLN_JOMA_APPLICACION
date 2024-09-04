@@ -24,11 +24,13 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
     public class InicioAppServices : BaseAppServices, IInicioAppServices
     {
         protected IInicioQueryServices LoginQueryServices;
+        protected IEnvioMailEnLineaAppServices envioMailEnLineaAppServices;
 
-        public InicioAppServices(ILogCrossCuttingService logService, GlobalDictionaryDto globalDictionary, IInicioQueryServices LoginQueryServices) : base(logService, globalDictionary)
+        public InicioAppServices(ILogCrossCuttingService logService, GlobalDictionaryDto globalDictionary, IInicioQueryServices LoginQueryServices, IEnvioMailEnLineaAppServices envioMailEnLineaAppServices) : base(logService, globalDictionary)
         {
             this.logService = logService;
             this.LoginQueryServices = LoginQueryServices;
+            this.envioMailEnLineaAppServices = envioMailEnLineaAppServices;
         }
 
         public async Task<List<MenuAppDto>> GetOpcionesMenuPorIdUsuario(long IdUsuario)
@@ -93,6 +95,20 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
             string seccion = string.Empty;
             try
             {
+                var ValidaUsuario = await LoginQueryServices.ValidarUsuarioRecuperacion(recuperacionReqAppDto.UsuarioRecuperacion, recuperacionReqAppDto.CedulaRecuperacion);
+                if (ValidaUsuario is null) throw new JOMAException($"No existen datos para el usuario: {recuperacionReqAppDto.UsuarioRecuperacion}, con cedula {recuperacionReqAppDto.CedulaRecuperacion}");
+
+                var ValidarAppDto = ValidaUsuario.First().MapToValidarUsuarioAppDto();
+
+                if (ValidarAppDto.Correcto <= 0) throw new JOMAException(ValidarAppDto.Mensaje);
+
+                var CorreoEnviado = envioMailEnLineaAppServices.EnviarCorreoRecuperacionContrasena(new Dto.Request.Mail.EnvioMailEnLineaRecuperacionContrasenaAppDto()
+                {
+                    Cedula = ValidarAppDto.CedulaUsuario,
+                    Ruc = ValidarAppDto.Ruc,
+                    Usuario = ValidarAppDto.NombreUsuario,
+                });
+
                 return new LoginAppResultDto();
             }
             catch (JOMAException)

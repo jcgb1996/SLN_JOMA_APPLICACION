@@ -19,6 +19,7 @@ namespace COM.JOMA.EMP.APLICACION.Dto.Request.Mail
         public string Ruc { get; set; }
 
 
+
         /// <summary>
         /// Identificación del usuario
         /// Origen: `JOMA`

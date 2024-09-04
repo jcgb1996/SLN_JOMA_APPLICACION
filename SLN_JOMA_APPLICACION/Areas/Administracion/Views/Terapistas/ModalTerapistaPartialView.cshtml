@@ -1,8 +1,4 @@
-﻿
-
-
-
-<div class="modal fade" id="ModalTerapista" tabindex="-1" aria-labelledby="ModalTerapista" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+﻿<div class="modal fade" id="ModalTerapista" tabindex="-1" aria-labelledby="ModalTerapista" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-header modal-colored-header bg-primary text-white pt-2 pb-2 m-0">
@@ -35,7 +31,7 @@
 
                         <div class="col-xl-4 col-md-4 col-sm-4 col-12">
                             <div class="form-floating">
-                                <input type="text" name="Cedula" class="form-control" id="Cedula" placeholder="cédula" required>
+                                <input type="text" name="Cedula" class="form-control" id="Cedula" placeholder="Cédula" required>
                                 <label for="Cedula">Cédula</label>
                                 <div class="invalid-feedback">Por favor, ingrese su cédula.</div>
                             </div>
@@ -43,7 +39,7 @@
 
                         <div class="col-xl-4 col-md-4 col-sm-4 col-12">
                             <div class="form-floating">
-                                <input type="email" name="Correo" class="form-control" id="Correo" placeholder="correo" required>
+                                <input type="email" name="Correo" class="form-control" id="Correo" placeholder="Correo" required>
                                 <label for="Correo">Correo</label>
                                 <div class="invalid-feedback">Por favor, ingrese su correo electrónico.</div>
                             </div>
@@ -97,6 +93,21 @@
                             </div>
                         </div>
 
+                        <!-- Nuevo campo Tipo de Terapia -->
+                        <div class="col-xl-4 col-md-4 col-sm-4 col-12">
+                            <div class="form-floating">
+                                <select id="TipoTerapia" name="TipoTerapia" class="form-select" placeholder="Tipo de Terapia" required>
+                                    <option></option>
+                                    <option value="1">Terapia de Lengua</option>
+                                    <option value="2">Terapia Inicial</option>
+                                    <option value="3">Terapia Física</option>
+                                    <option value="4">Terapia Ocupacional</option>
+                                </select>
+                                <label for="TipoTerapia">Tipo de Terapia</label>
+                                <div class="invalid-feedback">Por favor, seleccione el tipo de terapia.</div>
+                            </div>
+                        </div>
+
                         <div class="col-12">
                             <div class="form-floating">
                                 <textarea class="form-control" name="Direccion" placeholder="Dirección" id="Direccion" style="height: 100px;" required></textarea>
@@ -117,4 +128,3 @@
         </div>
     </div>
 </div>
-

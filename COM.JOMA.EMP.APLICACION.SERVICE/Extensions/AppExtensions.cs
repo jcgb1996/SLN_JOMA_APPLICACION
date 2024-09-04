@@ -157,5 +157,18 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.Extensions
             var mapper = configuration.CreateMapper();
             return mapper.Map<Mail>(obj);
         }
+
+        internal static ValidarUsuarioAppDto MapToValidarUsuarioAppDto(this ValidacionUsuarioQueryDto obj)
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.AllowNullCollections = true;
+                cfg.AllowNullDestinationValues = true;
+                cfg.CreateMap<ValidacionUsuarioQueryDto, ValidarUsuarioAppDto>()
+                ;
+            });
+            var mapper = configuration.CreateMapper();
+            return mapper.Map<ValidarUsuarioAppDto>(obj);
+        }
     }
 }
