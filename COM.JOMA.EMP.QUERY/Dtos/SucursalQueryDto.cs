@@ -8,5 +8,10 @@ namespace COM.JOMA.EMP.QUERY.Dtos
 {
     public class SucursalQueryDto
     {
+        public long Id { get; set; }
+        public string Nombre { get; set; }
+        public string AreaDesignada { get; set; }
+        public int Estado { get; set; }
+        public int Maxrowcount { get; set; }
     }
 }
