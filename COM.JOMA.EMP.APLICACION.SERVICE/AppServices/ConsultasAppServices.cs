@@ -104,40 +104,5 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 throw new Exception(Mensaje);
             }
         }
-        public async Task<List<SucursalQueryDto>> GetSucursalPorIdCompania(long IdCompania)
-        {
-            string seccion = string.Empty;
-            try
-            {
-                List<SucursalQueryDto>? sucursalQueryDtos = null;
-                seccion = "VERIFICAR SI HAY DATOS EN CACHE";
-                if (DomainParameters.CACHE_ENABLE_SUCURSALES_COMPANIA)
-                    sucursalQueryDtos = await cacheCrossCuttingService.GetObjectAsync<List<SucursalQueryDto>>($"{DomainConstants.JOMA_CACHE_KEY_SUCURSAL}_{DomainParameters.JOMA_CACHE_KEY}");
-
-                seccion = "PROCESO DE CONSULTA";
-                if (sucursalQueryDtos == null)
-                {
-                    seccion = "CONSULTAR EN BASE";
-                    sucursalQueryDtos = await consultasQueryServices.GetSucursalesXIdCompañia(IdCompania);
-                    seccion = "GUARDAR DATOS EN CACHE";
-                    if (DomainParameters.CACHE_ENABLE_SUCURSALES_COMPANIA)
-                        await cacheCrossCuttingService.AddObjectAsync($"{DomainConstants.JOMA_CACHE_KEY_SUCURSAL}_{DomainParameters.JOMA_CACHE_KEY}", sucursalQueryDtos, DomainParameters.CACHE_TIEMPO_EXP_TERAPISTA_COMPANIA);
-                }
-
-
-
-                return sucursalQueryDtos;
-            }
-            catch (JOMAException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                var CodigoSeguimiento = logService.AddLog(this.GetCaller(), $"{DomainParameters.APP_NOMBRE}", $"{seccion}: {JOMAUtilities.ExceptionToString(ex)}");
-                var Mensaje = globalDictionary.GenerarMensajeErrorGenerico(CodigoSeguimiento);
-                throw new Exception(Mensaje);
-            }
-        }
     }
 }
