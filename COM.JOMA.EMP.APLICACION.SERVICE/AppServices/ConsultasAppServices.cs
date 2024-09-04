@@ -2,6 +2,7 @@
 using COM.JOMA.EMP.CROSSCUTTING.ICrossCuttingServices;
 using COM.JOMA.EMP.DOMAIN;
 using COM.JOMA.EMP.DOMAIN.Constants;
+using COM.JOMA.EMP.DOMAIN.Entities;
 using COM.JOMA.EMP.DOMAIN.Extensions;
 using COM.JOMA.EMP.DOMAIN.JomaExtensions;
 using COM.JOMA.EMP.DOMAIN.Parameters;
@@ -107,7 +108,42 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
 
         public async Task<SucursalQueryDto> GetSucursalesXIdCompañia(long IdSucursal)
         {
-            throw new NotImplementedException();
+            string seccion = string.Empty;
+            try
+            {
+                List<SucursalQueryDto>? LstsucursalQueryDtos = null;
+                SucursalQueryDto? sucursalQueryDtos = null;
+                seccion = "VERIFICAR SI HAY DATOS EN CACHE";
+                if (DomainParameters.CACHE_ENABLE_TERAPISTAS_COMPANIA)
+                    LstsucursalQueryDtos = await cacheCrossCuttingService.GetObjectAsync<List<SucursalQueryDto>>($"{DomainConstants.JOMA_CACHE_KEY_SUCURSAL}_{DomainParameters.JOMA_CACHE_KEY}");
+
+                seccion = "PROCESO DE CONSULTA";
+                if (LstsucursalQueryDtos == null)
+                {
+                    seccion = "CONSULTAR EN BASE";
+                    sucursalQueryDtos = await consultasQueryServices.GetSucursalesXIdCompañia(IdSucursal);
+                    return sucursalQueryDtos;
+                }
+
+                seccion = "PROCESO DE CONSULTA TERAPISTA EN CACHE";
+                if (LstsucursalQueryDtos.Any(x => x.Id == IdSucursal))
+                    return await consultasQueryServices.GetSucursalesXIdCompañia(IdSucursal);
+
+                seccion = "CONSULTAR EN BASE POR QUE NO EXISTE EN CACHE";
+                sucursalQueryDtos = await consultasQueryServices.GetSucursalesXIdCompañia(IdSucursal);
+
+                return sucursalQueryDtos;
+            }
+            catch (JOMAException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                var CodigoSeguimiento = logService.AddLog(this.GetCaller(), $"{DomainParameters.APP_NOMBRE}", $"{seccion}: {JOMAUtilities.ExceptionToString(ex)}");
+                var Mensaje = globalDictionary.GenerarMensajeErrorGenerico(CodigoSeguimiento);
+                throw new Exception(Mensaje);
+            }
         }
     }
 }

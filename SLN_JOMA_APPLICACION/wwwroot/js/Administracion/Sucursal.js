@@ -13,7 +13,7 @@ var Sucursal = {
     GetSucursal: function () {
         var table = $("#DataTableSucursales").DataTable({
             ajax: {
-                url: Site.createUrl(URL_BASE_TERAPISTA, CONTROLERNAME_TERAPISTA, "/GetSucursales"),
+                url: Site.createUrl(URL_BASE_SUCURSAL, CONTROLERNAME_SUCURSAL, "/GetSucursales"),
                 type: "POST",
                 dataType: "json",
                 dataSrc: "data",
