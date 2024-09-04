@@ -72,6 +72,15 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
                                 Controller = "Paciente",
                                 Area = "Administracion"
                             },
+                            new MenuQueryDto
+                            {
+                                IdUario = 1,
+                                Title = "Registro Sucursal",
+                                Icon = "fas fa-users",
+                                Action = "Index",
+                                Controller = "Sucursal",
+                                Area = "Administracion"
+                            },
                         },
                     },
                     new MenuQueryDto

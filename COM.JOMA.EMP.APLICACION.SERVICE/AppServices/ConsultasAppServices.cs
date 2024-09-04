@@ -104,5 +104,10 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 throw new Exception(Mensaje);
             }
         }
+
+        public async Task<SucursalQueryDto> GetSucursalesXIdCompañia(long IdSucursal)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
