@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace COM.JOMA.EMP.APLICACION.Interfaces
 {
-    public interface ISucursalAppService
+    public interface ISucursalAppServices
     {
         public JOMAResponse RegistrarSucursal(SucursalReqDto sucursalReqtDto);
     }

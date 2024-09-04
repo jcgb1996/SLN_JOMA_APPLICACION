@@ -18,7 +18,7 @@ using COM.JOMA.EMP.APLICACION.SERVICE.Extensions;
 
 namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
 {
-    class SucursalAppService : BaseAppServices, ISucursalAppService
+    class SucursalAppService : BaseAppServices, ISucursalAppServices
     {
         protected ITerapistaQueryServices terapistaQueryServices;
         protected ICacheCrossCuttingService cacheCrossCuttingService;
