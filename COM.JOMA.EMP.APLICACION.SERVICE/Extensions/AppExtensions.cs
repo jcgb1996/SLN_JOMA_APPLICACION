@@ -2,6 +2,7 @@
 using COM.JOMA.EMP.APLICACION.Dto;
 using COM.JOMA.EMP.APLICACION.Dto.Request.Administracion;
 using COM.JOMA.EMP.APLICACION.Dto.Request.Administracion.PacienteDto;
+using COM.JOMA.EMP.APLICACION.Dto.Request.Administracion.SucursalDto;
 using COM.JOMA.EMP.APLICACION.Dto.Request.Administracion.TerapistaDto;
 using COM.JOMA.EMP.APLICACION.Dto.Response;
 using COM.JOMA.EMP.DOMAIN.Entities;
@@ -71,6 +72,18 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.Extensions
             var mapper = configuration.CreateMapper();
 
             return mapper.Map<Terapista>(obj);
+        }
+        
+        internal static Sucursal MapToSucursalReqDto(this SucursalReqDto obj)
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<SucursalReqDto, Sucursal>();
+            });
+
+            var mapper = configuration.CreateMapper();
+
+            return mapper.Map<Sucursal>(obj);
         }
     }
 }
