@@ -25,6 +25,7 @@ using System.Globalization;
 //Cambio de alan a prueba
 try
 {
+
     var builder = WebApplication.CreateBuilder(args);
 
     // Configuración de servicios de la aplicación
