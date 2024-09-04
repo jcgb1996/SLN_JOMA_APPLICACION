@@ -18,6 +18,7 @@ namespace COM.JOMA.EMP.APLICACION.Dto.Response
         public string? VentanasActivasConcat { get; set; }
         public bool Bloqueado { get; set; }
         public string? RucCompania { get; set; }
+        public string? Rol { get; set; }
         public List<MenuAppDto> OpcionesMenu { get; set; } // Lista de submenús
 
     }

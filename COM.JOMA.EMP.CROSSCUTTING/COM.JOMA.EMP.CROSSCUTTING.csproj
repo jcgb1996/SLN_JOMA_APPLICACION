@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\COM.JOMA.EMP.DOMAIN\COM.JOMA.EMP.DOMAIN.csproj" />
+  </ItemGroup>
+
 </Project>
