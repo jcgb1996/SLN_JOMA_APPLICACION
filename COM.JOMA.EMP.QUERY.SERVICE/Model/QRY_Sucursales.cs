@@ -9,7 +9,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
 {
     public partial class JomaQueryContext : JomaQueryContextEF
     {
-        internal async Task<List<TerapistaQueryDto>> GetSucursales(long IdCompania)
+        internal async Task<List<SucursalQueryDto>> GetSucursales(long IdCompania)
         {
 
 
@@ -57,3 +57,4 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
             return sucursales;
         }
     }
+}
