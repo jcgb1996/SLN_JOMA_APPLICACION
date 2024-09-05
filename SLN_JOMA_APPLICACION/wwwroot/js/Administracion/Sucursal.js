@@ -1,19 +1,19 @@
-﻿var URL_BASE_SUCURSAL= ""
-var CONTROLERNAME_SUCURSAL= ""
+﻿var URL_BASE_SUCURSAL = ""
+var CONTROLERNAME_SUCURSAL = ""
 
 var Sucursal = {
 
     Init: function (UrlBase, Controller) {
-        debugger;
+        //debugger;
         URL_BASE_SUCURSAL = UrlBase;
-        CONTROLERNAME_SUCURSAL = Controller;
-        Sucursal.GetSucursal();
+        CONTROLERNAME_TERAPISTA = Controller;
+        Sucursal.GetSucursales();
     },
 
-    GetSucursal: function () {
+    GetTerapistas: function () {
         var table = $("#DataTableSucursales").DataTable({
             ajax: {
-                url: Site.createUrl(URL_BASE_SUCURSAL, CONTROLERNAME_SUCURSAL, "/GetSucursales"),
+                url: Site.createUrl(URL_BASE_SUCURSAL, CONTROLERNAME_SUCURSAL, "/GetTerapistas"),
                 type: "POST",
                 dataType: "json",
                 dataSrc: "data",
@@ -54,14 +54,14 @@ var Sucursal = {
 
             buttons: [
                 {
-                    text: '<i title="Nuevo Sucursal" class="fa fa-plus-circle"></i> Nuevo Sucursal',
+                    text: '<i title="Nuevo Terapsita" class="fa fa-plus-circle"></i> Nuevo Terapista',
                     className: 'btn waves-effect waves-light btn-primary',
                     action: function (e, dt, node, config) {
                         AdministracionRol.AgregarNuevo();
                     },
                     attr: {
-                        title: 'Nuevo Sucursal',
-                        'aria-label': 'Nuevo Sucursal'
+                        title: 'Nuevo Terapsita',
+                        'aria-label': 'Nuevo Terapsita'
                     },
 
                 }
@@ -183,7 +183,7 @@ var Sucursal = {
 
     },
     GuardarDatos: function (id, event) {
-        debugger;
+        //debugger;
         if (!Site.ValidarForumarioById(id, event))
             return;
 
@@ -191,7 +191,7 @@ var Sucursal = {
         Site.IniciarLoading();
         $.ajax({
             type: "POST",
-            url: Site.createUrl(URL_BASE_SUCURSAL, CONTROLERNAME_SUCURSAL, "/GuardarTerapista"),
+            url: Site.createUrl(URL_BASE_TERAPISTA, CONTROLERNAME_TERAPISTA, "/GuardarTerapista"),
             data: JSON.stringify(formDataObj),
             contentType: "application/json; charset=utf-8",
             //dataType: "json",
@@ -217,7 +217,7 @@ var Sucursal = {
         Site.IniciarLoading();
         $.ajax({
             type: "GET",
-            url: Site.createUrl(URL_BASE_SUCURSAL, CONTROLERNAME_SUCURSAL, "/GetDatosTerapista"),
+            url: Site.createUrl(URL_BASE_TERAPISTA, CONTROLERNAME_TERAPISTA, "/GetDatosTerapista"),
             data: { Id: Id },
             contentType: "application/json; charset=utf-8",
             //dataType: "json",
@@ -236,7 +236,7 @@ var Sucursal = {
         Site.IniciarLoading();
         $.ajax({
             type: "POST",
-            url: Site.createUrl(URL_BASE_SUCURSAL, CONTROLERNAME_SUCURSAL, "/InactivarTerapista"),
+            url: Site.createUrl(URL_BASE_TERAPISTA, CONTROLERNAME_TERAPISTA, "/InactivarTerapista"),
             data: { Id: Id },
             contentType: "application/json; charset=utf-8",
             //dataType: "json",
