@@ -4,6 +4,7 @@ using COM.JOMA.EMP.APLICACION.Dto.Response.Mail;
 using COM.JOMA.EMP.APLICACION.Interfaces;
 using COM.JOMA.EMP.APLICACION.SERVICE.Extensions;
 using COM.JOMA.EMP.APLICACION.Utilities;
+using COM.JOMA.EMP.CROSSCUTTING.Contants;
 using COM.JOMA.EMP.CROSSCUTTING.ICrossCuttingServices;
 using COM.JOMA.EMP.DOMAIN;
 using COM.JOMA.EMP.DOMAIN.Constants;
@@ -61,13 +62,13 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 #endregion
 
                 #region VALIDAR REQUEST
-                if (string.IsNullOrEmpty(request.Usuario)) throw new Exception($"Usuario es requerido.");
-                if (string.IsNullOrEmpty(request.Ruc)) throw new Exception($"Ruc es requerido.");
+                if (string.IsNullOrEmpty(request.Usuario)) throw new JOMAException($"Usuario es requerido.");
+                if (string.IsNullOrEmpty(request.Ruc)) throw new JOMAException($"Ruc es requerido.");
                 #endregion
 
                 seccion = "GENERAR OTP";
                 var OtpModel = jOMAOtpManager.GenerateOtp($"{DomainConstants.JOMA_CACHE_KEY_TERAPISTAS}_{request.Usuario}_{request.Cedula}");
-                await cacheCrossCuttingService.AddObjectAsync($"{DomainConstants.JOMA_CACHE_KEY_TERAPISTAS}_{request.Usuario}_{request.Cedula}", OtpModel, DomainParameters.JOMA_OTP_TIEMPO_EXP_MINUTOS);
+                await cacheCrossCuttingService.AddObjectAsync($"{DomainConstants.JOMA_CACHE_KEY_OTP}_{request.Usuario}_{request.Cedula}", OtpModel, DomainParameters.JOMA_OTP_TIEMPO_EXP_MINUTOS);
 
                 #region CONSULTA A BASE Y MAPEO DE DATOS
                 seccion = "CONSULTA A BASE Y MAPEO DE DATOS";
@@ -95,7 +96,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
             }
             catch (Exception ex)
             {
-                var CodigoSeguimiento = logService.AddLog(this.GetCaller(), $"{DomainParameters.APP_NOMBRE}", $"{seccion}: {JOMAUtilities.ExceptionToString(ex)}");
+                var CodigoSeguimiento = logService.AddLog(this.GetCaller(), $"{DomainParameters.APP_NOMBRE}", $"{seccion}: {JOMAUtilities.ExceptionToString(ex)}", CrossCuttingLogLevel.Error);
                 var Mensaje = globalDictionary.GenerarMensajeErrorGenerico(CodigoSeguimiento);
                 throw new Exception(Mensaje);
             }

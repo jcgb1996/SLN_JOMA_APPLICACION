@@ -84,6 +84,10 @@ try
     builder.Services.AddScoped<IConsultasAppServices, ConsultasAppServices>();
     builder.Services.AddScoped<IConsultasQueryServices, ConsultasQueryServices>();
     builder.Services.AddScoped<ICacheCrossCuttingService, CacheCrossCuttingService>();
+    builder.Services.AddScoped<IEnvioMailEnLineaAppServices, EnvioMailEnLineaAppServices>();
+    builder.Services.AddScoped<IMailQueryService, MailQueryService>();
+    builder.Services.AddScoped<IProcesarEnvioMailAppService, ProcesarEnvioMailAppService>();
+    builder.Services.AddScoped<IMailRepositoryQueryServices, MailRepositoryQueryServices>();
     CacheParameters.PREFIJO = $"{DomainConstants.JOMA_PREFIJO_CACHE}_";
     CacheParameters.ENABLE = true; //cambiar este valor, por el valor que se va a traer desde la configuración inicial
     DomainParameters.CACHE_TIEMPO_EXP_TERAPISTA_COMPANIA = 600; //cambiar este valor, por el valor que se va a traer desde la configuración inicial (tiempo en segundos)

@@ -3,6 +3,7 @@ using COM.JOMA.EMP.APLICACION.Dto.Request;
 using COM.JOMA.EMP.APLICACION.Dto.Request.Inicio;
 using COM.JOMA.EMP.APLICACION.Dto.Response;
 using COM.JOMA.EMP.APLICACION.Dto.Response.Inicio;
+using COM.JOMA.EMP.APLICACION.Dto.Response.Mail;
 using COM.JOMA.EMP.APLICACION.Interfaces;
 using COM.JOMA.EMP.APLICACION.SERVICE.Extensions;
 using COM.JOMA.EMP.CROSSCUTTING.Contants;
@@ -89,12 +90,13 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
             }
         }
 
-        public async Task<LoginAppResultDto> RecuperarContrasena(RecuperacionReqAppDto recuperacionReqAppDto)
+        public async Task<EnvioMailEnLineaAppResultDto> RecuperarContrasena(RecuperacionReqAppDto recuperacionReqAppDto)
         {
-            LoginAppResultDto? loginAppResultDto = new();
+           
             string seccion = string.Empty;
             try
             {
+                EnvioMailEnLineaAppResultDto? MailEnviado = new();
                 var ValidaUsuario = await LoginQueryServices.ValidarUsuarioRecuperacion(recuperacionReqAppDto.UsuarioRecuperacion, recuperacionReqAppDto.CedulaRecuperacion);
                 if (ValidaUsuario is null) throw new JOMAException($"No existen datos para el usuario: {recuperacionReqAppDto.UsuarioRecuperacion}, con cedula {recuperacionReqAppDto.CedulaRecuperacion}");
 
@@ -102,14 +104,14 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
 
                 if (ValidarAppDto.Correcto <= 0) throw new JOMAException(ValidarAppDto.Mensaje);
 
-                var CorreoEnviado = envioMailEnLineaAppServices.EnviarCorreoRecuperacionContrasena(new Dto.Request.Mail.EnvioMailEnLineaRecuperacionContrasenaAppDto()
+                MailEnviado = await envioMailEnLineaAppServices.EnviarCorreoRecuperacionContrasena(new Dto.Request.Mail.EnvioMailEnLineaRecuperacionContrasenaAppDto()
                 {
                     Cedula = ValidarAppDto.CedulaUsuario,
                     Ruc = ValidarAppDto.Ruc,
                     Usuario = ValidarAppDto.NombreUsuario,
                 });
 
-                return new LoginAppResultDto();
+                return MailEnviado;
             }
             catch (JOMAException)
             {
@@ -117,9 +119,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
             }
             catch (Exception ex)
             {
-                var CodigoSeguimiento = logService.AddLog(this.GetCaller(), $"{DomainParameters.APP_NOMBRE}", $"{seccion}: {JOMAUtilities.ExceptionToString(ex)}", CrossCuttingLogLevel.Error);
-                var Mensaje = globalDictionary.GenerarMensajeErrorGenerico(CodigoSeguimiento);
-                throw new Exception(Mensaje);
+                throw;
             }
         }
 

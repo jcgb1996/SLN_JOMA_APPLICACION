@@ -84,14 +84,14 @@ var Login = {
         if (!Site.ValidarForumarioById(id, event))
             return;
 
-        var RecuperarData = Site.GetObjetoFormularioById(id);
+        var recuperacionReqAppDto = Site.GetObjetoFormularioById(id);
 
         Site.IniciarLoading();
 
         $.ajax({
             type: 'POST',
-            url: Site.createUrl(URL_BASE, CONTROLERNAME, "/RealizarLogin"),
-            data: JSON.stringify(loginData),
+            url: Site.createUrl(URL_BASE, CONTROLERNAME, "/RecuperarContrasena"),
+            data: JSON.stringify(recuperacionReqAppDto),
             contentType: 'application/json; charset=utf-8',
             success: function (result) {
                 if (result.success) {
@@ -112,9 +112,6 @@ var Login = {
                 Site.CerrarLoading();
             }
         });
-
-        //$('#forgotPasswordModal').modal('hide');
-        //Site.mostrarNotificacion("Correo enviado exitosamente", 1, 5000);
     },
 
     CerrarSesion: function () {

@@ -50,8 +50,8 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 //if (proceso.ConfigServidorCorreo != null)
                 //    configuracioncorreo = proceso.ConfigServidorCorreo;
                 //else
-                configuracioncorreo = ObtenerConfiguracionCorreo(proceso.EnvioMail).Result;
-                if (configuracioncorreo == null) throw new Exception($"No se encontro configuración de correo emisión de la compañia => [{proceso.EnvioMail.RucCompania}]");
+                //configuracioncorreo = ObtenerConfiguracionCorreo(proceso.EnvioMail).Result;
+                if (configuracioncorreo == null) throw new JOMAException($"No se encontro configuración de correo emisión de la compañia => [{proceso.EnvioMail.RucCompania}]");
                 logService.AddLog(this.GetCaller(), proceso.EnvioMail.NombreLog, $"Id Mail => [{proceso.EnvioMail.IdMail}] {seccion} finalizado.");
                 #endregion
 
@@ -90,8 +90,8 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
 
                 #region VALIDACIONES
                 seccion = "VALIDACIONES";
-                if (proceso.EnvioMail.TipoMail == null) throw new Exception("Tipo de mail no válido");
-                if (!Enum.IsDefined(typeof(JOMATipoMail), JOMAConversions.DBNullToInt32(proceso.EnvioMail.TipoMail))) throw new Exception("Tipo de mail no definido");
+                if (proceso.EnvioMail.TipoMail == null) throw new JOMAException("Tipo de mail no válido");
+                if (!Enum.IsDefined(typeof(JOMATipoMail), JOMAConversions.DBNullToInt32(proceso.EnvioMail.TipoMail))) throw new JOMAException("Tipo de mail no definido");
                 #endregion
 
                 switch ((JOMATipoMail)JOMAConversions.DBNullToInt32(proceso.EnvioMail.TipoMail))
@@ -135,9 +135,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
             }
             catch (Exception ex)
             {
-                var CodigoSeguimiento = logService.AddLog(this.GetCaller(), $"{DomainParameters.APP_NOMBRE}", $"{seccion}: {JOMAUtilities.ExceptionToString(ex)}");
-                var Mensaje = globalDictionary.GenerarMensajeErrorGenerico(CodigoSeguimiento);
-                throw new Exception(Mensaje);
+                throw new Exception($"Seccion => [{seccion}] Error => [{JOMAConversions.ExceptionToString(ex)}]");
             }
             return (false, string.Empty, false);
         }

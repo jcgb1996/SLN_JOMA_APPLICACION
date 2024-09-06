@@ -68,9 +68,28 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Inicio.Controllers
             return this.CrearRespuestaExitosa(redirectUrl);
         }
         [HttpPost]
-        public IActionResult RecuperarContrasena(RecuperacionReqAppDto recuperacionReqAppDto)
+        public async Task<IActionResult> RecuperarContrasena([FromBody] RecuperacionReqAppDto recuperacionReqAppDto)
         {
-            return Ok();
+            try
+            {
+                var Recuperar = await inicioAppServices.RecuperarContrasena(recuperacionReqAppDto);
+
+                return this.CrearRespuestaExitosa(Recuperar.Message);
+
+            }
+            catch (JOMAException ex)
+            {
+                return this.CrearRespuestaError(ex.Message, JOMAStatusCode.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                return this.CrearRespuestaError(ex.Message.ToString(), JOMAStatusCode.InternalServerError, ex.Message);
+            }
+            finally
+            {
+                logService.GuardarLogs();
+            }
+
         }
 
     }
