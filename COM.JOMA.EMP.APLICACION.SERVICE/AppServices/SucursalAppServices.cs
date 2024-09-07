@@ -18,11 +18,11 @@ using COM.JOMA.EMP.APLICACION.SERVICE.Extensions;
 
 namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
 {
-    class SucursalAppService : BaseAppServices, ISucursalAppServices
+    public class SucursalAppServices : BaseAppServices, ISucursalAppServices
     {
         protected ITerapistaQueryServices terapistaQueryServices;
         protected ICacheCrossCuttingService cacheCrossCuttingService;
-        public SucursalAppService(ILogCrossCuttingService logService, GlobalDictionaryDto globalDictionary, ITerapistaQueryServices terapistaQueryServices, ICacheCrossCuttingService cacheCrossCuttingService) : base(logService, globalDictionary)
+        public SucursalAppServices(ILogCrossCuttingService logService, GlobalDictionaryDto globalDictionary, ITerapistaQueryServices terapistaQueryServices, ICacheCrossCuttingService cacheCrossCuttingService) : base(logService, globalDictionary)
         {
             this.terapistaQueryServices = terapistaQueryServices;
             this.cacheCrossCuttingService = cacheCrossCuttingService;
