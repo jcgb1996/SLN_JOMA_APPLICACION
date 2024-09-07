@@ -17,14 +17,38 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
         {
         }
 
-        public bool? ActualizarMail(Mail mail, ref string mensaje)
+        public bool ActualizarMail(TrazabilidadCorreo mail)
         {
             try
             {
                 using (var scope = serviceProvider.CreateScope())
                 {
                     var edocCmdContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>();
-                    return edocCmdContext.ActualizarMail(mail);
+                    return edocCmdContext.ActualizarMailAsync(mail);
+                }
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception($"SQL Error: {sqlEx.Message} Error Number: {sqlEx.Number}");
+            }
+            catch (TimeoutException timeoutEx)
+            {
+                throw new Exception($"Timeout Error: {timeoutEx.Message}");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public bool InsertarTrazabilidadCorreo(TrazabilidadCorreo mail)
+        {
+            try
+            {
+                using (var scope = serviceProvider.CreateScope())
+                {
+                    var edocCmdContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>();
+                    return edocCmdContext.InsertarTrazabilidadCorreo(mail);
                 }
             }
             catch (SqlException sqlEx)

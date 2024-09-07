@@ -9,6 +9,7 @@ namespace COM.JOMA.EMP.QUERY.Interfaces
 {
     public interface IMailRepositoryQueryServices
     {
-        bool? ActualizarMail(Mail mail, ref string mensaje);
+        bool ActualizarMail(TrazabilidadCorreo mail);
+        bool InsertarTrazabilidadCorreo(TrazabilidadCorreo mail);
     }
 }

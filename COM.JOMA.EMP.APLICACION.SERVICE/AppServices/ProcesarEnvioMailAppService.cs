@@ -52,7 +52,6 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 logService.AddLog(this.GetCaller(), proceso.EnvioMail.NombreLog, $"Id Mail => [{proceso.EnvioMail.IdMail}] {seccion} finalizado.");
                 #endregion
 
-                var lala = JOMACrypto.CifrarClave(configuracioncorreo.Clave, DomainConstants.JOMA_KEYENCRIPTA, DomainConstants.JOMA_SALTO);
 
                 #region DEPURAR CONFIGURACION CORREO
                 seccion = "DEPURAR CONFIGURACION CORREO";
@@ -70,6 +69,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 seccion = "VALIDAR CORREOS";
                 logService.AddLog(this.GetCaller(), proceso.EnvioMail.NombreLog, $"Id Mail => [{proceso.EnvioMail.IdMail}] {seccion} iniciado.");
                 string tmpDestReenvio = proceso.EnvioMail.Destinatario;
+                proceso.EnvioMail.Cuerpo = proceso.EnvioMail.Cuerpo.Replace("{ImagenBase64}", configuracioncorreo.LogoEmpresa);
                 EnvioMailAppDto _EnvioMail = proceso.EnvioMail;
                 DepurarCorreosDestinatarios(configuracioncorreo, ref _EnvioMail);
                 proceso.EnvioMail = _EnvioMail;
@@ -195,16 +195,30 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                             break;
                     }
                     Thread.Sleep(TimeSpan.FromSeconds(JOMAConversions.DBNullToInt32(ConfigCorreo.IntervaloTiempoEsperaEnvioMail)).Milliseconds);
-                    ActualizarMailEnvio(EnvioMail, ConfigCorreo, JOMAEstadoMail.Enviado, $"Correo enviado a => [{EnvioMail.Destinatario}]");
+                    if (EnvioMail.IdMail == 0)
+                        InsertarTrazabilidadCorreo(EnvioMail, ConfigCorreo, JOMAEstadoMail.Enviado, $"Correo enviado a => [{EnvioMail.Destinatario}]");
+                    else
+                        ActualizarMailEnvio(EnvioMail, ConfigCorreo, JOMAEstadoMail.Enviado, $"Correo enviado a => [{EnvioMail.Destinatario}]");
+
                     CorreoFueEnviado = true;
                 }
                 catch (Exception ex)
                 {
                     string mensaje_err = JOMAConversions.ExceptionToString(ex);
                     if (ErrorEsCorreoInvalido(mensaje_err))
-                        ActualizarMailEnvio(EnvioMail, ConfigCorreo, JOMAEstadoMail.CorreoNoValido, mensaje_err, true);
+                    {
+                        if (EnvioMail.IdMail == 0)
+                            InsertarTrazabilidadCorreo(EnvioMail, ConfigCorreo, JOMAEstadoMail.CorreoNoValido, $"Correo no enviado a => [{EnvioMail.Destinatario}] Mensaje => {mensaje_err}");
+                        else
+                            ActualizarMailEnvio(EnvioMail, ConfigCorreo, JOMAEstadoMail.CorreoNoValido, $"Correo no enviado a => [{EnvioMail.Destinatario}]  Mensaje => {mensaje_err}");
+                    }
                     else
-                        ActualizarMailEnvio(EnvioMail, ConfigCorreo, JOMAEstadoMail.ErrorDeConexion, mensaje_err, true);
+                    {
+                        if (EnvioMail.IdMail == 0)
+                            InsertarTrazabilidadCorreo(EnvioMail, ConfigCorreo, JOMAEstadoMail.ErrorDeConexion, $"Correo no enviado a => [{EnvioMail.Destinatario}]");
+                        else
+                            ActualizarMailEnvio(EnvioMail, ConfigCorreo, JOMAEstadoMail.ErrorDeConexion, $"Correo no enviado a => [{EnvioMail.Destinatario}]");
+                    }
                     mensaje = mensaje_err;
                     CorreoFueEnviado = false;
                     Errorgenerico = true;
@@ -234,6 +248,51 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
             var errores = AppConstants.MAIL_ERROR_CORREOINVALIDO.Split(";");
             return errores.Contains(error);
         }
+
+        void InsertarTrazabilidadCorreo(EnvioMailAppDto EnvioMail, ConfigServidorCorreoAppDto ConfigCorreo, JOMAEstadoMail EstadoMail, string mensajerror, bool validarcastigo = false)
+        {
+            try
+            {
+                EnvioMail.EstadoEnvioMail = (int)EstadoMail;
+                string mensaje = string.Empty;
+                bool? resp = false;
+                TrazabilidadCorreo? mail = null;
+                switch (EnvioMail.TipoConsultaMail)
+                {
+                    case JOMATipoConsultaMail.NoEnviados:
+                    case JOMATipoConsultaMail.NoConfirmados:
+                    case JOMATipoConsultaMail.Reenvio:
+                        mail = EnvioMail.MapToMailInsert(ConfigCorreo, mensajerror);
+                        break;
+                }
+                resp = mailRepository.InsertarTrazabilidadCorreo(mail);
+                if (resp == null)
+                {
+                    logService.AddLog(this.GetCaller(), EnvioMail.NombreLog, $"Id Mail => [{EnvioMail.IdMail}] Error al actualizar envio mail => [{mensaje}]", CrossCuttingLogLevel.Error);
+                    //var msgDocumentoProceso = new MsgEnvioMailAppDto
+                    //{
+                    //    mensajerror = mensajerror,
+                    //    EstadoEnvioMail = (byte)EstadoMail,
+                    //    TipoConsultaMail = (byte)EnvioMail.TipoConsultaMail,
+                    //    TipoMensajeDocumento = (byte)TipoMessageDocumento.UpdateEdMail,
+                    //    envioMail = EnvioMail,
+                    //    ConfigCorreo = ConfigCorreo,
+                    //};
+                    //var msg = JOMAConversions.SerializeJson(msgDocumentoProceso, ref mensaje);
+                    //if (msg == null) throw new Exception(mensaje);
+
+                    //var Tarea = Task.Run(() => GuardarRecoveryMsgActualizarEstadoMail(logService, EnvioMail, $"{EnvioMail.IdMail}_{EnvioMail.IdProceso}_{DomainConstants.RECOV_EXT_UDP_EDMAIL}", msg));
+                    //Task.WaitAll(Tarea);
+                }
+            }
+            finally
+            {
+                //if (validarcastigo)
+                //    ValidarCastigo(EnvioMail).Wait();
+            }
+
+        }
+
         void ActualizarMailEnvio(EnvioMailAppDto EnvioMail, ConfigServidorCorreoAppDto ConfigCorreo, JOMAEstadoMail EstadoMail, string mensajerror, bool validarcastigo = false)
         {
             try
@@ -241,7 +300,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 EnvioMail.EstadoEnvioMail = (int)EstadoMail;
                 string mensaje = string.Empty;
                 bool? resp = false;
-                Mail? mail = null;
+                TrazabilidadCorreo? mail = null;
                 switch (EnvioMail.TipoConsultaMail)
                 {
                     case JOMATipoConsultaMail.NoEnviados:
@@ -252,7 +311,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                         mail = EnvioMail.MapToMailUpdate(ConfigCorreo, mensajerror);
                         break;
                 }
-                resp = mailRepository.ActualizarMail(mail, ref mensaje);
+                resp = mailRepository.ActualizarMail(mail);
                 if (resp == null)
                 {
                     logService.AddLog(this.GetCaller(), EnvioMail.NombreLog, $"Id Mail => [{EnvioMail.IdMail}] Error al actualizar envio mail => [{mensaje}]", CrossCuttingLogLevel.Error);

@@ -97,6 +97,9 @@ try
     DomainParameters.CACHE_ENABLE_DATOS_COMPANIA = true;//cambiar este valor, por el que se va a traer desde la configuración inicial
     DomainParameters.CACHE_TIEMPO_EXP_DATOS_COMPANIA = 600;//cambiar este valor, por el que se va a traer desde la configuración inicial
     DomainParameters.CACHE_TIEMPO_EXP_OTP = 300;//cambiar este valor, por el que se va a traer desde la configuración inicial
+    DomainParameters.MAIL_INTERVALO_TIEMPOESPERAENVIOMAIL = 1;//cambiar este valor, por el que se va a traer desde la configuración inicial
+    DomainParameters.CACHE_ENABLE_CONF_SERVIDORCORREO_COMPANIA = true;//cambiar este valor, por el que se va a traer desde la configuración inicial
+    DomainParameters.CACHE_TIEMPO_EXP_CONF_SERVIDORCORREO_COMPANIA = 600;//cambiar este valor, por el que se va a traer desde la configuración inicial
 
     builder.Services.AddSingleton<LogCrossCuttingService>();
     builder.Services.AddScoped<GlobalDictionaryDto>();

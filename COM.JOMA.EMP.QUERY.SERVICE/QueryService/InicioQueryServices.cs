@@ -48,7 +48,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
             }
         }
 
-        public async Task<List<LoginQueryDto>> Login(string Usuario, string Clave, string Compania)
+        public async Task<List<LoginQueryDto>> Login(string Usuario, string Clave, string Cedula)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 {
                     using (var jomaQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
                     {
-                        return await jomaQueryContext.QRY_LoginInterno(Usuario, Clave, Compania, "");
+                        return await jomaQueryContext.QRY_LoginInterno(Usuario, Clave, Cedula, "");
                         //return new LoginQueryDto();
                     };
                 };

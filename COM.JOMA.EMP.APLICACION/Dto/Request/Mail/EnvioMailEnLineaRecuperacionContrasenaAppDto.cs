@@ -16,7 +16,7 @@ namespace COM.JOMA.EMP.APLICACION.Dto.Request.Mail
         ///  
         /// </summary>
         /// <example>0950763711001</example>
-        public string Ruc { get; set; }
+        public string? Ruc { get; set; }
 
 
 
@@ -38,6 +38,16 @@ namespace COM.JOMA.EMP.APLICACION.Dto.Request.Mail
         /// </summary>
         /// <example>JM_NOMBREAPELLIDO</example>
         public string Usuario { get; set; }
+
+        /// <summary>
+        /// Usuario
+        /// Origen: `JOMA`
+        /// 
+        /// `Obligatorio`
+        ///  
+        /// </summary>
+        /// <example>JM_NOMBREAPELLIDO</example>
+        public string? Nombres { get; set; }
 
         /// <summary>
         /// Usuario

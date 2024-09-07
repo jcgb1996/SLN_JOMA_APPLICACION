@@ -60,7 +60,7 @@ namespace COM.JOMA.EMP.DOMAIN.Constants
     public enum JOMATipoMail
     {
         [Description("Recuperar contraseña usuario")]
-        RecuperacionContrasena,
+        RecuperacionContrasena = 1,
         [Description("Correo bienvenida usuario")]
         CorreoBienvenida,
         [Description("Cuando se tenga agendada una cita")]

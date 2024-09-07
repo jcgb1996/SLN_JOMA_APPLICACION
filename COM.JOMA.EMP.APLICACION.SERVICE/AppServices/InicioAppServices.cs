@@ -65,8 +65,8 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
             try
             {
                 seccion = "REALIZAR LOGIN";
-                var RealizoLogin = await LoginQueryServices.Login(login.Usuario, login.Clave, login.Compania);
-                if (RealizoLogin is null || RealizoLogin.Count == 0) throw new JOMAException($"No se encontro datos para la compañia {login.Compania}");
+                var RealizoLogin = await LoginQueryServices.Login(login.Usuario, login.Clave, login.Cedula);
+                if (RealizoLogin is null || RealizoLogin.Count == 0) throw new JOMAException($"No se encontro datos para la cedula {login.Cedula}");
 
 
                 seccion = "REALIZAR MAP";
@@ -92,7 +92,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
 
         public async Task<EnvioMailEnLineaAppResultDto> RecuperarContrasena(RecuperacionReqAppDto recuperacionReqAppDto)
         {
-           
+
             string seccion = string.Empty;
             try
             {
@@ -110,6 +110,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                     Ruc = ValidarAppDto.Ruc,
                     Usuario = ValidarAppDto.NombreUsuario,
                     Correo = ValidarAppDto.Correo,
+                    Nombres = ValidarAppDto.Nombres,
                 });
 
                 return MailEnviado;

@@ -1,21 +1,22 @@
 ﻿using COM.JOMA.EMP.DOMAIN.Constants;
 using COM.JOMA.EMP.DOMAIN.Entities;
-using COM.JOMA.EMP.DOMAIN.Tools;
-using COM.JOMA.EMP.QUERY.Dtos;
 using COM.JOMA.EMP.QUERY.Parameters;
 using Dapper;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.Data;
-using COM.JOMA.EMP.QUERY.SERVICE.Extensions;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace COM.JOMA.EMP.QUERY.SERVICE.Model
 {
     public partial class JomaQueryContext : JomaQueryContextEF
     {
-        internal bool ActualizarMailAsync(TrazabilidadCorreo mail)
+        internal bool InsertarTrazabilidadCorreo(TrazabilidadCorreo mail)
         {
-            string SP_NAME = "[UPD_MailEnviar]";
+            string SP_NAME = "[INS_TrazabilidadCorreo]";
             switch (QueryParameters.TipoORM)
             {
                 case JOMATipoORM.EntityFramework:
@@ -33,15 +34,15 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
                             mail.FechaEnvio ?? (object)DBNull.Value,
                             mail.NumeroReintentos,
                             mail.UsuarioCreacion ?? (object)DBNull.Value,
-                            mail.UsuarioModificacion ?? (object)DBNull.Value, 
-                            mail.NombreMostrar ?? (object)DBNull.Value, 
+                            mail.UsuarioModificacion ?? (object)DBNull.Value,
+                            mail.NombreMostrar ?? (object)DBNull.Value,
                             mail.CorreoMostrar ?? (object)DBNull.Value,
-                            mail.RucCompania ?? (object)DBNull.Value, 
+                            mail.RucCompania ?? (object)DBNull.Value,
                             mail.TipoMail ?? (object)DBNull.Value,
-                            mail.Destinatario, 
-                            mail.TieneAdjunto, 
-                            mail.EMailPara, 
-                            mail.EMailCc, 
+                            mail.Destinatario,
+                            mail.TieneAdjunto,
+                            mail.EMailPara,
+                            mail.EMailCc,
                             mail.EMailCco,
                             mail.EMailErroneos,
                             mail.EMailAsunto
@@ -88,7 +89,5 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
                     throw new Exception($"Tipo ORM {QueryParameters.TipoORM} no definido");
             }
         }
-
-
     }
 }

@@ -4,13 +4,12 @@ namespace COM.JOMA.EMP.APLICACION.Dto.Request.Mail
 {
     public class EnvioMailAppDto
     {
-        public string IdMail { get; set; }
+        public long IdMail { get; set; }
         public string? Asunto { get; set; }
         public string? Cuerpo { get; set; }
         public string Destinatario { get; set; }
         public bool TieneAdjunto { get; set; }
         public List<MailAdjuntoAppDto> Adjuntos { get; set; } = new List<MailAdjuntoAppDto>();
-        public long IdProceso { get; set; }
         public byte? TipoMail { get; set; }
         public string RucCompania { get; set; }
         public int EstadoEnvioMail { get; set; }

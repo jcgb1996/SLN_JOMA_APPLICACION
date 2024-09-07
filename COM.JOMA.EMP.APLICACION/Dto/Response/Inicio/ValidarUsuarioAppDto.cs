@@ -24,6 +24,11 @@ namespace COM.JOMA.EMP.APLICACION.Dto.Response.Inicio
         public string NombreUsuario { get; set; }
 
         /// <summary>
+        /// Nombre de la persona
+        /// </summary>
+        public string Nombres { get; set; }
+
+        /// <summary>
         /// Identificador de la empresa.
         /// </summary>
         public long IdEmpresa { get; set; }

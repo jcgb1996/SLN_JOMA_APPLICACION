@@ -8,6 +8,7 @@ namespace COM.JOMA.EMP.QUERY.Dtos
 {
     public class ServidorCorreoQueryDto
     {
+        public long Id { get; set; }    
         public string? Usuario { set; get; }
         public string? Clave { set; get; }
         public string? Mail { set; get; }
@@ -20,5 +21,6 @@ namespace COM.JOMA.EMP.QUERY.Dtos
         public string? CCO { set; get; }
         public string? CorreoMostrar { set; get; }
         public string? FormaCopiaMail { set; get; }
+        public string? LogoEmpresa { set; get; }
     }
 }
