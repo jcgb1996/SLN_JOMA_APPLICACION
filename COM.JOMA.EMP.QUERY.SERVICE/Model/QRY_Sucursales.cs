@@ -45,7 +45,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
             {
                 sucursales = new List<SucursalQueryDto>
                     {
-                        new SucursalQueryDto { Id = 8, Nombre = "Allan Stuart", AreaDesignada = "Oncología", Estado = 1,Maxrowcount=3 },
+                        new SucursalQueryDto { Id = 8, Nombre = "Robert Stuart", AreaDesignada = "Oncología", Estado = 1,Maxrowcount=3 },
                         new SucursalQueryDto { Id = 1, Nombre = "Smith White", AreaDesignada = "Neurología", Estado = 0,Maxrowcount=3 },
                         new SucursalQueryDto { Id = 26, Nombre = "Gilbert Sandoval", AreaDesignada = "Cardiología", Estado = 1 ,Maxrowcount=3},
                     };

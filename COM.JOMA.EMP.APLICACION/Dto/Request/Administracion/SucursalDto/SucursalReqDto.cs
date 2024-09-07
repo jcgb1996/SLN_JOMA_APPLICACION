@@ -24,7 +24,6 @@ namespace COM.JOMA.EMP.APLICACION.Dto.Request.Administracion.SucursalDto
 
         public string CedulaRepresentante { get; set; }
 
-        public string ActividadEconomica { get; set; }
-        public string HorarioAtencion { get; set; }
+        public int ActividadEconomica { get; set; }
     }
 }

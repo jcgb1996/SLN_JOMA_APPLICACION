@@ -10,6 +10,6 @@ namespace COM.JOMA.EMP.APLICACION.Interfaces
 {
     public interface ISucursalAppServices
     {
-        public JOMAResponse RegistrarSucursal(SucursalReqDto sucursalReqtDto);
+        public JOMAResponse RegistrarSucursal(SucursalReqDto sucursalReqDto);
     }
 }

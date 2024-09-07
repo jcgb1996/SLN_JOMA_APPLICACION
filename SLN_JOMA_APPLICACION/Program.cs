@@ -24,21 +24,18 @@ using System.Globalization;
 
 //Cambio de alan a prueba
 try
-{
 
+{
     var builder = WebApplication.CreateBuilder(args);
 
     // Configuración de servicios de la aplicación
     DomainParameters.APP_COMPONENTE_JOMA = JOMAComponente.JomaPortalWeb;
     DomainParameters.APP_NOMBRE = $"{DomainParameters.APP_COMPONENTE_JOMA.GetNombre()} v{AppConstants.Version}";
 
-
     #region LOAD SETTINGS
     Settings settings = new Settings();
     LoadSettings(ref settings);
     #endregion
-
-
 
 
     builder.Host.UseSerilog();
@@ -78,14 +75,19 @@ try
     builder.Services.AddScoped<IPacienteQueryServices, PacienteQueryServices>();
     builder.Services.AddScoped<ITerapistaAppServices, TerapistaAppServices>();
     builder.Services.AddScoped<ITerapistaQueryServices, TerapistaQueryServices>();
+    builder.Services.AddScoped<ISucursalAppServices, SucursalAppServices>();//Añadi yo
+    builder.Services.AddScoped<ISucursalQueryService, SucursalQueryServices>();//---
     builder.Services.AddScoped<IConsultasAppServices, ConsultasAppServices>();
     builder.Services.AddScoped<IConsultasQueryServices, ConsultasQueryServices>();
     builder.Services.AddScoped<ICacheCrossCuttingService, CacheCrossCuttingService>();
-    builder.Services.AddScoped<ISucursalAppServices, SucursalAppServices>();
     CacheParameters.PREFIJO = $"{DomainConstants.JOMA_PREFIJO_CACHE}_";
     CacheParameters.ENABLE = true; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial
     DomainParameters.CACHE_TIEMPO_EXP_TERAPISTA_COMPANIA = 600; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial (tiempo en segundos)
     DomainParameters.CACHE_ENABLE_TERAPISTAS_COMPANIA = true; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial
+
+    DomainParameters.CACHE_TIEMPO_EXP_SUCURSAL_COMPANIA = 600; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial (tiempo en segundos)
+    DomainParameters.CACHE_ENABLE_SUCURSALES_COMPANIA = true;
+
     builder.Services.AddSingleton<LogCrossCuttingService>();
     builder.Services.AddScoped<GlobalDictionaryDto>();
 

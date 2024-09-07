@@ -2,7 +2,6 @@
 using COM.JOMA.EMP.CROSSCUTTING.ICrossCuttingServices;
 using COM.JOMA.EMP.DOMAIN;
 using COM.JOMA.EMP.DOMAIN.Constants;
-using COM.JOMA.EMP.DOMAIN.Entities;
 using COM.JOMA.EMP.DOMAIN.Extensions;
 using COM.JOMA.EMP.DOMAIN.JomaExtensions;
 using COM.JOMA.EMP.DOMAIN.Parameters;
@@ -105,8 +104,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 throw new Exception(Mensaje);
             }
         }
-
-        public async Task<SucursalQueryDto> GetSucursalesXIdCompañia(long IdSucursal)
+        public async Task<SucursalQueryDto> GetSucursalesXId(long IdSucursal)
         {
             string seccion = string.Empty;
             try
@@ -146,7 +144,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
             }
         }
 
-        public async Task<List<SucursalQueryDto>> GetSucursalesPorId(long IdCompania)
+        public async Task<List<SucursalQueryDto>> GetSucursalesPorIdCompania(long IdCompania)
         {
             string seccion = string.Empty;
             try

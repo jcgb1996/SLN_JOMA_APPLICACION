@@ -22,7 +22,7 @@ var Sucursal = {
                     //Eliminar parámetros de solicitud adicionales
                     for (var key in d) {
                         if (key.indexOf("columns") == 0 || key.indexOf("order") == 0) { // Los parámetros que comienzan con columnas se eliminan
-                            delete d[key];
+                            delete d[ key ];
                         }
                     }
 
@@ -57,7 +57,7 @@ var Sucursal = {
                     text: '<i title="Nueva Sucursal" class="fa fa-plus-circle"></i> Nueva Sucursal',
                     className: 'btn waves-effect waves-light btn-primary',
                     action: function (e, dt, node, config) {
-                        AdministracionRol.AgregarNuevo();
+                        Sucursal.AgregarNuevo();
                     },
                     attr: {
                         title: 'Nueva Sucursal',
@@ -81,12 +81,12 @@ var Sucursal = {
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton_${row.id}">
                                 
                                 <li>
-                                    <a class="dropdown-item d-flex align-items-center gap-3" onclick="Terapista.EditarTerapista('${row.id}');" href="javascript:void(0)">
+                                    <a class="dropdown-item d-flex align-items-center gap-3" onclick="Sucursal.EditarSucursal('${row.id}');" href="javascript:void(0)">
                                         <i class="fs-4 ti ti-edit"></i> Editar
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item d-flex align-items-center gap-3" onclick="Terapista.InactivarTerapista('${row.id}');" href="javascript:void(0)">
+                                    <a class="dropdown-item d-flex align-items-center gap-3" onclick="Sucursal.InactivarSucursal('${row.id}');" href="javascript:void(0)">
                                         <i class="fs-4 ti ti-trash"></i> Inactivar
                                     </a>
                                 </li>
@@ -182,77 +182,95 @@ var Sucursal = {
     },
 
 
-    //GuardarDatos: function (id, event) {
-    //    debugger;
-    //    if (!Site.ValidarForumarioById(id, event))
-    //        return;
+    GuardarDatos: function (id, event) {
+        debugger;
+        if (!Site.ValidarForumarioById(id, event))
+            return;
 
-    //    var formDataObj = Site.GetObjetoFormularioById(id);
-    //    Site.IniciarLoading();
-    //    $.ajax({
-    //        type: "POST",
-    //        url: Site.createUrl(URL_BASE_SUCURSAL, CONTROLERNAME_SUCURSAL, "/GuardarSucursal"),
-    //        data: JSON.stringify(formDataObj),
-    //        contentType: "application/json; charset=utf-8",
-    //        //dataType: "json",
-    //        success: function (response) {
-    //            Site.CerrarLoading();
-    //            $("#ModalSucursal").modal('hide');
-    //            if (response && response.success) {
-    //                Site.mostrarNotificacion(response.message, 1);
-    //            } else if (response && response.message) {
-    //                Site.mostrarNotificacion("Error al guardar los datos: " + response.message, 2);
-    //            } else {
-    //                Site.mostrarNotificacion("Ocurrió un error inesperado." + response.message, 2);
-    //            }
-    //        },
-    //        error: function (result) {
-    //            Site.AjaxError(result);
-    //        }
-    //    });
+        var formDataObj = Site.GetObjetoFormularioById(id);
+        Site.IniciarLoading();
+        $.ajax({
+            type: "POST",
+            url: Site.createUrl(URL_BASE_SUCURSAL, CONTROLERNAME_SUCURSAL, "/GuardarSucursal"),
+            data: JSON.stringify(formDataObj),
+            contentType: "application/json; charset=utf-8",
+            //dataType: "json",
+            success: function (response) {
+                Site.CerrarLoading();
+                $("#ModalSucursal").modal('hide');
+                if (response && response.success) {
+                    Site.mostrarNotificacion(response.message, 1);
+                } else if (response && response.message) {
+                    Site.mostrarNotificacion("Error al guardar los datos: " + response.message, 2);
+                } else {
+                    Site.mostrarNotificacion("Ocurrió un error inesperado." + response.message, 2);
+                }
+            },
+            error: function (result) {
+                Site.AjaxError(result);
+            }
+        });
 
-    //},
+    },
+    AgregarNuevo: function (Id) {
+        Site.IniciarLoading();
+        $.ajax({
+            type: "GET",
+            url: Site.createUrl(URL_BASE_SUCURSAL, CONTROLERNAME_SUCURSAL, "/GetDatosSucursal"),
+            data: { Id: Id },
+            contentType: "application/json; charset=utf-8",
+            //dataType: "json",
+            success: function (response) {
+                Site.CerrarLoading();
+                $("#ContenteModal").empty().html(response);
+                $("#ModalSucursal").modal('show');
+            },
+            error: function (result) {
+                Site.AjaxError(result);
+            }
+        });
+    },
 
-    //EditarSucursal: function (Id) {
-    //    Site.IniciarLoading();
-    //    $.ajax({
-    //        type: "GET",
-    //        url: Site.createUrl(URL_BASE_SUCURSAL, CONTROLERNAME_SUCURSAL, "/GetDatosSucursal"),
-    //        data: { Id: Id },
-    //        contentType: "application/json; charset=utf-8",
-    //        //dataType: "json",
-    //        success: function (response) {
-    //            Site.CerrarLoading();
-    //            $("#ContenteModal").empty().html(response);
-    //            $("#ModalTerapista").modal('show');
-    //        },
-    //        error: function (result) {
-    //            Site.AjaxError(result);
-    //        }
-    //    });
-    //},
+    EditarSucursal: function (Id) {
+        Site.IniciarLoading();
+        $.ajax({
+            type: "GET",
+            url: Site.createUrl(URL_BASE_SUCURSAL, CONTROLERNAME_SUCURSAL, "/GetDatosSucursal"),
+            data: { Id: Id },
+            contentType: "application/json; charset=utf-8",
+            //dataType: "json",
+            success: function (response) {
+                Site.CerrarLoading();
+                $("#ContenteModal").empty().html(response);
+                $("#ModalSucursal").modal('show');
+            },
+            error: function (result) {
+                Site.AjaxError(result);
+            }
+        });
+    },
 
-    //InactivarSucursal: function (Id) {
-    //    Site.IniciarLoading();
-    //    $.ajax({
-    //        type: "POST",
-    //        url: Site.createUrl(URL_BASE_SUCURSAL, CONTROLERNAME_SUCURSAL, "/InactivarSucursal"),
-    //        data: { Id: Id },
-    //        contentType: "application/json; charset=utf-8",
-    //        //dataType: "json",
-    //        success: function (response) {
-    //            Site.CerrarLoading();
-    //            if (response && response.success) {
-    //                Site.mostrarNotificacion(response.message, 1);
-    //            } else if (response && response.message) {
-    //                Site.mostrarNotificacion("Error al guardar los datos: " + response.message, 2);
-    //            } else {
-    //                Site.mostrarNotificacion("Ocurrió un error inesperado." + response.message, 2);
-    //            }
-    //        },
-    //        error: function (result) {
-    //            Site.AjaxError(result);
-    //        }
-    //    });
-    //}
+    InactivarSucursal: function (Id) {
+        Site.IniciarLoading();
+        $.ajax({
+            type: "POST",
+            url: Site.createUrl(URL_BASE_SUCURSAL, CONTROLERNAME_SUCURSAL, "/InactivarSucursal"),
+            data: { Id: Id },
+            contentType: "application/json; charset=utf-8",
+            //dataType: "json",
+            success: function (response) {
+                Site.CerrarLoading();
+                if (response && response.success) {
+                    Site.mostrarNotificacion(response.message, 1);
+                } else if (response && response.message) {
+                    Site.mostrarNotificacion("Error al guardar los datos: " + response.message, 2);
+                } else {
+                    Site.mostrarNotificacion("Ocurrió un error inesperado." + response.message, 2);
+                }
+            },
+            error: function (result) {
+                Site.AjaxError(result);
+            }
+        });
+    }
 };
