@@ -4,16 +4,16 @@ var CONTROLERNAME_SUCURSAL = ""
 var Sucursal = {
 
     Init: function (UrlBase, Controller) {
-        //debugger;
+        debugger;
         URL_BASE_SUCURSAL = UrlBase;
-        CONTROLERNAME_TERAPISTA = Controller;
+        CONTROLERNAME_SUCURSAL = Controller;
         Sucursal.GetSucursales();
     },
 
-    GetTerapistas: function () {
+    GetSucursales: function () {
         var table = $("#DataTableSucursales").DataTable({
             ajax: {
-                url: Site.createUrl(URL_BASE_SUCURSAL, CONTROLERNAME_SUCURSAL, "/GetTerapistas"),
+                url: Site.createUrl(URL_BASE_SUCURSAL, CONTROLERNAME_SUCURSAL, "/GetSucursales"),
                 type: "POST",
                 dataType: "json",
                 dataSrc: "data",
@@ -54,14 +54,14 @@ var Sucursal = {
 
             buttons: [
                 {
-                    text: '<i title="Nuevo Terapsita" class="fa fa-plus-circle"></i> Nuevo Terapista',
+                    text: '<i title="Nueva Sucursal" class="fa fa-plus-circle"></i> Nueva Sucursal',
                     className: 'btn waves-effect waves-light btn-primary',
                     action: function (e, dt, node, config) {
                         AdministracionRol.AgregarNuevo();
                     },
                     attr: {
-                        title: 'Nuevo Terapsita',
-                        'aria-label': 'Nuevo Terapsita'
+                        title: 'Nueva Sucursal',
+                        'aria-label': 'Nueva Sucursal'
                     },
 
                 }
@@ -179,82 +179,80 @@ var Sucursal = {
 
         });
 
-
-
-    },
-    GuardarDatos: function (id, event) {
-        //debugger;
-        if (!Site.ValidarForumarioById(id, event))
-            return;
-
-        var formDataObj = Site.GetObjetoFormularioById(id);
-        Site.IniciarLoading();
-        $.ajax({
-            type: "POST",
-            url: Site.createUrl(URL_BASE_TERAPISTA, CONTROLERNAME_TERAPISTA, "/GuardarTerapista"),
-            data: JSON.stringify(formDataObj),
-            contentType: "application/json; charset=utf-8",
-            //dataType: "json",
-            success: function (response) {
-                Site.CerrarLoading();
-                $("#ModalTerapista").modal('hide');
-                if (response && response.success) {
-                    Site.mostrarNotificacion(response.message, 1);
-                } else if (response && response.message) {
-                    Site.mostrarNotificacion("Error al guardar los datos: " + response.message, 2);
-                } else {
-                    Site.mostrarNotificacion("Ocurrió un error inesperado." + response.message, 2);
-                }
-            },
-            error: function (result) {
-                Site.AjaxError(result);
-            }
-        });
-
     },
 
-    EditarTerapista: function (Id) {
-        Site.IniciarLoading();
-        $.ajax({
-            type: "GET",
-            url: Site.createUrl(URL_BASE_TERAPISTA, CONTROLERNAME_TERAPISTA, "/GetDatosTerapista"),
-            data: { Id: Id },
-            contentType: "application/json; charset=utf-8",
-            //dataType: "json",
-            success: function (response) {
-                Site.CerrarLoading();
-                $("#ContenteModal").empty().html(response);
-                $("#ModalTerapista").modal('show');
-            },
-            error: function (result) {
-                Site.AjaxError(result);
-            }
-        });
-    },
 
-    InactivarTerapista: function (Id) {
-        Site.IniciarLoading();
-        $.ajax({
-            type: "POST",
-            url: Site.createUrl(URL_BASE_TERAPISTA, CONTROLERNAME_TERAPISTA, "/InactivarTerapista"),
-            data: { Id: Id },
-            contentType: "application/json; charset=utf-8",
-            //dataType: "json",
-            success: function (response) {
-                Site.CerrarLoading();
-                if (response && response.success) {
-                    Site.mostrarNotificacion(response.message, 1);
-                } else if (response && response.message) {
-                    Site.mostrarNotificacion("Error al guardar los datos: " + response.message, 2);
-                } else {
-                    Site.mostrarNotificacion("Ocurrió un error inesperado." + response.message, 2);
-                }
-            },
-            error: function (result) {
-                Site.AjaxError(result);
-            }
-        });
-    }
+    //GuardarDatos: function (id, event) {
+    //    debugger;
+    //    if (!Site.ValidarForumarioById(id, event))
+    //        return;
 
+    //    var formDataObj = Site.GetObjetoFormularioById(id);
+    //    Site.IniciarLoading();
+    //    $.ajax({
+    //        type: "POST",
+    //        url: Site.createUrl(URL_BASE_SUCURSAL, CONTROLERNAME_SUCURSAL, "/GuardarSucursal"),
+    //        data: JSON.stringify(formDataObj),
+    //        contentType: "application/json; charset=utf-8",
+    //        //dataType: "json",
+    //        success: function (response) {
+    //            Site.CerrarLoading();
+    //            $("#ModalSucursal").modal('hide');
+    //            if (response && response.success) {
+    //                Site.mostrarNotificacion(response.message, 1);
+    //            } else if (response && response.message) {
+    //                Site.mostrarNotificacion("Error al guardar los datos: " + response.message, 2);
+    //            } else {
+    //                Site.mostrarNotificacion("Ocurrió un error inesperado." + response.message, 2);
+    //            }
+    //        },
+    //        error: function (result) {
+    //            Site.AjaxError(result);
+    //        }
+    //    });
 
+    //},
+
+    //EditarSucursal: function (Id) {
+    //    Site.IniciarLoading();
+    //    $.ajax({
+    //        type: "GET",
+    //        url: Site.createUrl(URL_BASE_SUCURSAL, CONTROLERNAME_SUCURSAL, "/GetDatosSucursal"),
+    //        data: { Id: Id },
+    //        contentType: "application/json; charset=utf-8",
+    //        //dataType: "json",
+    //        success: function (response) {
+    //            Site.CerrarLoading();
+    //            $("#ContenteModal").empty().html(response);
+    //            $("#ModalTerapista").modal('show');
+    //        },
+    //        error: function (result) {
+    //            Site.AjaxError(result);
+    //        }
+    //    });
+    //},
+
+    //InactivarSucursal: function (Id) {
+    //    Site.IniciarLoading();
+    //    $.ajax({
+    //        type: "POST",
+    //        url: Site.createUrl(URL_BASE_SUCURSAL, CONTROLERNAME_SUCURSAL, "/InactivarSucursal"),
+    //        data: { Id: Id },
+    //        contentType: "application/json; charset=utf-8",
+    //        //dataType: "json",
+    //        success: function (response) {
+    //            Site.CerrarLoading();
+    //            if (response && response.success) {
+    //                Site.mostrarNotificacion(response.message, 1);
+    //            } else if (response && response.message) {
+    //                Site.mostrarNotificacion("Error al guardar los datos: " + response.message, 2);
+    //            } else {
+    //                Site.mostrarNotificacion("Ocurrió un error inesperado." + response.message, 2);
+    //            }
+    //        },
+    //        error: function (result) {
+    //            Site.AjaxError(result);
+    //        }
+    //    });
+    //}
 };

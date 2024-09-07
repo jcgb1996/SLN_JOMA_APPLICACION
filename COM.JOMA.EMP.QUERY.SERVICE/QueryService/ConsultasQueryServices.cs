@@ -162,5 +162,35 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
             }
         }
 
+        public async Task<List<SucursalQueryDto>> GetSucursalesPorId(long IdCompania)
+        {
+            try
+            {
+                using (var scope = serviceProvider.CreateScope())
+                {
+                    using (var edocQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
+                    {
+                        return await edocQueryContext.GetSucursales(IdCompania);
+                        //return new LoginQueryDto();
+                    };
+                };
+
+
+
+
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception($"SQL Error: {sqlEx.Message} Error Number: {sqlEx.Number}");
+            }
+            catch (TimeoutException timeoutEx)
+            {
+                throw new Exception($"Timeout Error: {timeoutEx.Message}");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

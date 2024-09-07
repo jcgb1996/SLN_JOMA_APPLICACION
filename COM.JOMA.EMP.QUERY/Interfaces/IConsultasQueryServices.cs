@@ -12,5 +12,6 @@ namespace COM.JOMA.EMP.QUERY.Interfaces
         public Task<List<TerapistaQueryDto>> GetTerapistasPorIdCompania(long IdCompania);
         public Task<TerapistaQueryDto> GetTerapistasPorId(long IdTerapista);
         public Task<SucursalQueryDto> GetSucursalesXIdCompañia(long IdSucursal);
+        public Task<List<SucursalQueryDto>> GetSucursalesPorId(long IdCompania);
     }
 }

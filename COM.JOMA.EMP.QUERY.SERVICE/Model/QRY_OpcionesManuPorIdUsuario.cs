@@ -78,7 +78,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
                                 Title = "Registro Sucursal",
                                 Icon = "fas fa-users",
                                 Action = "Index",
-                                Controller = "Sucursal",
+                                Controller = "Sucursales",
                                 Area = "Administracion"
                             },
                         },
