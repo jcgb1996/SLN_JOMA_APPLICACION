@@ -56,4 +56,10 @@ namespace COM.JOMA.EMP.DOMAIN.Constants
         NotFound = StatusCodes.Status404NotFound,
         InternalServerError = StatusCodes.Status500InternalServerError
     }
+
+    public enum TipoCache
+    {
+        Memory = 1,
+        Distributed
+    }   
 }

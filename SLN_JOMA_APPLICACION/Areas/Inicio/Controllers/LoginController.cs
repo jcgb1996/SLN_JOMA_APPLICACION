@@ -4,6 +4,7 @@ using COM.JOMA.EMP.APLICACION.SERVICE.Constants;
 using COM.JOMA.EMP.CROSSCUTTING.ICrossCuttingServices;
 using COM.JOMA.EMP.DOMAIN;
 using COM.JOMA.EMP.DOMAIN.Constants;
+using COM.JOMA.EMP.DOMAIN.Parameters;
 using COM.JOMA.EMP.DOMAIN.Tools;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -34,7 +35,6 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Inicio.Controllers
             {
                 var loginDto = await inicioAppServices.LoginCompania(DatosLogin);
                 HttpContext.Session.SetString("UsuarioLogin", JsonConvert.SerializeObject(loginDto));
-
                 if (loginDto.ForzarCambioClave)
                 {
                     return this.CrearRespuestaExitosa(WebSiteConstans.JOMA_WEBSITE_ACCION_FORZARCAMBIOCLAVE);
@@ -42,6 +42,7 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Inicio.Controllers
                 else
                 {
                     string redirectUrl = Url.Action(WebSiteConstans.JOMA_WEBSITE_ACCION_INDEX, WebSiteConstans.JOMA_WEBSITE_AREA_CONTROLLER_DASHBOARD, new { area = WebSiteConstans.JOMA_WEBSITE_AREA_INICIO })!;
+                    DomainParameters.JOMA_CACHE_KEY = $"{loginDto.Rol}_{loginDto.Usuario}";
                     return this.CrearRespuestaExitosa(redirectUrl);
                 }
             }
