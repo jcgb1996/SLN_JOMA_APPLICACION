@@ -15,7 +15,7 @@ namespace COM.JOMA.EMP.APLICACION.Dto.Request.Mail
         public string RucCompania { get; set; }
         public int EstadoEnvioMail { get; set; }
         public EmailDestinatarioAppDto DestinatarioFINAL { get; set; } = new EmailDestinatarioAppDto();
-        public long IdCompania { get; set; }
+        public long IdEmpresa { get; set; }
         public JOMATipoEnvioMail TipoEnvioMail { get; set; }
         public JOMATipoConsultaMail TipoConsultaMail { get; set; }
         public string? NombreLog { set; get; }

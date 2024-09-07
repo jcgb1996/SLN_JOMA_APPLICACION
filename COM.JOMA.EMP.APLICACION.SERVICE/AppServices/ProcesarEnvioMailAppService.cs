@@ -47,13 +47,12 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 seccion = "OBTENER CONFIGURACION CORREO";
                 logService.AddLog(this.GetCaller(), proceso.EnvioMail.NombreLog, $"Id Mail => [{proceso.EnvioMail.IdMail}] {seccion} iniciado.");
                 ConfigServidorCorreoAppDto? configuracioncorreo = ObtenerConfiguracionCorreo(proceso.EnvioMail).Result;
-                //if (proceso.ConfigServidorCorreo != null)
-                //    configuracioncorreo = proceso.ConfigServidorCorreo;
-                //else
-                //configuracioncorreo = ObtenerConfiguracionCorreo(proceso.EnvioMail).Result;
+
                 if (configuracioncorreo == null) throw new JOMAException($"No se encontro configuración de correo emisión de la compañia => [{proceso.EnvioMail.RucCompania}]");
                 logService.AddLog(this.GetCaller(), proceso.EnvioMail.NombreLog, $"Id Mail => [{proceso.EnvioMail.IdMail}] {seccion} finalizado.");
                 #endregion
+
+                var lala = JOMACrypto.CifrarClave(configuracioncorreo.Clave, DomainConstants.JOMA_KEYENCRIPTA, DomainConstants.JOMA_SALTO);
 
                 #region DEPURAR CONFIGURACION CORREO
                 seccion = "DEPURAR CONFIGURACION CORREO";
@@ -361,7 +360,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
             string key = DomainConstants.EDOC_CACHE_KEY_CONFIGSERVIDORCORREOCOMPANIA;
             double? duration = DomainParameters.CACHE_TIEMPO_EXP_CONF_SERVIDORCORREO_COMPANIA;
             key += $"_{mail.RucCompania}";
-            ConfigServidorCorreoQueryDto configcache = null;
+            ConfigServidorCorreoQueryDto? configcache = default;
 
             if (DomainParameters.CACHE_ENABLE_CONF_SERVIDORCORREO_COMPANIA)
             {
@@ -372,7 +371,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
             #endregion
 
             #region BUSCAR EN BASE
-            configcache = await mailQueryService.ConsultarConfigServidorCorreoXIdCompaniaXRucCompania(mail.IdCompania, mail.RucCompania);
+            configcache = await mailQueryService.ConsultarConfigServidorCorreoXIdCompaniaXRucCompania(mail.IdEmpresa, mail.RucCompania);
             if (DomainParameters.CACHE_ENABLE_CONF_SERVIDORCORREO_COMPANIA)
                 await cache.AddObjectAsync(key, configcache, duration);
             #endregion

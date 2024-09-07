@@ -38,5 +38,15 @@ namespace COM.JOMA.EMP.APLICACION.Dto.Request.Mail
         /// </summary>
         /// <example>JM_NOMBREAPELLIDO</example>
         public string Usuario { get; set; }
+
+        /// <summary>
+        /// Usuario
+        /// Origen: `JOMA`
+        /// 
+        /// `Obligatorio`
+        ///  
+        /// </summary>
+        /// <example>JM_NOMBREAPELLIDO</example>
+        public string Correo { get; set; }
     }
 }

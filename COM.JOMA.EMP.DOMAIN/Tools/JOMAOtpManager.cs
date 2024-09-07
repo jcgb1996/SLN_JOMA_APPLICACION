@@ -17,7 +17,6 @@ namespace COM.JOMA.EMP.DOMAIN.Tools
             var otpDetails = new JOMAOtp
             {
                 Otp = otp,
-                Expiry = DateTime.UtcNow.AddMinutes(DomainParameters.JOMA_OTP_TIEMPO_EXP_MINUTOS),
                 Attempts = 0
             };
 

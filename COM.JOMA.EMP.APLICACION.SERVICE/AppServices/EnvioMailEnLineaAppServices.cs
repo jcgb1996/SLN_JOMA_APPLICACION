@@ -8,6 +8,7 @@ using COM.JOMA.EMP.CROSSCUTTING.Contants;
 using COM.JOMA.EMP.CROSSCUTTING.ICrossCuttingServices;
 using COM.JOMA.EMP.DOMAIN;
 using COM.JOMA.EMP.DOMAIN.Constants;
+using COM.JOMA.EMP.DOMAIN.Entities;
 using COM.JOMA.EMP.DOMAIN.Extensions;
 using COM.JOMA.EMP.DOMAIN.JomaExtensions;
 using COM.JOMA.EMP.DOMAIN.Parameters;
@@ -25,12 +26,14 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
         protected ICacheCrossCuttingService cacheCrossCuttingService;
         protected IMailQueryService mailQueryService;
         protected IProcesarEnvioMailAppService procesarEnvioMailAppService;
-        public EnvioMailEnLineaAppServices(ILogCrossCuttingService logService, GlobalDictionaryDto globalDictionary, ICacheCrossCuttingService cacheCrossCuttingService, IMailQueryService mailQueryService, IProcesarEnvioMailAppService procesarEnvioMailAppService) : base(logService, globalDictionary)
+        protected IAdministracionAppServices administracionAppServices;
+        public EnvioMailEnLineaAppServices(ILogCrossCuttingService logService, GlobalDictionaryDto globalDictionary, ICacheCrossCuttingService cacheCrossCuttingService, IMailQueryService mailQueryService, IProcesarEnvioMailAppService procesarEnvioMailAppService, IAdministracionAppServices administracionAppServices) : base(logService, globalDictionary)
         {
             jOMAOtpManager = new JOMAOtpManager();
             this.cacheCrossCuttingService = cacheCrossCuttingService;
             this.mailQueryService = mailQueryService;
             this.procesarEnvioMailAppService = procesarEnvioMailAppService;
+            this.administracionAppServices = administracionAppServices;
         }
 
         public Task<EnvioMailEnLineaAppResultDto> EnviarCorreoBienvenida(EnvioMailEnLineaBienvenidaAppDto request)
@@ -53,12 +56,8 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
 
                 #region VALIDAR COMPAÑIA
                 seccion = "VALIDAR COMPAÑIA";
-                //var validarCompañia = await procesarCompaniaService.ValidarCompañia(request.Ruc);
-                //if (!validarCompañia.Item1) throw new JOMAException("Compañia no autorizada.");
-                //{
-                //    resulapp = EDOCError.E003.MapToEnvioMailEnLineaAppResultDto("Compañia no autorizada.", HttpStatusCode.Unauthorized);
-                //    return resulapp;
-                //}
+                var validarCompania = await administracionAppServices.ExisteCompania(0, request.Ruc);
+                if (!validarCompania.Item1) throw new JOMAException("Compañia no autorizada.");
                 #endregion
 
                 #region VALIDAR REQUEST
@@ -67,19 +66,26 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 #endregion
 
                 seccion = "GENERAR OTP";
-                var OtpModel = jOMAOtpManager.GenerateOtp($"{DomainConstants.JOMA_CACHE_KEY_TERAPISTAS}_{request.Usuario}_{request.Cedula}");
-                await cacheCrossCuttingService.AddObjectAsync($"{DomainConstants.JOMA_CACHE_KEY_OTP}_{request.Usuario}_{request.Cedula}", OtpModel, DomainParameters.JOMA_OTP_TIEMPO_EXP_MINUTOS);
+                var OtpModel = jOMAOtpManager.GenerateOtp($"{DomainConstants.JOMA_CACHE_KEY_OTP}_{request.Usuario}_{request.Cedula}");
+                await cacheCrossCuttingService.AddObjectAsync($"{DomainConstants.JOMA_CACHE_KEY_OTP}_{request.Usuario}_{request.Cedula}", OtpModel, DomainParameters.CACHE_TIEMPO_EXP_OTP);
 
                 #region CONSULTA A BASE Y MAPEO DE DATOS
                 seccion = "CONSULTA A BASE Y MAPEO DE DATOS";
-                var datos = await mailQueryService.ConsultarMailRecuperarContrasena(/*validarCompañia.Item2.IdCompania*/0, request.Usuario, OtpModel.Otp);
+                var datos = await mailQueryService.ConsultarMailRecuperarContrasena(validarCompania.Item2.Id);
+                if (datos == null) throw new JOMAException($"No se pudieron obtener parametros para la recuperación de contraseña");
+                if (string.IsNullOrEmpty(datos.Asunto)) throw new JOMAException($"el parametro ASUNTO_CORREO_RECUPERAR_CONTRASENA no esta configurado");
+                if (string.IsNullOrEmpty(datos.Cuerpo)) throw new JOMAException($"el parametro CUERPO_CORREO_RECUPERAR_CONTRASENA no esta configurado");
+
+                datos.RucCompania = validarCompania.Item2.Ruc;
+                datos.Destinatario = request.Correo;
+                datos.Cuerpo = await PrepararCuerpoCorreoAsync(datos.Cuerpo, request);
+                datos.Asunto = datos.Asunto.Replace("{NombreUsuario}", request.Usuario);
                 var EnvioMail = datos.MapToEnvioMailAppDto(JOMATipoMail.RecuperacionContrasena);
-                //var ConfigCorreo = datos.MapToConfigServidorCorreoEmisionAppDto();
                 #endregion
 
                 #region PROCESAR ENVIO CORREO
                 seccion = "PROCESAR ENVIO CORREO";
-                var proceso = new ProcesoEnvioMailEnLineaAppDto { EnvioMail = EnvioMail, /*ConfigServidorCorreo = ConfigCorreo*/ };
+                var proceso = new ProcesoEnvioMailEnLineaAppDto { EnvioMail = EnvioMail };
                 logService.AddLog(this.GetCaller(), $"Enviar correo iniciado.");
                 var enviar = procesarEnvioMailAppService.ProcesarMailEnLinea(proceso);
                 logService.AddLog(this.GetCaller(), $"Enviar correo finalizado => [{enviar}]");
@@ -103,7 +109,13 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
         }
 
         #region Metodos Ayudantes
-
+        private async Task<string> PrepararCuerpoCorreoAsync(string CuerpoCorreo, EnvioMailEnLineaRecuperacionContrasenaAppDto request)
+        {
+            var ObjtoOtp = await cacheCrossCuttingService.GetValueAsync<JOMAOtp>($"{DomainConstants.JOMA_CACHE_KEY_OTP}_{request.Usuario}_{request.Cedula}");
+            if (ObjtoOtp == null) throw new JOMAException("Error al Obtener el OTP Generado");
+            CuerpoCorreo.Replace("{CodOtp}", ObjtoOtp.Otp).Replace("{NombreUsuario}", request.Usuario);
+            return CuerpoCorreo;
+        }
         #endregion
     }
 }

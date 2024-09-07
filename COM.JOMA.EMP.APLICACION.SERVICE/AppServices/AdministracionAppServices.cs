@@ -14,9 +14,35 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
     public class AdministracionAppServices : BaseAppServices, IAdministracionAppServices
     {
         protected IAdministracionQueryService trabajadorQueryService;
-        public AdministracionAppServices(ILogCrossCuttingService logService, GlobalDictionaryDto globalDictionary, IAdministracionQueryService trabajadorQueryService) : base(logService, globalDictionary)
+        protected IConsultasAppServices consultasAppServices;
+        public AdministracionAppServices(ILogCrossCuttingService logService, GlobalDictionaryDto globalDictionary, IAdministracionQueryService trabajadorQueryService, IConsultasAppServices consultasAppServices) : base(logService, globalDictionary)
         {
             this.trabajadorQueryService = trabajadorQueryService;
+            this.consultasAppServices = consultasAppServices;
+        }
+
+        public async Task<Tuple<bool, EmpresaQueryDtos>> ExisteCompania(long IdCompania, string? Ruc)
+        {
+            string seccion = string.Empty;
+            try
+            {
+                seccion = "CONSULTAR MENU POR ID USUARIO";
+                var Compania = await consultasAppServices.GetCompaniaXidXRuc(IdCompania, Ruc);
+                if (Compania is null) throw new JOMAException("No se encontraron datos de la compañía");
+                bool Existe = (Compania.Id != 0);
+
+                return Tuple.Create(Existe, Compania);
+            }
+            catch (JOMAException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                var CodigoSeguimiento = logService.AddLog(this.GetCaller(), $"{DomainParameters.APP_NOMBRE}", $"{seccion}: {JOMAUtilities.ExceptionToString(ex)}");
+                var Mensaje = globalDictionary.GenerarMensajeErrorGenerico(CodigoSeguimiento);
+                throw new Exception(Mensaje);
+            }
         }
 
         public async Task<List<InteresadosQueryDto>> GetInteresados(long IdCompania)
@@ -83,7 +109,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
             }
         }
 
-        public async  Task<List<PacientesQueryDto>> GetPacientes(long IdCompania)
+        public async Task<List<PacientesQueryDto>> GetPacientes(long IdCompania)
         {
             string seccion = string.Empty;
             try

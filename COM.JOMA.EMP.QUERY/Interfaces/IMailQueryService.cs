@@ -9,7 +9,7 @@ namespace COM.JOMA.EMP.QUERY.Interfaces
 {
     public interface IMailQueryService
     {
-        Task<MailRecuperarContrasenaQueryDto> ConsultarMailRecuperarContrasena(long IdCompania, string Usuario, string Otp);
-        Task<ConfigServidorCorreoQueryDto> ConsultarConfigServidorCorreoXIdCompaniaXRucCompania(long? IdCompania, string? RucCompania);
+        Task<MailRecuperarContrasenaQueryDto> ConsultarMailRecuperarContrasena(long IdEmpresa);
+        Task<ConfigServidorCorreoQueryDto> ConsultarConfigServidorCorreoXIdCompaniaXRucCompania(long IdEmpresa, string? RucCompania);
     }
 }

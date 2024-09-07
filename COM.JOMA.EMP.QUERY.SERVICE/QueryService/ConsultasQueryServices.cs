@@ -74,5 +74,33 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 throw;
             }
         }
+
+        public async Task<EmpresaQueryDtos> GetCompaniaXidXRuc(long IdCompania, string Ruc)
+        {
+            try
+            {
+                using (var scope = serviceProvider.CreateScope())
+                {
+                    using (var jomaQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
+                    {
+                        return await jomaQueryContext.GetCompaniaXidXRuc(IdCompania, Ruc);
+                    };
+                };
+
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception($"SQL Error: {sqlEx.Message} Error Number: {sqlEx.Number}");
+            }
+            catch (TimeoutException timeoutEx)
+            {
+                throw new Exception($"Timeout Error: {timeoutEx.Message}");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
     }
 }

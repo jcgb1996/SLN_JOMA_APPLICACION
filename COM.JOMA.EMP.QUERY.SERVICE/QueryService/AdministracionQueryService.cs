@@ -45,7 +45,6 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
             }
 
         }
-
         public async Task<List<NotificacionesQueryDto>> GetNotificaciones(long IdCompania)
         {
             try
@@ -74,7 +73,6 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
             }
 
         }
-
         public async Task<List<InteresadosQueryDto>> GetInteresados(long IdCompania)
         {
             try
@@ -103,8 +101,6 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
             }
 
         }
-
-
         public async Task<List<PacientesQueryDto>> GetPacientes(long IdCompania)
         {
             try
@@ -132,6 +128,6 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 throw;
             }
 
-        }
+        }        
     }
 }

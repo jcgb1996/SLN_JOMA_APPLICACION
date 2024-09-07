@@ -70,7 +70,7 @@ namespace COM.JOMA.EMP.DOMAIN.Constants
     public enum JOMATipoEnvioMail : byte
     {
         [Description("SMTP")]
-        Smtp,
+        Smtp = 1,
         [Description("AMAZON")]
         Amazon,
         [Description("GOOGLE")]

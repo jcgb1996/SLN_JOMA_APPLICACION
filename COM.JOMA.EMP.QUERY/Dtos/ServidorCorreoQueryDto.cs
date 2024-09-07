@@ -8,7 +8,6 @@ namespace COM.JOMA.EMP.QUERY.Dtos
 {
     public class ServidorCorreoQueryDto
     {
-        public string? TenantId { set; get; }
         public string? Usuario { set; get; }
         public string? Clave { set; get; }
         public string? Mail { set; get; }
@@ -17,11 +16,9 @@ namespace COM.JOMA.EMP.QUERY.Dtos
         public int? SMTPPuerto { set; get; }
         public string? SMTPServidor { set; get; }
         public bool? EnabledSSL { set; get; }
-        public byte? EnvioSendGrid { set; get; }
+        public byte? TipoEnvio { set; get; }
         public string? CCO { set; get; }
-        public string? Asunto { set; get; }
-        public string? Cuerpo { set; get; }
-        public bool? ActivarAcuse { set; get; }
-        public string? TextoAcuse { set; get; }
+        public string? CorreoMostrar { set; get; }
+        public string? FormaCopiaMail { set; get; }
     }
 }

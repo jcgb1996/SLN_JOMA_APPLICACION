@@ -109,6 +109,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                     Cedula = ValidarAppDto.CedulaUsuario,
                     Ruc = ValidarAppDto.Ruc,
                     Usuario = ValidarAppDto.NombreUsuario,
+                    Correo = ValidarAppDto.Correo,
                 });
 
                 return MailEnviado;

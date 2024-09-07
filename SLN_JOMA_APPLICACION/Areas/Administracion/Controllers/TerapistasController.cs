@@ -61,7 +61,7 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Trabajador.Controllers
                 short pagTam = Request.Form.ContainsKey("length") ? Convert.ToInt16(Request.Form["length"][0]) : (short)0;
                 var pagIdx = (startRec / (pagTam == 0 ? 1 : pagTam));
                 var loginDto = GetUsuarioSesion();
-                var LstTerapista = await consultasAppServices.GetTerapistasPorIdCompania(loginDto.IdCompania);
+                var LstTerapista = await consultasAppServices.GetTerapistasPorIdCompania(loginDto.IdCompania, loginDto.RucCompania);
                 return this.CrearRespuestaExitosa(string.Empty, new
                 {
                     draw = Convert.ToInt32(draw),
@@ -89,7 +89,8 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Trabajador.Controllers
         {
             try
             {
-                var Terapista = await consultasAppServices.GetTerapistasPorId(IdTerapista);
+                var loginDto = GetUsuarioSesion();
+                var Terapista = await consultasAppServices.GetTerapistasPorId(IdTerapista, loginDto.RucCompania);
                 return PartialView("ModalTerapistaPartialView");
             }
             catch (JOMAException ex)

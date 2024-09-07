@@ -12,14 +12,14 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
         {
         }
 
-        public async Task<MailRecuperarContrasenaQueryDto> ConsultarMailRecuperarContrasena(long IdCompania, string Usuario, string Otp)
+        public async Task<MailRecuperarContrasenaQueryDto> ConsultarMailRecuperarContrasena(long IdEmpresa)
         {
             try
             {
                 using (var scope = serviceProvider.CreateScope())
                 {
                     var jomaQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>();
-                    return await jomaQueryContext.ConsultarMailRecuperarContrasena(IdCompania, Usuario, Otp);
+                    return await jomaQueryContext.ConsultarMailRecuperarContrasena(IdEmpresa);
                 }
             }
             catch (SqlException sqlEx)
@@ -35,14 +35,14 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 throw;
             }
         }
-        public async Task<ConfigServidorCorreoQueryDto> ConsultarConfigServidorCorreoXIdCompaniaXRucCompania(long? IdCompania, string? RucCompania)
+        public async Task<ConfigServidorCorreoQueryDto> ConsultarConfigServidorCorreoXIdCompaniaXRucCompania(long IdEmpresa, string? RucCompania)
         {
             try
             {
                 using (var scope = serviceProvider.CreateScope())
                 {
                     var jomaQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>();
-                    return await jomaQueryContext.ConsultarConfigServidorCorreoEmisionXRucCompaniaXIdCompania(IdCompania, RucCompania);
+                    return await jomaQueryContext.ConsultarConfigServidorCorreoEmisionXRucCompaniaXIdCompania(IdEmpresa, RucCompania);
                 }
             }
             catch (Exception ex)

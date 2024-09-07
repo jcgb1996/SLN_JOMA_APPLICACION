@@ -2,6 +2,7 @@
 using COM.JOMA.EMP.CROSSCUTTING.ICrossCuttingServices;
 using COM.JOMA.EMP.DOMAIN;
 using COM.JOMA.EMP.DOMAIN.Constants;
+using COM.JOMA.EMP.DOMAIN.Entities;
 using COM.JOMA.EMP.DOMAIN.Extensions;
 using COM.JOMA.EMP.DOMAIN.JomaExtensions;
 using COM.JOMA.EMP.DOMAIN.Parameters;
@@ -26,8 +27,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
         {
             throw new NotImplementedException();
         }
-
-        public async Task<List<TerapistaQueryDto>> GetTerapistasPorIdCompania(long IdCompania)
+        public async Task<List<TerapistaQueryDto>> GetTerapistasPorIdCompania(long IdCompania, string RucCompania)
         {
             string seccion = string.Empty;
             try
@@ -35,7 +35,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 List<TerapistaQueryDto>? terapistaQueryDtos = null;
                 seccion = "VERIFICAR SI HAY DATOS EN CACHE";
                 if (DomainParameters.CACHE_ENABLE_TERAPISTAS_COMPANIA)
-                    terapistaQueryDtos = await cacheCrossCuttingService.GetObjectAsync<List<TerapistaQueryDto>>($"{DomainConstants.JOMA_CACHE_KEY_TERAPISTAS}_{DomainParameters.JOMA_CACHE_KEY}");
+                    terapistaQueryDtos = await cacheCrossCuttingService.GetObjectAsync<List<TerapistaQueryDto>>($"{DomainConstants.JOMA_CACHE_KEY_TERAPISTAS}_{RucCompania}");
 
                 seccion = "PROCESO DE CONSULTA";
                 if (terapistaQueryDtos == null)
@@ -44,7 +44,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                     terapistaQueryDtos = await consultasQueryServices.GetTerapistasPorIdCompania(IdCompania);
                     seccion = "GUARDAR DATOS EN CACHE";
                     if (DomainParameters.CACHE_ENABLE_TERAPISTAS_COMPANIA)
-                        await cacheCrossCuttingService.AddObjectAsync($"{DomainConstants.JOMA_CACHE_KEY_TERAPISTAS}_{DomainParameters.JOMA_CACHE_KEY}", terapistaQueryDtos, DomainParameters.CACHE_TIEMPO_EXP_TERAPISTA_COMPANIA);
+                        await cacheCrossCuttingService.AddObjectAsync($"{DomainConstants.JOMA_CACHE_KEY_TERAPISTAS}_{RucCompania}", terapistaQueryDtos, DomainParameters.CACHE_TIEMPO_EXP_TERAPISTA_COMPANIA);
                 }
 
 
@@ -62,8 +62,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 throw new Exception(Mensaje);
             }
         }
-
-        public async Task<TerapistaQueryDto> GetTerapistasPorId(long IdTerapista)
+        public async Task<TerapistaQueryDto> GetTerapistasPorId(long IdTerapista, string RucCompania)
         {
             string seccion = string.Empty;
             try
@@ -72,7 +71,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 TerapistaQueryDto? terapistaQueryDtos = null;
                 seccion = "VERIFICAR SI HAY DATOS EN CACHE";
                 if (DomainParameters.CACHE_ENABLE_TERAPISTAS_COMPANIA)
-                    LstterapistaQueryDtos = await cacheCrossCuttingService.GetObjectAsync<List<TerapistaQueryDto>>($"{DomainConstants.JOMA_CACHE_KEY_TERAPISTAS}_{DomainParameters.JOMA_CACHE_KEY}");
+                    LstterapistaQueryDtos = await cacheCrossCuttingService.GetObjectAsync<List<TerapistaQueryDto>>($"{DomainConstants.JOMA_CACHE_KEY_TERAPISTAS}_{RucCompania}");
 
                 seccion = "PROCESO DE CONSULTA";
                 if (LstterapistaQueryDtos == null)
@@ -90,6 +89,43 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 terapistaQueryDtos = await consultasQueryServices.GetTerapistasPorId(IdTerapista);
 
                 return terapistaQueryDtos;
+            }
+            catch (JOMAException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                var CodigoSeguimiento = logService.AddLog(this.GetCaller(), $"{DomainParameters.APP_NOMBRE}", $"{seccion}: {JOMAUtilities.ExceptionToString(ex)}");
+                var Mensaje = globalDictionary.GenerarMensajeErrorGenerico(CodigoSeguimiento);
+                throw new Exception(Mensaje);
+            }
+        }
+
+        public async Task<EmpresaQueryDtos> GetCompaniaXidXRuc(long IdCompania, string Ruc)
+        {
+            string seccion = string.Empty;
+            try
+            {
+                EmpresaQueryDtos? empresaQueryDtos = null;
+                seccion = "VERIFICAR SI HAY DATOS EN CACHE";
+                if (DomainParameters.CACHE_ENABLE_DATOS_COMPANIA)
+                    empresaQueryDtos = await cacheCrossCuttingService.GetObjectAsync<EmpresaQueryDtos>($"{DomainConstants.JOMA_CACHE_KEY_DATOS_COMPANIA}_{Ruc}");
+
+                seccion = "PROCESO DE CONSULTA";
+                if (empresaQueryDtos == null)
+                {
+                    seccion = "CONSULTAR EN BASE";
+                    empresaQueryDtos = await consultasQueryServices.GetCompaniaXidXRuc(IdCompania, Ruc);
+                    await cacheCrossCuttingService.AddObjectAsync($"{DomainConstants.JOMA_CACHE_KEY_DATOS_COMPANIA}_{Ruc}", empresaQueryDtos, DomainParameters.CACHE_TIEMPO_EXP_DATOS_COMPANIA);
+                    return empresaQueryDtos;
+                }
+
+                seccion = "PROCESO DE CONSULTA TERAPISTA EN CACHE";
+                if (empresaQueryDtos.Id != 0)
+                    return empresaQueryDtos;
+
+                return empresaQueryDtos;
             }
             catch (JOMAException)
             {

@@ -81,7 +81,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.Extensions
                 .ForMember(dest => dest.Asunto, m => m.MapFrom(src => src.Asunto))
                 .ForMember(dest => dest.Cuerpo, m => m.MapFrom(src => src.Cuerpo))
                 .ForMember(dest => dest.Destinatario, m => m.MapFrom(src => src.Destinatario))
-                .ForMember(dest => dest.IdCompania, m => m.MapFrom(src => src.IdCompania))
+                .ForMember(dest => dest.IdEmpresa, m => m.MapFrom(src => src.IdEmpresa))
                 .ForMember(dest => dest.IdMail, m => m.MapFrom(src => 0))
                 .ForMember(dest => dest.TipoConsultaMail, m => m.MapFrom(src => JOMATipoConsultaMail.Reenvio))
                 .ForMember(dest => dest.RucCompania, m => m.MapFrom(src => src.RucCompania))
@@ -100,7 +100,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.Extensions
                 cfg.AllowNullDestinationValues = true;
                 cfg.CreateMap<ServidorCorreoQueryDto, ConfigServidorCorreoAppDto>()
                 .ForMember(dest => dest.CorreoMostrar, m => m.MapFrom(src => src.Mail))
-                .ForMember(dest => dest.ServidorCorreo, m => m.MapFrom(src => (JOMATipoEnvioMail)JOMAConversions.DBNullToByte(src.EnvioSendGrid)))
+                .ForMember(dest => dest.ServidorCorreo, m => m.MapFrom(src => (JOMATipoEnvioMail)JOMAConversions.DBNullToByte(src.TipoEnvio)))
                 ;
             });
             var mapper = configuration.CreateMapper();
@@ -109,7 +109,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.Extensions
         internal static ConfigServidorCorreoAppDto MapToConfigServidorCorreoAppDto(this ConfigServidorCorreoQueryDto obj)
         {
             var result = obj.ServidorCorreoEmision.MapToConfigServidorCorreoAppDto();
-            result.EnvioCopiaMail = (JOMATipoCopiaMail)JOMAConversions.DBNullToByte(obj.FormaCopiaMail);
+            result.EnvioCopiaMail = (JOMATipoCopiaMail)JOMAConversions.DBNullToByte(obj.ServidorCorreoEmision.FormaCopiaMail);
             result.IntervaloTiempoEsperaEnvioMail = DomainParameters.MAIL_INTERVALO_TIEMPOESPERAENVIOMAIL;
             return result;
         }

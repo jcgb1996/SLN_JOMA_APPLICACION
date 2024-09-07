@@ -13,5 +13,6 @@ namespace COM.JOMA.EMP.APLICACION.Interfaces
         Task<List<NotificacionesQueryDto>> GetNotificaciones(long IdCompania);
         Task<List<PacientesQueryDto>> GetPacientes(long IdCompania);
         Task<List<InteresadosQueryDto>> GetInteresados(long IdCompania);
+        Task<Tuple<bool, EmpresaQueryDtos>> ExisteCompania(long IdCompania, string? Ruc);
     }
 }
