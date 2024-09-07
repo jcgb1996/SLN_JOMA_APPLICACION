@@ -1,0 +1,116 @@
+﻿
+
+
+
+<div class="modal fade" id="ModalSucursal" tabindex="-1" aria-labelledby="ModalSucursal" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header modal-colored-header bg-primary text-white pt-2 pb-2 m-0">
+                <h1 class="modal-title card-title text-center p-0 fs-4" id="">Registo de una Sucursal</h1>
+                <button type="button" class="btn-close" id="CerrarModal" data-bs-dismiss="modal" onclick="Site.limpiarFormularioById('RegistrarSucursal');" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pt-1 pb-1">
+                <div class="card-body">
+                    <div class="pt-4 pb-2">
+                        <h1 class="card-title text-center pb-0 fs-8">Sucursal</h1>
+                        <p class="text-center fw-medium">Ingrese los datos de la sucursal</p>
+                    </div>
+
+                    <form class="row g-3 needs-validation" id="RegistrarSucursal" novalidate>
+                        <div class="col-xl-4 col-md-4 col-sm-4 col-12">
+                            <div class="form-floating">
+                                <input type="text" name="Nombre" class="form-control" id="Nombre" placeholder="Nombre" required>
+                                <label for="Nombre">Nombre</label>
+                                <div class="invalid-feedback">Por favor, ingrese el nombre de la Sucursal.</div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-md-4 col-sm-4 col-12">
+                            <div class="form-floating">
+                                <input type="text" name="Direccion" class="form-control" id="Direccion" placeholder="Direccion" required>
+                                <label for="Direccion">Direccion</label>
+                                <div class="invalid-feedback">Por favor, ingrese su direccion.</div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-md-4 col-sm-4 col-12">
+                            <div class="form-floating">
+                                <input type="number" name="Telefono" class="form-control" id="Telefono" placeholder="Telefono" required>
+                                <label for="Telefono">Telefono</label>
+                                <div class="invalid-feedback">
+                                    Por favor, ingrese su telefono
+                                    .
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-md-4 col-sm-4 col-12">
+                            <div class="form-floating">
+                                <input type="email" name="CorreoElectronico" class="form-control" id="CorreoElectronico" placeholder="Correo" required>
+                                <label for="Correo">Correo</label>
+                                <div class="invalid-feedback">Por favor, ingrese su correo electrónico.</div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-md-4 col-sm-4 col-12">
+                            <div class="form-floating">
+                                <input type="text" name="RepresentanteLegal" class="form-control" id="RepresentanteLegal" placeholder="Representante" required>
+                                <label for="Representante">Representante</label>
+                                <div class="invalid-feedback">Por favor, seleccione un representante.</div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-md-4 col-sm-4 col-12">
+                            <div class="form-floating">
+                                <input type="number" name="CedulaRepresentante" class="form-control" id="CedulaRepresentante" placeholder="Cedula Representante" required>
+                                <label for="Cedula Representante">Cedula Representante</label>
+                                <div class="invalid-feedback">
+                                    Por favor, ingrese la cedula de la representante
+                                    .
+                                </div>
+                            </div>
+                        </div>
+
+                        @* <div class="col-xl-4 col-md-4 col-sm-4 col-12">
+                        <div class="form-floating">
+                        <input type="datetime" name="FechaNacimiento" class="form-control" placeholder="Fecha nacimiento" id="FechaNacimiento" required>
+                        <label for="FechaNacimiento">Fecha Nacimiento</label>
+                        <div class="invalid-feedback">Por favor, seleccione su fecha de nacimiento.</div>
+                        </div>
+                        </div> *@
+
+                        <div class="col-xl-4 col-md-4 col-sm-4 col-12">
+                            <div class="form-floating">
+                                <input type="number" name="RUC" class="form-control" id="RUC" placeholder="RUC" required>
+                                <label for="RUC">RUC</label>
+                                <div class="invalid-feedback">Por favor, ingrese el RUC.</div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-md-4 col-sm-4 col-12">
+                            <div class="form-floating">
+                                <select id="ActividadEconomica" name="ActividadEconomica" class="form-select" placeholder="Actividad Economica" required>
+                                    <option value="1">Agricultura</option>
+                                    <option value="2">Petróleo</option>
+                                    <option value="3">Turismo</option>
+                                    <option value="4">Acuicultura y Pesca</option>
+                                    <option value="5">Manufactura</option>
+                                    <option value="6">Minería</option>
+                                    <option value="7">Servicios</option>
+                                </select>
+                                <label for="Actividad Economica">Actividad Economica</label>
+                                <div class="invalid-feedback">Por favor, seleccione una opcion.</div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="Site.limpiarFormularioById('RegistrarTrabajador');" data-bs-dismiss="modal" class="btn btn-secondary">Cancelar</button>
+                <button type="button" onclick="Sucursal.GuardarDatos('RegistrarSucursal',event);" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+

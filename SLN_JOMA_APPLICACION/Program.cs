@@ -24,8 +24,8 @@ using System.Globalization;
 
 //Cambio de alan a prueba
 try
-{
 
+{
     var builder = WebApplication.CreateBuilder(args);
 
     // Configuración de servicios de la aplicación
@@ -75,6 +75,8 @@ try
     builder.Services.AddScoped<IPacienteQueryServices, PacienteQueryServices>();
     builder.Services.AddScoped<ITerapistaAppServices, TerapistaAppServices>();
     builder.Services.AddScoped<ITerapistaQueryServices, TerapistaQueryServices>();
+    builder.Services.AddScoped<ISucursalAppServices, SucursalAppServices>();//Añadi yo
+    builder.Services.AddScoped<ISucursalQueryService, SucursalQueryServices>();//---
     builder.Services.AddScoped<IConsultasAppServices, ConsultasAppServices>();
     builder.Services.AddScoped<IConsultasQueryServices, ConsultasQueryServices>();
     builder.Services.AddScoped<ICacheCrossCuttingService, CacheCrossCuttingService>();
@@ -82,6 +84,10 @@ try
     CacheParameters.ENABLE = true; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial
     DomainParameters.CACHE_TIEMPO_EXP_TERAPISTA_COMPANIA = 600; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial (tiempo en segundos)
     DomainParameters.CACHE_ENABLE_TERAPISTAS_COMPANIA = true; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial
+
+    DomainParameters.CACHE_TIEMPO_EXP_SUCURSAL_COMPANIA = 600; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial (tiempo en segundos)
+    DomainParameters.CACHE_ENABLE_SUCURSALES_COMPANIA = true;
+
     builder.Services.AddSingleton<LogCrossCuttingService>();
     builder.Services.AddScoped<GlobalDictionaryDto>();
 
