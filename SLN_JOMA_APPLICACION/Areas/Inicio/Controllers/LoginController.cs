@@ -1,4 +1,4 @@
-﻿using COM.JOMA.EMP.APLICACION.Dto.Request;
+﻿using COM.JOMA.EMP.APLICACION.Dto.Request.Inicio;
 using COM.JOMA.EMP.APLICACION.Interfaces;
 using COM.JOMA.EMP.APLICACION.SERVICE.Constants;
 using COM.JOMA.EMP.CROSSCUTTING.ICrossCuttingServices;
@@ -42,7 +42,7 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Inicio.Controllers
                 else
                 {
                     string redirectUrl = Url.Action(WebSiteConstans.JOMA_WEBSITE_ACCION_INDEX, WebSiteConstans.JOMA_WEBSITE_AREA_CONTROLLER_DASHBOARD, new { area = WebSiteConstans.JOMA_WEBSITE_AREA_INICIO })!;
-                    DomainParameters.JOMA_CACHE_KEY = $"{loginDto.Rol}_{loginDto.Usuario}";
+                    //DomainParameters.JOMA_CACHE_KEY = $"{loginDto.NombreRol}_{loginDto.Usuario}";
                     return this.CrearRespuestaExitosa(redirectUrl);
                 }
             }
@@ -67,10 +67,29 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Inicio.Controllers
             string redirectUrl = Url.Action(WebSiteConstans.JOMA_WEBSITE_ACCION_INDEX, WebSiteConstans.JOMA_WEBSITE_AREA_CONTROLLER_LOGIN, new { area = WebSiteConstans.JOMA_WEBSITE_AREA_INICIO })!;
             return this.CrearRespuestaExitosa(redirectUrl);
         }
-
-        public IActionResult RecuperarContrasena()
+        [HttpPost]
+        public async Task<IActionResult> RecuperarContrasena([FromBody] RecuperacionReqAppDto recuperacionReqAppDto)
         {
-            return Ok();
+            try
+            {
+                var Recuperar = await inicioAppServices.RecuperarContrasena(recuperacionReqAppDto);
+
+                return this.CrearRespuestaExitosa(Recuperar.Message);
+
+            }
+            catch (JOMAException ex)
+            {
+                return this.CrearRespuestaError(ex.Message, JOMAStatusCode.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                return this.CrearRespuestaError(ex.Message.ToString(), JOMAStatusCode.InternalServerError, ex.Message);
+            }
+            finally
+            {
+                logService.GuardarLogs();
+            }
+
         }
 
     }

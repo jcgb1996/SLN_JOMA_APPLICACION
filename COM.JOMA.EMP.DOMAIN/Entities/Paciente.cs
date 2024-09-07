@@ -22,6 +22,6 @@ namespace COM.JOMA.EMP.DOMAIN.Entities
         public string? RepresentanteLegal { get; set; }
         public int EdadRepresentante { get; set; }
         public string? CedulaNino { get; set; }
-        public string? CedulaRepresentante { get; set; }
+        public string? CedulaRepresentante { get; set; }    
     }
 }

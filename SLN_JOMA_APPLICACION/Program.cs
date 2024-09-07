@@ -18,6 +18,7 @@ using Serilog;
 using SLN_COM_JOMA_APPLICACION.Extensions;
 using SLN_COM_JOMA_APPLICACION.Settings;
 using SLN_JOMA_APPLICACION.Middleware;
+using System.Data.Common;
 using System.Globalization;
 
 
@@ -30,6 +31,7 @@ try
 
     // Configuración de servicios de la aplicación
     DomainParameters.APP_COMPONENTE_JOMA = JOMAComponente.JomaPortalWeb;
+
     DomainParameters.APP_NOMBRE = $"{DomainParameters.APP_COMPONENTE_JOMA.GetNombre()} v{AppConstants.Version}";
 
     #region LOAD SETTINGS
@@ -41,6 +43,13 @@ try
     builder.Host.UseSerilog();
 
     #region INJECT DATABASE
+
+
+    //var BR_DataSource = JOMACrypto.CifrarClave(JOMAConversions.DBNullToString(settings.GSEDOC_BR.DataSource), DomainConstants.JOMA_KEYENCRIPTA, DomainConstants.JOMA_SALTO);
+    //var BR_InitialCatalog = JOMACrypto.CifrarClave(JOMAConversions.DBNullToString(settings.GSEDOC_BR.InitialCatalog), DomainConstants.JOMA_KEYENCRIPTA, DomainConstants.JOMA_SALTO);
+    //var BR_UserId = JOMACrypto.CifrarClave(JOMAConversions.DBNullToString(settings.GSEDOC_BR.UserId), DomainConstants.JOMA_KEYENCRIPTA, DomainConstants.JOMA_SALTO);
+    //var password = JOMACrypto.CifrarClave(settings.GSEDOC_BR.Password, DomainConstants.JOMA_KEYENCRIPTA, DomainConstants.JOMA_SALTO);
+
     builder.Services.AddDatabase(
         settings.GSEDOC_BR.DataSource,
         settings.GSEDOC_BR.InitialCatalog,
@@ -80,10 +89,23 @@ try
     builder.Services.AddScoped<IConsultasAppServices, ConsultasAppServices>();
     builder.Services.AddScoped<IConsultasQueryServices, ConsultasQueryServices>();
     builder.Services.AddScoped<ICacheCrossCuttingService, CacheCrossCuttingService>();
+    builder.Services.AddScoped<IEnvioMailEnLineaAppServices, EnvioMailEnLineaAppServices>();
+    builder.Services.AddScoped<IMailQueryService, MailQueryService>();
+    builder.Services.AddScoped<IProcesarEnvioMailAppService, ProcesarEnvioMailAppService>();
+    builder.Services.AddScoped<IMailRepositoryQueryServices, MailRepositoryQueryServices>();
     CacheParameters.PREFIJO = $"{DomainConstants.JOMA_PREFIJO_CACHE}_";
-    CacheParameters.ENABLE = true; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial
-    DomainParameters.CACHE_TIEMPO_EXP_TERAPISTA_COMPANIA = 600; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial (tiempo en segundos)
-    DomainParameters.CACHE_ENABLE_TERAPISTAS_COMPANIA = true; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial
+    CacheParameters.ENABLE = true; //cambiar este valor, por el valor que se va a traer desde la configuración inicial
+    DomainParameters.CACHE_TIEMPO_EXP_TERAPISTA_COMPANIA = 600; //cambiar este valor, por el valor que se va a traer desde la configuración inicial (tiempo en segundos)
+    DomainParameters.CACHE_ENABLE_TERAPISTAS_COMPANIA = true; //cambiar este valor, por el que se va a traer desde la configuración inicial
+    DomainParameters.JOMA_OTP_LENGTH = 4;//cambiar este valor, por el que se va a traer desde la configuración inicial
+    DomainParameters.JOMA_OTP_INTENTOS_MAXIMOS = 3;//cambiar este valor, por el que se va a traer desde la configuración inicial
+    DomainParameters.CACHE_ENABLE_DATOS_COMPANIA = true;//cambiar este valor, por el que se va a traer desde la configuración inicial
+    DomainParameters.CACHE_TIEMPO_EXP_DATOS_COMPANIA = 600;//cambiar este valor, por el que se va a traer desde la configuración inicial
+    DomainParameters.CACHE_TIEMPO_EXP_OTP = 300;//cambiar este valor, por el que se va a traer desde la configuración inicial
+    DomainParameters.MAIL_INTERVALO_TIEMPOESPERAENVIOMAIL = 1;//cambiar este valor, por el que se va a traer desde la configuración inicial
+    DomainParameters.CACHE_ENABLE_CONF_SERVIDORCORREO_COMPANIA = true;//cambiar este valor, por el que se va a traer desde la configuración inicial
+    DomainParameters.CACHE_TIEMPO_EXP_CONF_SERVIDORCORREO_COMPANIA = 600;//cambiar este valor, por el que se va a traer desde la configuración inicial
+
 
     DomainParameters.CACHE_TIEMPO_EXP_SUCURSAL_COMPANIA = 600; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial (tiempo en segundos)
     DomainParameters.CACHE_ENABLE_SUCURSALES_COMPANIA = true;

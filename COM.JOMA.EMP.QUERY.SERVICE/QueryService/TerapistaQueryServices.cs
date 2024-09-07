@@ -23,9 +23,9 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
             {
                 using (var scope = serviceProvider.CreateScope())
                 {
-                    using (var edocQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
+                    using (var jomaQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
                     {
-                        return edocQueryContext.InsertarTerapista(terapista);
+                        return jomaQueryContext.InsertarTerapista(terapista);
                         //return new LoginQueryDto();
                     };
                 };

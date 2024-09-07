@@ -17,15 +17,15 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
         {
         }
 
-        public async Task<List<MenuQueryDto>> GetOpcionesMenuPorIdUsuario(long IdUsuario, byte Sitio)
+        public async Task<List<MenuQueryDto>> GetOpcionesMenuPorIdUsuario(long IdUsuario)
         {
             try
             {
                 using (var scope = serviceProvider.CreateScope())
                 {
-                    using (var edocQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
+                    using (var jomaQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
                     {
-                        return await edocQueryContext.QRY_OpcionesManuPorIdUsuario(IdUsuario, Sitio);
+                        return await jomaQueryContext.QRY_OpcionesManuPorIdUsuario(IdUsuario);
                         //return new LoginQueryDto();
                     };
                 };
@@ -48,16 +48,47 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
             }
         }
 
-        public async Task<List<LoginQueryDto>> Login(string Usuario, string Clave, string Compania)
+        public async Task<List<LoginQueryDto>> Login(string Usuario, string Clave, string Cedula)
         {
             try
             {
                 using (var scope = serviceProvider.CreateScope())
                 {
-                    using (var edocQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
+                    using (var jomaQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
                     {
-                        return await edocQueryContext.QRY_LoginInterno(Usuario, Clave, Compania, "");
+                        return await jomaQueryContext.QRY_LoginInterno(Usuario, Clave, Cedula, "");
                         //return new LoginQueryDto();
+                    };
+                };
+
+
+
+
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception($"SQL Error: {sqlEx.Message} Error Number: {sqlEx.Number}");
+            }
+            catch (TimeoutException timeoutEx)
+            {
+                throw new Exception($"Timeout Error: {timeoutEx.Message}");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
+        public async Task<List<ValidacionUsuarioQueryDto>> ValidarUsuarioRecuperacion(string Usuario, string Cedula)
+        {
+            try
+            {
+                using (var scope = serviceProvider.CreateScope())
+                {
+                    using (var jomaQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
+                    {
+                        return await jomaQueryContext.ValidarUsuarioRecuperacion(Usuario, Cedula);
                     };
                 };
 
