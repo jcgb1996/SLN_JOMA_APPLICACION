@@ -38,8 +38,6 @@ try
     Settings settings = new Settings();
     LoadSettings(ref settings);
     #endregion
-
-
     builder.Host.UseSerilog();
 
     #region INJECT DATABASE

@@ -108,9 +108,9 @@ var Sucursal = {
                     }
                 },
                 {
-                    data: 'areaDesignada',
+                    data: 'representanteLegal',
                     className: 'dt-center',
-                    title: 'Área Designada'
+                    title: 'Representante Legal'
                 },
                 {
                     data: 'estado',

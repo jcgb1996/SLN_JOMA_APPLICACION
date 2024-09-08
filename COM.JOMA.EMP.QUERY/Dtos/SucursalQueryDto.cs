@@ -10,8 +10,9 @@ namespace COM.JOMA.EMP.QUERY.Dtos
     {
         public long Id { get; set; }
         public string Nombre { get; set; }
-        public string AreaDesignada { get; set; }
+        public string RepresentanteLegal { get; set; }
         public int Estado { get; set; }
+        public int ActividadEconomica { get; set; }
         public int Maxrowcount { get; set; }
     }
 }
