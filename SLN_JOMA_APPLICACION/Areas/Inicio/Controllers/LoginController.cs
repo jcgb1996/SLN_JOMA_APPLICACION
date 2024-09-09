@@ -1,4 +1,5 @@
 ﻿using COM.JOMA.EMP.APLICACION.Dto.Request.Inicio;
+using COM.JOMA.EMP.APLICACION.Dto.Response.Inicio;
 using COM.JOMA.EMP.APLICACION.Interfaces;
 using COM.JOMA.EMP.APLICACION.SERVICE.Constants;
 using COM.JOMA.EMP.CROSSCUTTING.ICrossCuttingServices;
@@ -63,7 +64,15 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Inicio.Controllers
         [HttpGet]
         public IActionResult CerrarSesion()
         {
+
+            string Mensaje = string.Empty;
+            string? session = HttpContext.Session.GetString("UsuarioRecuperacion");
+            var Datos = JOMAConversions.DeserializeJsonObject<RecuperacionReqAppDto>(session, ref Mensaje);
+
             HttpContext.Session.Clear(); // Borrar la sesión
+            if (!string.IsNullOrEmpty(session))
+                inicioAppServices.EliminarOtpPorUsuario(Datos.UsuarioRecuperacion, Datos.CedulaRecuperacion);
+
             string redirectUrl = Url.Action(WebSiteConstans.JOMA_WEBSITE_ACCION_INDEX, WebSiteConstans.JOMA_WEBSITE_AREA_CONTROLLER_LOGIN, new { area = WebSiteConstans.JOMA_WEBSITE_AREA_INICIO })!;
             return this.CrearRespuestaExitosa(redirectUrl);
         }
@@ -72,9 +81,87 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Inicio.Controllers
         {
             try
             {
+                HttpContext.Session.SetString("UsuarioRecuperacion", JsonConvert.SerializeObject(recuperacionReqAppDto));
                 var Recuperar = await inicioAppServices.RecuperarContrasena(recuperacionReqAppDto);
+                return await this.CrearRespuestaExitosaConVista(string.Empty, "DobleAuthPartialView", Recuperar.Item2);
 
-                return this.CrearRespuestaExitosa(Recuperar.Message);
+            }
+            catch (JOMAException ex)
+            {
+                return this.CrearRespuestaError(ex.Message, JOMAStatusCode.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                return this.CrearRespuestaError(ex.Message.ToString(), JOMAStatusCode.InternalServerError, ex.Message);
+            }
+            finally
+            {
+                logService.GuardarLogs();
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ValidarOtp([FromBody] string Otp)
+        {
+            try
+            {
+                string Mensaje = string.Empty;
+                string? session = HttpContext.Session.GetString("UsuarioRecuperacion");
+                var Datos = JOMAConversions.DeserializeJsonObject<RecuperacionReqAppDto>(session, ref Mensaje);
+                var Recuperar = await inicioAppServices.ValidarOtp(Datos.UsuarioRecuperacion, Datos.CedulaRecuperacion, Otp);
+                return await this.CrearRespuestaExitosaConVista("Otp validado Correctamente", "RecuperarContrasenaPartialView", null);
+
+            }
+            catch (JOMAException ex)
+            {
+                return this.CrearRespuestaError(ex.Message, JOMAStatusCode.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                return this.CrearRespuestaError(ex.Message.ToString(), JOMAStatusCode.InternalServerError, ex.Message);
+            }
+            finally
+            {
+                logService.GuardarLogs();
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ReenviarOtp()
+        {
+            try
+            {
+                string Mensaje = string.Empty;
+                string? session = HttpContext.Session.GetString("UsuarioRecuperacion");
+                var recuperacionReqAppDto = JOMAConversions.DeserializeJsonObject<RecuperacionReqAppDto>(session, ref Mensaje);
+                var Recuperar = await inicioAppServices.RecuperarContrasena(recuperacionReqAppDto);
+                return this.CrearRespuestaExitosa($"Otp Enviado al correo registrado {Recuperar.Item2}");
+            }
+            catch (JOMAException ex)
+            {
+                return this.CrearRespuestaError(ex.Message, JOMAStatusCode.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                return this.CrearRespuestaError(ex.Message.ToString(), JOMAStatusCode.InternalServerError, ex.Message);
+            }
+            finally
+            {
+                logService.GuardarLogs();
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ActualizarContrasena([FromBody] RecuperacionReqAppDto recuperacionReqAppDto)
+        {
+            try
+            {
+                HttpContext.Session.SetString("UsuarioRecuperacion", JsonConvert.SerializeObject(recuperacionReqAppDto));
+                var Recuperar = await inicioAppServices.RecuperarContrasena(recuperacionReqAppDto);
+                return await this.CrearRespuestaExitosaConVista(string.Empty, "DobleAuthPartialView", Recuperar.Item2);
 
             }
             catch (JOMAException ex)

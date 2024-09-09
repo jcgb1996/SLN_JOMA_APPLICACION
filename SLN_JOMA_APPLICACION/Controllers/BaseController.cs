@@ -30,5 +30,6 @@ namespace SLN_COM_JOMA_APPLICACION.Controllers
 
             return usuario; // usuario podría ser null si la deserialización falla
         }
+
     }
 }

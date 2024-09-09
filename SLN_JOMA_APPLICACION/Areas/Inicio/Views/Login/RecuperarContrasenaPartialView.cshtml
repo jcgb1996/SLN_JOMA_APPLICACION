@@ -1,0 +1,58 @@
+﻿<div class="modal-body">
+    <div class="card-body">
+        <div class="alert alert-primary alert-dismissible fade show mb-2 pt-2 pb-2 pe-2 ps-2" id="ContentMensaje" role="alert">
+            <ul>
+                <li><strong>Longitud Adecuada:</strong> Debe tener al menos 12 caracteres.</li>
+                <li><strong>Diversidad de Caracteres:</strong> Combina letras mayúsculas y minúsculas, números y símbolos especiales (como !, @@, #, $).</li>
+                <li><strong>Sin Patrones Simples:</strong> Evita secuencias o repeticiones obvias (como 1234, abcd, o aaaa).</li>
+            </ul>
+        </div>
+        <form class="row g-3 needs-validation" id="FrmContrsenas" novalidate>
+            <div class="col-12">
+                <label for="Contrasena" class="form-label">Nueva Contraseña</label>
+                <div class="input-group has-validation">
+                    <span class="input-group-text" id="inputGroupPrependUsuarioContrasena">
+                        <i class="ti ti-lock"></i>
+                    </span>
+                    <input type="password" name="Contrasena" placeholder="Contraseña" minlength="12" maxlength="100" class="form-control password-field" id="Contrasena" required aria-describedby="passwordHelpBlock">
+                    <button type="button" class="btn btn-outline-primary  toggle-password">
+                        <i class="ti ti-eye"></i>
+                    </button>
+                    <div class="invalid-feedback">
+                        ¡Por favor, introduzca una contraseña válida y segura!
+                    </div>
+                </div>
+                <div id="passwordHelpBlock" class="form-text">
+                    La contraseña debe tener entre 12 y 100 caracteres.
+                </div>
+            </div>
+            <div class="col-12">
+                <label for="ConfirmarContrasena" class="form-label">Confirmar Nueva Contraseña</label>
+                <div class="input-group has-validation">
+                    <span class="input-group-text" id="inputGroupPrependConfirmarContrasena">
+                        <i class="ti ti-lock"></i>
+                    </span>
+                    <input type="password" name="ConfirmarContrasena" minlength="12" maxlength="100" placeholder="Confirmar contraseña" class="form-control password-field" id="ConfirmarContrasena" required>
+                    <button type="button" class="btn btn-outline-primary  toggle-password">
+                        <i class="ti ti-eye"></i>
+                    </button>
+                    <div class="invalid-feedback">
+                        ¡Las contraseñas no coinciden!
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" id="CerrarForm" data-bs-dismiss="modal">Cerrar</button>
+    <button type="button" onclick="Login.RealizarCambio('FrmContrsenas', event);" class="btn btn-primary">Recuperar</button>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        Login.InitRecuperarContrasena();
+    });
+
+</script>

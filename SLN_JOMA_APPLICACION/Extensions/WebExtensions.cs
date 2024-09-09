@@ -7,10 +7,12 @@ using COM.JOMA.EMP.DOMAIN.Tools;
 using COM.JOMA.EMP.DOMAIN.Utilities;
 using COM.JOMA.EMP.QUERY.Parameters;
 using COM.JOMA.EMP.QUERY.SERVICE.Model;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
-using System.Reflection;
 using System.Text.Json;
 
 namespace SLN_COM_JOMA_APPLICACION.Extensions
@@ -50,6 +52,50 @@ namespace SLN_COM_JOMA_APPLICACION.Extensions
             services.AddScoped<JomaQueryContext>();
             QueryParameters.TipoORM = (JOMATipoORM)JOMAConversions.DBNullToByte(TipoOrm);
             return services;
+        }
+
+        // Método de extensión para renderizar una vista parcial a string
+        public static async Task<string> RenderViewAsync(this Controller controller, string viewName, object model)
+        {
+            // Asegurarse de que el modelo está asignado a ViewData
+            controller.ViewData.Model = model;
+
+            // Buscar la vista utilizando el motor de vistas
+            IViewEngine? viewEngine = controller.HttpContext.RequestServices.GetService(typeof(ICompositeViewEngine)) as ICompositeViewEngine;
+            ViewEngineResult viewResult = viewEngine.FindView(controller.ControllerContext, viewName, false);
+
+            if (!viewResult.Success)
+            {
+                return $"No se pudo encontrar la vista '{viewName}'.";
+            }
+
+            // Configurar un contexto de vista y renderizar la vista en un StringWriter
+            using (var writer = new StringWriter())
+            {
+                ViewContext viewContext = new ViewContext(
+                    controller.ControllerContext,
+                    viewResult.View,
+                    controller.ViewData,
+                    controller.TempData,
+                    writer,
+                    new HtmlHelperOptions()
+                );
+
+                await viewResult.View.RenderAsync(viewContext);
+                return writer.ToString();
+            }
+        }
+
+        // Método para crear una respuesta exitosa incluyendo la vista parcial renderizada
+        public static async Task<IActionResult> CrearRespuestaExitosaConVista(this Controller controller, string message, string viewName, object model)
+        {
+            string viewContent = await RenderViewAsync(controller, viewName, model);
+            return controller.Ok(new JOMAResponse
+            {
+                Message = message,
+                StatusCode = JOMAStatusCode.Success,
+                View = viewContent,
+            });
         }
 
         public static IActionResult CrearRespuestaExitosa(this ControllerBase controller, string message, JOMAStatusCode statusCode = JOMAStatusCode.Success)

@@ -10,6 +10,7 @@ using COM.JOMA.EMP.CROSSCUTTING.Contants;
 using COM.JOMA.EMP.CROSSCUTTING.ICrossCuttingServices;
 using COM.JOMA.EMP.DOMAIN;
 using COM.JOMA.EMP.DOMAIN.Constants;
+using COM.JOMA.EMP.DOMAIN.Entities;
 using COM.JOMA.EMP.DOMAIN.Extensions;
 using COM.JOMA.EMP.DOMAIN.JomaExtensions;
 using COM.JOMA.EMP.DOMAIN.Parameters;
@@ -19,6 +20,7 @@ using COM.JOMA.EMP.QUERY.Dtos;
 using COM.JOMA.EMP.QUERY.Interfaces;
 using System;
 using System.Security.Cryptography;
+using static System.Collections.Specialized.BitVector32;
 
 namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
 {
@@ -26,12 +28,14 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
     {
         protected IInicioQueryServices LoginQueryServices;
         protected IEnvioMailEnLineaAppServices envioMailEnLineaAppServices;
+        protected ICacheCrossCuttingService cacheCrossCuttingService;
 
-        public InicioAppServices(ILogCrossCuttingService logService, GlobalDictionaryDto globalDictionary, IInicioQueryServices LoginQueryServices, IEnvioMailEnLineaAppServices envioMailEnLineaAppServices) : base(logService, globalDictionary)
+        public InicioAppServices(ILogCrossCuttingService logService, GlobalDictionaryDto globalDictionary, IInicioQueryServices LoginQueryServices, IEnvioMailEnLineaAppServices envioMailEnLineaAppServices, ICacheCrossCuttingService cacheCrossCuttingService) : base(logService, globalDictionary)
         {
             this.logService = logService;
             this.LoginQueryServices = LoginQueryServices;
             this.envioMailEnLineaAppServices = envioMailEnLineaAppServices;
+            this.cacheCrossCuttingService = cacheCrossCuttingService;
         }
 
         public async Task<List<MenuAppDto>> GetOpcionesMenuPorIdUsuario(long IdUsuario)
@@ -90,7 +94,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
             }
         }
 
-        public async Task<EnvioMailEnLineaAppResultDto> RecuperarContrasena(RecuperacionReqAppDto recuperacionReqAppDto)
+        public async Task<(EnvioMailEnLineaAppResultDto, string)> RecuperarContrasena(RecuperacionReqAppDto recuperacionReqAppDto)
         {
 
             string seccion = string.Empty;
@@ -113,7 +117,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                     Nombres = ValidarAppDto.Nombres,
                 });
 
-                return MailEnviado;
+                return (MailEnviado, ValidarAppDto.Correo);
             }
             catch (JOMAException)
             {
@@ -123,6 +127,56 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
             {
                 throw;
             }
+        }
+
+        public async Task<bool> ValidarOtp(string Usuario, string Cedula, string Otp)
+        {
+            string seccion = string.Empty; ;
+            try
+            {
+                seccion = "BUSCAR OTP EN CACHE";
+                var OtpModel = await cacheCrossCuttingService.GetObjectAsync<JOMAOtp>($"{DomainConstants.JOMA_CACHE_KEY_OTP}_{Usuario}_{Cedula}");
+                if (OtpModel is null) throw new JOMAException($"Otp Caducado, vuelva  a generar un OTP");
+
+
+                seccion = "VALIDA SI EL OTP REGISTRADO ES EL MISMO";
+                if (OtpModel.Otp == Otp) return true;
+                else
+                    throw new JOMAException("Otp Invalido, vuelva ingresr el codigo correcto");
+            }
+            catch (JOMAException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                var CodigoSeguimiento = logService.AddLog(this.GetCaller(), $"{DomainParameters.APP_NOMBRE}", $"{seccion}: {JOMAUtilities.ExceptionToString(ex)}", CrossCuttingLogLevel.Error);
+                var Mensaje = globalDictionary.GenerarMensajeErrorGenerico(CodigoSeguimiento);
+                throw new Exception(Mensaje);
+            }
+        }
+
+        public async Task<bool> EliminarOtpPorUsuario(string Usuario, string Cedula)
+        {
+            string seccion = string.Empty;
+            try
+            {
+                seccion = "REMOVER OTP DE CACHE";
+                var OtpModel = await cacheCrossCuttingService.RemoveAsync($"{DomainConstants.JOMA_CACHE_KEY_OTP}_{Usuario}_{Cedula}");
+                return OtpModel;
+            }
+            catch (JOMAException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                var CodigoSeguimiento = logService.AddLog(this.GetCaller(), $"{DomainParameters.APP_NOMBRE}", $"{seccion}: {JOMAUtilities.ExceptionToString(ex)}", CrossCuttingLogLevel.Error);
+                var Mensaje = globalDictionary.GenerarMensajeErrorGenerico(CodigoSeguimiento);
+                throw new Exception(Mensaje);
+            }
+
+           
         }
 
         #region METODOS AYUDANTES

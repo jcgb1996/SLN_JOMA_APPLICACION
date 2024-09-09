@@ -9,6 +9,8 @@ namespace COM.JOMA.EMP.APLICACION.Interfaces
     {
         Task<LoginAppResultDto> LoginCompania(LoginReqAppDto login);
         Task<List<MenuAppDto>> GetOpcionesMenuPorIdUsuario(long IdUsuario);
-        Task<EnvioMailEnLineaAppResultDto> RecuperarContrasena(RecuperacionReqAppDto recuperacionReqAppDto);
+        Task<(EnvioMailEnLineaAppResultDto, string)> RecuperarContrasena(RecuperacionReqAppDto recuperacionReqAppDto);
+        Task<bool> ValidarOtp(string Usuario, string Cedula, string Otp);
+        Task<bool> EliminarOtpPorUsuario(string Usuario, string Cedula);
     }
 }

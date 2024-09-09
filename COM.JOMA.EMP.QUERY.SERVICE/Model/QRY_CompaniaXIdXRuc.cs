@@ -17,22 +17,22 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
     {
         internal async Task<EmpresaQueryDtos> GetCompaniaXidXRuc(long IdCompania, string Ruc)
         {
-            var SP_NAME = "[dbo].[QRY_Login]";
+            var SP_NAME = "[dbo].[QRY_GetCompaniaXidXRuc]";
             List<EmpresaQueryDtos>? Result = new();
             switch (QueryParameters.TipoORM)
             {
                 case JOMATipoORM.EntityFramework:
                     Result = empresaQueryDtos?.FromSqlRaw($"[{SP_NAME}] @p0,@p1",
-                        JOMAConversions.NothingToDBNULL(Ruc),
-                        JOMAConversions.NothingToDBNULL(IdCompania)).ToList();
+                        JOMAConversions.NothingToDBNULL(IdCompania),
+                        JOMAConversions.NothingToDBNULL(Ruc)).ToList();
 
                     break;
                 case JOMATipoORM.Dapper:
                     using (var connection = jomaQueryContextDP.CreateConnection())
                     {
                         var parameters = new DynamicParameters();
+                        parameters.Add("@IdEmpresa", JOMAConversions.NothingToDBNULL(IdCompania), DbType.Int64);
                         parameters.Add("@Ruc", JOMAConversions.NothingToDBNULL(Ruc), DbType.String);
-                        parameters.Add("@Id", JOMAConversions.NothingToDBNULL(IdCompania), DbType.Int64);
                         Result = (await connection.QueryAsync<EmpresaQueryDtos>(SP_NAME, parameters, commandType: CommandType.StoredProcedure)).ToList();
                     }
                     break;

@@ -27,8 +27,8 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
         protected IMailQueryService mailQueryService;
         protected IProcesarEnvioMailAppService procesarEnvioMailAppService;
         protected IConsultasAppServices consultasAppServices;
-        public EnvioMailEnLineaAppServices(ILogCrossCuttingService logService, GlobalDictionaryDto globalDictionary, 
-            ICacheCrossCuttingService cacheCrossCuttingService, IMailQueryService mailQueryService, 
+        public EnvioMailEnLineaAppServices(ILogCrossCuttingService logService, GlobalDictionaryDto globalDictionary,
+            ICacheCrossCuttingService cacheCrossCuttingService, IMailQueryService mailQueryService,
             IProcesarEnvioMailAppService procesarEnvioMailAppService, IConsultasAppServices consultasAppServices) : base(logService, globalDictionary)
         {
             jOMAOtpManager = new JOMAOtpManager();
@@ -68,7 +68,14 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 #endregion
 
                 seccion = "GENERAR OTP";
-                var OtpModel = jOMAOtpManager.GenerateOtp($"{DomainConstants.JOMA_CACHE_KEY_OTP}_{request.Usuario}_{request.Cedula}");
+                JOMAOtp jOMAOtp = null;
+                bool ExisteCacheOtp = true;
+                jOMAOtp = await cacheCrossCuttingService.GetValueAsync<JOMAOtp>($"{DomainConstants.JOMA_CACHE_KEY_OTP}_{request.Usuario}_{request.Cedula}");
+                if (jOMAOtp == null)
+                {
+                    ExisteCacheOtp = false;
+                    jOMAOtp = jOMAOtpManager.GenerateOtp($"{DomainConstants.JOMA_CACHE_KEY_OTP}_{request.Usuario}_{request.Cedula}");
+                }
 
                 #region CONSULTA A BASE Y MAPEO DE DATOS
                 seccion = "CONSULTA A BASE Y MAPEO DE DATOS";
@@ -79,7 +86,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
 
                 MailRecuperarContrasenia.RucCompania = DatosEmpresa.Ruc;
                 MailRecuperarContrasenia.Destinatario = request.Correo;
-                MailRecuperarContrasenia.Cuerpo = MailRecuperarContrasenia.Cuerpo.Replace("{CodOtp}", OtpModel.Otp).Replace("{NombreUsuario}", request.Nombres)
+                MailRecuperarContrasenia.Cuerpo = MailRecuperarContrasenia.Cuerpo.Replace("{CodOtp}", jOMAOtp.Otp).Replace("{NombreUsuario}", request.Nombres)
                     .Replace("{TiempoDuracionOtp}", (DomainParameters.CACHE_TIEMPO_EXP_OTP / 60).ToString())
                     .Replace("{Año}", DateTime.UtcNow.Year.ToString()).Replace("{LinkEmpresa}", string.Empty)
                     .Replace("{NombreEmpresa}", DatosEmpresa.RazonSocial);
@@ -98,7 +105,8 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 if (!enviar.Item1 && enviar.Item3)
                     throw new Exception(enviar.Item2);
 
-                await cacheCrossCuttingService.AddObjectAsync($"{DomainConstants.JOMA_CACHE_KEY_OTP}_{request.Usuario}_{request.Cedula}", OtpModel, DomainParameters.CACHE_TIEMPO_EXP_OTP);
+                if (!ExisteCacheOtp)
+                    await cacheCrossCuttingService.AddObjectAsync($"{DomainConstants.JOMA_CACHE_KEY_OTP}_{request.Usuario}_{request.Cedula}", jOMAOtp, DomainParameters.CACHE_TIEMPO_EXP_OTP);
                 resulapp = new EnvioMailEnLineaAppResultDto { StatusCode = JOMAStatusCode.Success, Success = enviar.Item1 };
                 return resulapp;
                 #endregion
