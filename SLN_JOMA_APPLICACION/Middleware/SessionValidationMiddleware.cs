@@ -22,7 +22,7 @@ namespace SLN_COM_JOMA_APPLICACION.Middleware
                     !path.Contains($"/{WebSiteConstans.JOMA_WEBSITE_AREA_CONTROLLER_CERRARSESION.ToLower()}"))
                 {
                     context.Session.Clear(); // Limpiar la sesión por seguridad
-                    context.Response.Redirect($"/{WebSiteConstans.JOMA_WEBSITE_AREA_CONTROLLER_LOGIN}");
+                    context.Response.Redirect($"{WebSiteConstans.JOMA_WEBSITE_AREA_INICIO}/{WebSiteConstans.JOMA_WEBSITE_AREA_CONTROLLER_LOGIN}");
                     return;
                 }
             }
@@ -39,7 +39,7 @@ namespace SLN_COM_JOMA_APPLICACION.Middleware
                 // Si la sesión está activa y el usuario intenta acceder al login, redirigir al Dashboard
                 if (path.Contains($"/{WebSiteConstans.JOMA_WEBSITE_AREA_CONTROLLER_LOGIN.ToLower()}"))
                 {
-                    context.Response.Redirect($"/{WebSiteConstans.JOMA_WEBSITE_AREA_CONTROLLER_DASHBOARD}");
+                    context.Response.Redirect($"/{WebSiteConstans.JOMA_WEBSITE_AREA_INICIO}/{WebSiteConstans.JOMA_WEBSITE_AREA_CONTROLLER_DASHBOARD}");
                     return;
                 }
             }

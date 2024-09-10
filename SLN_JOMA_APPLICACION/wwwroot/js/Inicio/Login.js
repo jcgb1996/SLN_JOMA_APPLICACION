@@ -256,7 +256,6 @@ var Login = {
 
         if (password !== confirmPassword) {
             Site.mostrarNotificacion("Las contraseñas no coinciden.", 2);
-            alert();
             return false;
         }
 
@@ -267,8 +266,7 @@ var Login = {
 
         Login.ActualziarContrasenas(id, event);
     },
-
-    ActualziarContrasenas: function (id) {   
+    ActualziarContrasenas: function (id) {
 
         var Contrasenas = Site.GetObjetoFormularioById(id);
 
@@ -280,14 +278,12 @@ var Login = {
             data: JSON.stringify(Contrasenas),
             contentType: 'application/json; charset=utf-8',
             success: function (result) {
-                if (result.success) {
-                    if (result.message === Login.ACCION_FORZARCAMBIOCLAVE) {
-                        Site.CerrarLoading();
-                        Login.OpenModalRecuperarContrasenia(result.message, true);
-                        return;
-                    }
+                Site.CerrarLoading();
 
-                    $("#ContentModalRecuperar").empty().html(result.view);
+                if (result.success) {
+                    Site.mostrarNotificacion(result.message, 1);
+                    Login.CerrarSesion();
+                    $('#forgotPasswordModal').modal('hide');
                 } else {
                     Site.mostrarNotificacion(result.message, 2);
                 }

@@ -16,7 +16,6 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
         public InicioQueryServices(IServiceScopeFactory serviceProvider) : base(serviceProvider)
         {
         }
-
         public async Task<List<MenuQueryDto>> GetOpcionesMenuPorIdUsuario(long IdUsuario)
         {
             try
@@ -47,7 +46,6 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 throw;
             }
         }
-
         public async Task<List<LoginQueryDto>> Login(string Usuario, string Clave, string Cedula)
         {
             try
@@ -79,7 +77,6 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
             }
 
         }
-
         public async Task<List<ValidacionUsuarioQueryDto>> ValidarUsuarioRecuperacion(string Usuario, string Cedula)
         {
             try
@@ -91,9 +88,6 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                         return await jomaQueryContext.ValidarUsuarioRecuperacion(Usuario, Cedula);
                     };
                 };
-
-
-
 
             }
             catch (SqlException sqlEx)
@@ -109,6 +103,32 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 throw;
             }
 
+        }
+        public async Task<ActualizarContrasenaQueryDto> ActualizarContrasenaXUsuario(string Usuario, string Cedula, string NuevaContrasena)
+        {
+            try
+            {
+                using (var scope = serviceProvider.CreateScope())
+                {
+                    using (var jomaQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
+                    {
+                        return await jomaQueryContext.ActualizarContrasenaXUsuario(Usuario, Cedula, NuevaContrasena);
+                    };
+                };
+
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception($"SQL Error: {sqlEx.Message} Error Number: {sqlEx.Number}");
+            }
+            catch (TimeoutException timeoutEx)
+            {
+                throw new Exception($"Timeout Error: {timeoutEx.Message}");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

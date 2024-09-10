@@ -61,7 +61,6 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
             }
 
         }
-
         public async Task<LoginAppResultDto> LoginCompania(LoginReqAppDto login)
         {
             LoginAppResultDto? loginAppResultDto = new();
@@ -93,7 +92,6 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 throw new Exception(Mensaje);
             }
         }
-
         public async Task<(EnvioMailEnLineaAppResultDto, string)> RecuperarContrasena(RecuperacionReqAppDto recuperacionReqAppDto)
         {
 
@@ -128,7 +126,6 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 throw;
             }
         }
-
         public async Task<bool> ValidarOtp(string Usuario, string Cedula, string Otp)
         {
             string seccion = string.Empty; ;
@@ -155,7 +152,6 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 throw new Exception(Mensaje);
             }
         }
-
         public async Task<bool> EliminarOtpPorUsuario(string Usuario, string Cedula)
         {
             string seccion = string.Empty;
@@ -176,9 +172,30 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 throw new Exception(Mensaje);
             }
 
-           
+
         }
 
+        public async Task<(bool, string)> ActualizarContrasenaXUsuario(string Usuario, string Cedula, string NuevaContrasena)
+        {
+            string seccion = string.Empty;
+            try
+            {
+                seccion = "ACTUALIZAR CONTRASEÑA USUAIRO";
+                var Actualizado = await LoginQueryServices.ActualizarContrasenaXUsuario(Usuario, Cedula, NuevaContrasena);
+                if (!Actualizado.Correcto) throw new JOMAException(Actualizado.Mensaje);
+                return (Actualizado.Correcto, Actualizado.Mensaje);
+            }
+            catch (JOMAException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                var CodigoSeguimiento = logService.AddLog(this.GetCaller(), $"{DomainParameters.APP_NOMBRE}", $"{seccion}: {JOMAUtilities.ExceptionToString(ex)}", CrossCuttingLogLevel.Error);
+                var Mensaje = globalDictionary.GenerarMensajeErrorGenerico(CodigoSeguimiento);
+                throw new Exception(Mensaje);
+            }
+        }
         #region METODOS AYUDANTES
         private List<MenuQueryDto> BuildMenuHierarchy(List<MenuQueryDto> flatMenuList)
         {

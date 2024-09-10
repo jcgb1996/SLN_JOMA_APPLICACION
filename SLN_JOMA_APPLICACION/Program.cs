@@ -16,6 +16,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Serilog;
 using SLN_COM_JOMA_APPLICACION.Extensions;
+using SLN_COM_JOMA_APPLICACION.Middleware;
 using SLN_COM_JOMA_APPLICACION.Settings;
 using SLN_JOMA_APPLICACION.Middleware;
 using System.Data.Common;
@@ -128,7 +129,7 @@ try
     }
 
     // Habilitar NoCacheMiddleware
-    //app.UseMiddleware<NoCacheMiddleware>();
+    app.UseMiddleware<NoCacheMiddleware>();
 
     app.UseHttpsRedirection();
     app.UseStaticFiles(new StaticFileOptions
@@ -148,7 +149,7 @@ try
 
     // Uso de sesión
     app.UseSession();
-    //app.UseMiddleware<SessionManagementMiddleware>();
+    app.UseMiddleware<SessionManagementMiddleware>();
     app.UseMiddleware<GlobalExceptionMiddleware>();
 
     // Configurar la localización

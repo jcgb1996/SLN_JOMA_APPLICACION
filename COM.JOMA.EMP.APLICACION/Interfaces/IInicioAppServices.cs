@@ -12,5 +12,6 @@ namespace COM.JOMA.EMP.APLICACION.Interfaces
         Task<(EnvioMailEnLineaAppResultDto, string)> RecuperarContrasena(RecuperacionReqAppDto recuperacionReqAppDto);
         Task<bool> ValidarOtp(string Usuario, string Cedula, string Otp);
         Task<bool> EliminarOtpPorUsuario(string Usuario, string Cedula);
+        Task<(bool, string)> ActualizarContrasenaXUsuario(string Usuario, string Cedula, string NuevaContrasena);
     }
 }

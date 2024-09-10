@@ -155,13 +155,15 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Inicio.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ActualizarContrasena([FromBody] RecuperacionReqAppDto recuperacionReqAppDto)
+        public async Task<IActionResult> ActualizarContrasena([FromBody] ContrasenaReqAppDto recuperacionReqAppDto)
         {
             try
             {
-                HttpContext.Session.SetString("UsuarioRecuperacion", JsonConvert.SerializeObject(recuperacionReqAppDto));
-                var Recuperar = await inicioAppServices.RecuperarContrasena(recuperacionReqAppDto);
-                return await this.CrearRespuestaExitosaConVista(string.Empty, "DobleAuthPartialView", Recuperar.Item2);
+                string Mensaje = string.Empty;
+                string? session = HttpContext.Session.GetString("UsuarioRecuperacion");
+                var Datos = JOMAConversions.DeserializeJsonObject<RecuperacionReqAppDto>(session, ref Mensaje);
+                var Recuperar = await inicioAppServices.ActualizarContrasenaXUsuario(Datos.UsuarioRecuperacion, Datos.CedulaRecuperacion, recuperacionReqAppDto.Contrasena);
+                return this.CrearRespuestaExitosa(Recuperar.Item2);
 
             }
             catch (JOMAException ex)

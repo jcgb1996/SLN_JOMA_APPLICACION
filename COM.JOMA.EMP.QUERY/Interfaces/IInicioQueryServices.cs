@@ -12,5 +12,6 @@ namespace COM.JOMA.EMP.QUERY.Interfaces
         Task<List<LoginQueryDto>> Login(string Usuario, string Clave, string Compania);
         Task<List<MenuQueryDto>> GetOpcionesMenuPorIdUsuario(long IdUsuario);
         Task<List<ValidacionUsuarioQueryDto>> ValidarUsuarioRecuperacion(string Usuario, string Cedula);
+        Task<ActualizarContrasenaQueryDto> ActualizarContrasenaXUsuario(string Usuario, string Cedula, string NuevaContrasena);
     }
 }
