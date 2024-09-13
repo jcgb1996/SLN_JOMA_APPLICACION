@@ -1,4 +1,17 @@
-﻿<div class="modal fade" id="ModalTerapista" tabindex="-1" aria-labelledby="ModalTerapista" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+﻿
+
+
+<style>
+    .form-control, .form-select {
+        height: 56px !important; /* Ajusta según el tamaño deseado */
+    }
+
+    .select2-selection, .select2-selection {
+        height: 56px !important; /* Ajusta según el tamaño deseado */
+    }
+</style>
+
+<div class="modal fade" id="ModalTerapista" tabindex="-1" aria-labelledby="ModalTerapista" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-header modal-colored-header bg-primary text-white pt-2 pb-2 m-0">
@@ -39,7 +52,7 @@
 
                         <div class="col-xl-4 col-md-4 col-sm-4 col-12">
                             <div class="form-floating">
-                                <input type="email" name="Correo" class="form-control" id="Correo" placeholder="Correo" required>
+                                <input type="email" name="Correo" class="form-control " id="Correo" placeholder="Correo" required>
                                 <label for="Correo">Correo</label>
                                 <div class="invalid-feedback">Por favor, ingrese su correo electrónico.</div>
                             </div>
@@ -47,13 +60,10 @@
 
                         <div class="col-xl-4 col-md-4 col-sm-4 col-12">
                             <div class="form-floating">
-                                <select id="Genero" name="Genero" class="form-select" placeholder="Genero" required>
-                                    <option></option>
-                                    <option value="1">Masculino</option>
-                                    <option value="2">Femenino</option>
-                                    <option value="3">Otros</option>
+                                <select id="Genero" name="Genero" data-bgcolor="blue" data-bgcolor-variation="light" class="form-select select2 select2-with-menu-bg" placeholder="Sucursal" required>
                                 </select>
-                                <label for="Genero">Género</label>
+
+                                <label for="Genero"></label>
                                 <div class="invalid-feedback">Por favor, seleccione un género.</div>
                             </div>
                         </div>
@@ -84,11 +94,9 @@
 
                         <div class="col-xl-4 col-md-4 col-sm-4 col-12">
                             <div class="form-floating">
-                                <select id="Sucursal" name="Sucursal" class="form-select" placeholder="Sucursal" required>
-                                    <option></option>
-                                    <option value="1">Centro</option>
+                                <select id="Sucursal" name="Sucursal" data-bgcolor="blue" data-bgcolor-variation="light" class="form-select select2 select2-with-menu-bg" placeholder="Sucursal" required>
                                 </select>
-                                <label for="Sucursal">Sucursal</label>
+                                <label for="Sucursal"></label>
                                 <div class="invalid-feedback">Por favor, seleccione una sucursal.</div>
                             </div>
                         </div>
@@ -96,14 +104,10 @@
                         <!-- Nuevo campo Tipo de Terapia -->
                         <div class="col-xl-4 col-md-4 col-sm-4 col-12">
                             <div class="form-floating">
-                                <select id="TipoTerapia" name="TipoTerapia" class="form-select" placeholder="Tipo de Terapia" required>
-                                    <option></option>
-                                    <option value="1">Terapia de Lengua</option>
-                                    <option value="2">Terapia Inicial</option>
-                                    <option value="3">Terapia Física</option>
-                                    <option value="4">Terapia Ocupacional</option>
+                                <select id="TipoTerapia" name="TipoTerapia" data-bgcolor="blue" data-bgcolor-variation="light" class="form-select select2 select2-with-menu-bg" placeholder="Sucursal" required>
                                 </select>
-                                <label for="TipoTerapia">Tipo de Terapia</label>
+
+                                <label for="TipoTerapia"></label>
                                 <div class="invalid-feedback">Por favor, seleccione el tipo de terapia.</div>
                             </div>
                         </div>
@@ -122,9 +126,12 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" onclick="Site.limpiarFormularioById('RegistrarTrabajador');" data-bs-dismiss="modal" class="btn btn-secondary">Cancelar</button>
+                <button type="button" onclick="Site.limpiarFormularioById('RegistrarTerapista');" data-bs-dismiss="modal" class="btn btn-secondary">Cancelar</button>
                 <button type="button" onclick="Terapista.GuardarDatos('RegistrarTerapista',event);" class="btn btn-primary">Guardar</button>
             </div>
         </div>
     </div>
 </div>
+
+
+

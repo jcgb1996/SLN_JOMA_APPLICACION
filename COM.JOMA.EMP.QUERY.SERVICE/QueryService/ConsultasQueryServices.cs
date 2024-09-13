@@ -17,7 +17,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
         {
         }
 
-        public async Task<List<TerapistaQueryDto>> GetTerapistasPorIdCompania(long IdCompania)
+        public async Task<List<TerapistaQueryDto>> GetTerapistasXRucEmpresa(string RucEmpresa)
         {
             try
             {
@@ -25,8 +25,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 {
                     using (var jomaQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
                     {
-                        return await jomaQueryContext.GetTerapistas(IdCompania);
-                        //return new LoginQueryDto();
+                        return await jomaQueryContext.GetTerapistasXRucEmpresa(RucEmpresa);
                     };
                 };
 
@@ -57,6 +56,33 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                     using (var jomaQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
                     {
                         return await jomaQueryContext.GetTerapistasPorId(IdTerapista);
+                        //return new LoginQueryDto();
+                    };
+                };
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception($"SQL Error: {sqlEx.Message} Error Number: {sqlEx.Number}");
+            }
+            catch (TimeoutException timeoutEx)
+            {
+                throw new Exception($"Timeout Error: {timeoutEx.Message}");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<TerapistaQueryDto> GetTerapistasPorCedula(string Cedula, string RucCompania)
+        {
+            try
+            {
+                using (var scope = serviceProvider.CreateScope())
+                {
+                    using (var jomaQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
+                    {
+                        return await jomaQueryContext.GetTerapistasPorId(0);
                         //return new LoginQueryDto();
                     };
                 };
@@ -111,10 +137,8 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 {
                     using (var edocQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
                     {
-                        //return await edocQueryContext.GetSucursales(IdSucursal);
-                        var resultado = await edocQueryContext.GetSucursales(IdSucursal);
+                        var resultado = await edocQueryContext.GetSucursalesXIdEmpresa(IdSucursal);
                         return resultado.FirstOrDefault();
-                        //return new LoginQueryDto();
                     };
                 };
 
@@ -133,6 +157,35 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
             }
         }
 
+        public async Task<List<SucursalQueryDto>> GetSucursalesXIdEmpresa(long IdSucursal)
+        {
+            try
+            {
+                using (var scope = serviceProvider.CreateScope())
+                {
+                    using (var edocQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
+                    {
+                        var resultado = await edocQueryContext.GetSucursalesXIdEmpresa(IdSucursal);
+                        return resultado;
+                    };
+                };
+
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception($"SQL Error: {sqlEx.Message} Error Number: {sqlEx.Number}");
+            }
+            catch (TimeoutException timeoutEx)
+            {
+                throw new Exception($"Timeout Error: {timeoutEx.Message}");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
         public async Task<List<SucursalQueryDto>> GetSucursalesPorId(long IdCompania)
         {
             try
@@ -141,7 +194,37 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 {
                     using (var edocQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
                     {
-                        return await edocQueryContext.GetSucursales(IdCompania);
+                        return await edocQueryContext.GetSucursalesXIdEmpresa(IdCompania);
+                    };
+                };
+
+
+
+
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception($"SQL Error: {sqlEx.Message} Error Number: {sqlEx.Number}");
+            }
+            catch (TimeoutException timeoutEx)
+            {
+                throw new Exception($"Timeout Error: {timeoutEx.Message}");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<TipoTerapiaQueryDto>> GetTipoTerapiasXIdEmpresa(long IdEmpresa)
+        {
+            try
+            {
+                using (var scope = serviceProvider.CreateScope())
+                {
+                    using (var edocQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
+                    {
+                        return await edocQueryContext.GetTipoTerapiasXIdEmpresa(IdEmpresa);
                         //return new LoginQueryDto();
                     };
                 };

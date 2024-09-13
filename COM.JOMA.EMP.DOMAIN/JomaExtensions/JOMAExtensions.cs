@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using COM.JOMA.EMP.DOMAIN.Constants;
+using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace COM.JOMA.EMP.DOMAIN.JomaExtensions
 {
@@ -69,6 +66,22 @@ namespace COM.JOMA.EMP.DOMAIN.JomaExtensions
         {
             return enumValue.GetType().GetMember(enumValue.ToString()).First()
                 .GetCustomAttribute<TAttribute>();
+        }
+
+        public static List<(string Description, int Value)> GetGeneros<T>() where T : Enum
+        {
+            var result = new List<(string Description, int Value)>();
+            foreach (var value in Enum.GetValues(typeof(T)))
+            {
+                FieldInfo fieldInfo = typeof(T).GetField(value.ToString());
+                DescriptionAttribute attribute = fieldInfo.GetCustomAttribute<DescriptionAttribute>();
+
+                string description = attribute != null ? attribute.Description : "No Description";
+                int intValue = (int)value;
+
+                result.Add((description, intValue));
+            }
+            return result;
         }
     }
 }

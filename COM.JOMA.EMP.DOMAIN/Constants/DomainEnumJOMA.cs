@@ -119,4 +119,18 @@ namespace COM.JOMA.EMP.DOMAIN.Constants
         [Description("Enviado parcialmente")]
         EnviadoParcialmente
     }
+
+    public enum JOMAGenero: int
+    {
+        [Description("Masculino")]
+        Masculino = 1,
+        [Description("Femenino")]
+        Femenino,
+        [Description("No Binario")]
+        NoBinario,
+        [Description("Agenero")]
+        Agenero,
+        [Description("Otros")]
+        Otro
+    }
 }

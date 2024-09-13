@@ -6,7 +6,9 @@ using COM.JOMA.EMP.APLICACION.SERVICE.Constants;
 using COM.JOMA.EMP.CROSSCUTTING.ICrossCuttingServices;
 using COM.JOMA.EMP.DOMAIN;
 using COM.JOMA.EMP.DOMAIN.Constants;
+using COM.JOMA.EMP.DOMAIN.JomaExtensions;
 using COM.JOMA.EMP.DOMAIN.Tools;
+using COM.JOMA.EMP.QUERY.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using SLN_COM_JOMA_APPLICACION.Controllers;
 using SLN_COM_JOMA_APPLICACION.Extensions;
@@ -18,14 +20,24 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Trabajador.Controllers
     {
         protected ITerapistaAppServices terapistaAppServices;
         protected IConsultasAppServices consultasAppServices;
+
+       
+
         public TerapistasController(ILogCrossCuttingService logService, GlobalDictionaryDto globalDictionary, ITerapistaAppServices terapistaAppServices, IConsultasAppServices consultasAppServices) : base(logService, globalDictionary)
         {
             this.terapistaAppServices = terapistaAppServices;
             this.consultasAppServices = consultasAppServices;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
+            var loginDto = GetUsuarioSesion();
+            var CmbGenero = JOMAExtensions.GetGeneros<JOMAGenero>();
+            var CmbTipoServicio = await consultasAppServices.GetTipoTerapiasXIdEmpresa(loginDto.IdCompania);
+            var CmbSucursales = await consultasAppServices.GetSucursalesPorIdEmpresa(loginDto.IdCompania);
+            ViewData["CmgGenero"] = CmbGenero;
+            ViewData["CbmTipoTerapias"] = CmbTipoServicio;
+            ViewData["CmbSucursales"] = CmbSucursales;
             return View();
         }
 
@@ -61,7 +73,7 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Trabajador.Controllers
                 short pagTam = Request.Form.ContainsKey("length") ? Convert.ToInt16(Request.Form["length"][0]) : (short)0;
                 var pagIdx = (startRec / (pagTam == 0 ? 1 : pagTam));
                 var loginDto = GetUsuarioSesion();
-                var LstTerapista = await consultasAppServices.GetTerapistasPorIdCompania(loginDto.IdCompania, loginDto.Ruc);
+                var LstTerapista = await consultasAppServices.GetTerapistasXRucEmpresa(loginDto.Ruc);
                 return this.CrearRespuestaExitosa(string.Empty, new
                 {
                     draw = Convert.ToInt32(draw),
@@ -84,8 +96,8 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Trabajador.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetDatosTerapista(long IdTerapista)
+        [HttpPost]
+        public async Task<IActionResult> GetDatosTerapista([FromBody] long IdTerapista)
         {
             try
             {
@@ -127,5 +139,30 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Trabajador.Controllers
                 logService.GuardarLogs();
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ModalNuevoTerapista()
+        {
+            try
+            {
+                return PartialView("ModalTerapistaPartialView");
+            }
+            catch (JOMAException ex)
+            {
+                return this.CrearRespuestaError(ex.Message, JOMAStatusCode.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                return this.CrearRespuestaError(ex.Message.ToString(), JOMAStatusCode.InternalServerError, ex.Message);
+            }
+            finally
+            {
+                logService.GuardarLogs();
+            }
+        }
+
+
+
+
     }
 }

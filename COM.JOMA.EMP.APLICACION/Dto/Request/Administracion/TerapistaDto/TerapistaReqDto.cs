@@ -17,6 +17,7 @@ namespace COM.JOMA.EMP.APLICACION.Dto.Request.Administracion.TerapistaDto
         public string TelefonoContacto { get; set; }
         public string TelefonoContactoEmergencia { get; set; }
         public int Sucursal { get; set; }
+        public int TipoTerapia { get; set; }
         public string Direccion { get; set; }
     }
 }

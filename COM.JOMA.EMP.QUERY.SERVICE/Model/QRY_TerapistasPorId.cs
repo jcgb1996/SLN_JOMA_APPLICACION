@@ -40,21 +40,21 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
             //
             //}
             #endregion
-            var terapistas = new List<TerapistaQueryDto>();
-            var tarea = Task.Run(() =>
-            {
-                terapistas = new List<TerapistaQueryDto>
-                    {
-                        new TerapistaQueryDto { Id = 8, Nombre = "Allan Stuart", AreaDesignada = "Oncología", Estado = 1,Maxrowcount=3 },
-                        new TerapistaQueryDto { Id = 1, Nombre = "Smith White", AreaDesignada = "Neurología", Estado = 0,Maxrowcount=3 },
-                        new TerapistaQueryDto { Id = 26, Nombre = "Gilbert Sandoval", AreaDesignada = "Cardiología", Estado = 1 ,Maxrowcount=3},
-                    };
+            //var terapistas = new List<TerapistaQueryDto>();
+            //var tarea = Task.Run(() =>
+            //{
+            //    terapistas = new List<TerapistaQueryDto>
+            //        {
+            //            new TerapistaQueryDto { Id = 8, Nombre = "Allan Stuart", AreaDesignada = "Oncología", Estado = 1,Maxrowcount=3 },
+            //            new TerapistaQueryDto { Id = 1, Nombre = "Smith White", AreaDesignada = "Neurología", Estado = 0,Maxrowcount=3 },
+            //            new TerapistaQueryDto { Id = 26, Nombre = "Gilbert Sandoval", AreaDesignada = "Cardiología", Estado = 1 ,Maxrowcount=3},
+            //        };
 
-            });
+            //});
 
-            await tarea;
+            //await tarea;
 
-            return terapistas.FirstOrDefault(x => x.Id == IdTerapista);
+            return new TerapistaQueryDto();
         }
     }
 }

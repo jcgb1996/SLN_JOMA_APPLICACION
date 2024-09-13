@@ -1,6 +1,12 @@
-﻿using COM.JOMA.EMP.QUERY.Dtos;
+﻿using COM.JOMA.EMP.DOMAIN.Constants;
+using COM.JOMA.EMP.DOMAIN.Tools;
+using COM.JOMA.EMP.QUERY.Dtos;
+using COM.JOMA.EMP.QUERY.Parameters;
+using Dapper;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,52 +15,29 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
 {
     public partial class JomaQueryContext : JomaQueryContextEF
     {
-        internal async Task<List<SucursalQueryDto>> GetSucursales(long IdCompania)
+        internal async Task<List<SucursalQueryDto>> GetSucursalesXIdEmpresa(long IdCompania)
         {
-
-
-
-            #region Descomentar
-            //var SP_NAME = "[QRY_Login]";
-            //List<LoginQueryDto>? Result = new();
-            //switch (QueryParameters.TipoORM)
-            //{
-            //    case JOMATipoORM.EntityFramework:
-            //        Result = LoginQueryDto?.FromSqlRaw($"[{SP_NAME}] @p0,@p1,@p2,@p3",
-            //            JOMAConversions.NothingToDBNULL(Usuario), JOMAConversions.NothingToDBNULL(ClaveEncriptada),
-            //            JOMAConversions.NothingToDBNULL(Compania), JOMAConversions.NothingToDBNULL(IPLogin)).ToList();
-            //
-            //        break;
-            //    case JOMATipoORM.Dapper:
-            //        using (var connection = jomaQueryContextDP.CreateConnection())
-            //        {
-            //            var parameters = new DynamicParameters();
-            //            parameters.Add("@LoginUsuario", JOMAConversions.NothingToDBNULL(Usuario), DbType.String);
-            //            parameters.Add("@ClaveUsuario", JOMAConversions.NothingToDBNULL(ClaveEncriptada), DbType.String);
-            //            parameters.Add("@RucCiaNube", JOMAConversions.NothingToDBNULL(Compania), DbType.String);
-            //            parameters.Add("@IpLogin", JOMAConversions.NothingToDBNULL(IPLogin), DbType.String);
-            //            Result = (await connection.QueryAsync<LoginQueryDto>(SP_NAME, parameters, commandType: CommandType.StoredProcedure)).ToList();
-            //        }
-            //        break;
-            //
-            //
-            //}
-            #endregion
-            var sucursales = new List<SucursalQueryDto>();
-            var tarea = Task.Run(() =>
+            var SP_NAME = "[dbo].[QRY_GetSucursalesXIdEmpresa]";
+            List<SucursalQueryDto>? Result = new();
+            switch (QueryParameters.TipoORM)
             {
-                sucursales = new List<SucursalQueryDto>
+                case JOMATipoORM.EntityFramework:
+                    Result = sucursalQueryDto?.FromSqlRaw($"[{SP_NAME}] @p0",
+                        JOMAConversions.NothingToDBNULL(IdCompania)).ToList();
+
+                    break;
+                case JOMATipoORM.Dapper:
+                    using (var connection = jomaQueryContextDP.CreateConnection())
                     {
-                        new SucursalQueryDto { Id = 8, Nombre = "Robert Stuart", AreaDesignada = "Oncología", Estado = 1,Maxrowcount=3 },
-                        new SucursalQueryDto { Id = 1, Nombre = "Smith White", AreaDesignada = "Neurología", Estado = 0,Maxrowcount=3 },
-                        new SucursalQueryDto { Id = 26, Nombre = "Gilbert Sandoval", AreaDesignada = "Cardiología", Estado = 1 ,Maxrowcount=3},
-                    };
+                        var parameters = new DynamicParameters();
+                        parameters.Add("@IdEmpresa", JOMAConversions.NothingToDBNULL(IdCompania), DbType.Int64);
+                        Result = (await connection.QueryAsync<SucursalQueryDto>(SP_NAME, parameters, commandType: CommandType.StoredProcedure)).ToList();
+                    }
+                    break;
 
-            });
 
-            await tarea;
-
-            return sucursales;
+            }
+            return Result;
         }
     }
 }

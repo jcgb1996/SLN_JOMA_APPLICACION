@@ -1,7 +1,18 @@
 ﻿@using COM.JOMA.EMP.APLICACION.SERVICE.Constants
+@using COM.JOMA.EMP.QUERY.Dtos
 @{
     var Controller = $"{WebSiteConstans.JOMA_WEBSITE_AREA_ADMINISTRACION}/{WebSiteConstans.JOMA_WEBSITE_AREA_CONTROLLER_TERAPISTAS}";
+    var jsonCbmTipoTerapias = string.Empty;
+    var jsonCmbGenero = string.Empty;
+    var jsonCmbSucursales = string.Empty;
+    var CmbGenero = ViewData["CmgGenero"] as List<(string Description, int Value)>;
+    var CbmTipoTerapias = ViewData["CbmTipoTerapias"] as List<TipoTerapiaQueryDto>;
+    var CmbSucursales = ViewData["CmbSucursales"] as List<SucursalQueryDto>;
+    if (CmbGenero != null) jsonCbmTipoTerapias = Newtonsoft.Json.JsonConvert.SerializeObject(CbmTipoTerapias);
+    if (CbmTipoTerapias != null) jsonCmbGenero = Newtonsoft.Json.JsonConvert.SerializeObject(CmbGenero);
+    if (CmbSucursales != null) jsonCmbSucursales = Newtonsoft.Json.JsonConvert.SerializeObject(CmbSucursales);
 }
+
 <style>
     .table td {
         padding: 5px !important; /* Elimina el padding de las celdas */
@@ -12,6 +23,7 @@
 
 <section class="section">
     <div id="ContenteModal">
+        @await Html.PartialAsync("ModalTerapistaPartialView")
     </div>
     <div class="row">
         <div class="col-lg-12">
@@ -34,12 +46,54 @@
 </section>
 
 <script src="~/js/Administracion/Terapista.js"></script>
-<script>
 
+
+@{
+    if (!string.IsNullOrEmpty(jsonCmbGenero))
+    {
+        <script type="text/javascript">
+            Terapista.CmbGenero = @Html.Raw(jsonCmbGenero);
+            Terapista.CmbGenero = Terapista.CmbGenero.map(function (item) {
+                return {
+                    id: item.Item2,
+                    text: item.Item1
+                };
+            });
+        </script>
+    }
+    if (!string.IsNullOrEmpty(jsonCbmTipoTerapias))
+    {
+
+        <script type="text/javascript">
+            Terapista.CmbTipoTerapista = @Html.Raw(jsonCbmTipoTerapias);
+            Terapista.CmbTipoTerapista = Terapista.CmbTipoTerapista.map(function (item) {
+                return {
+                    id: item.id,
+                    text: item.NombreTerapia
+                };
+            });
+        </script>
+    }
+
+    if (!string.IsNullOrEmpty(jsonCmbSucursales))
+    {
+
+        <script type="text/javascript">
+            Terapista.CmbSucursales = @Html.Raw(jsonCmbSucursales);
+            Terapista.CmbSucursales = Terapista.CmbSucursales.map(function (item) {
+                return {
+                    id: item.Id,
+                    text: item.Nombre
+                };
+            });
+        </script>
+    }
+}
+
+
+<script>
     $(document).ready(function () {
         debugger;
         Terapista.Init('@Url.Content("~/")', '@Controller');
     });
-
-
 </script>

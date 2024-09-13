@@ -106,6 +106,8 @@ try
     DomainParameters.MAIL_INTERVALO_TIEMPOESPERAENVIOMAIL = 1;//cambiar este valor, por el que se va a traer desde la configuración inicial
     DomainParameters.CACHE_ENABLE_CONF_SERVIDORCORREO_COMPANIA = true;//cambiar este valor, por el que se va a traer desde la configuración inicial
     DomainParameters.CACHE_TIEMPO_EXP_CONF_SERVIDORCORREO_COMPANIA = 600;//cambiar este valor, por el que se va a traer desde la configuración inicial
+    DomainParameters.CACHE_TIEMPO_EXP_TIPOTERAPIAS_COMPANIA = 600;//cambiar este valor, por el que se va a traer desde la configuración inicial
+    DomainParameters.CACHE_ENABLE_TIPOTERAPIAS_COMPANIA = true;//cambiar este valor, por el que se va a traer desde la configuración inicial
 
 
     DomainParameters.CACHE_TIEMPO_EXP_SUCURSAL_COMPANIA = 600; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial (tiempo en segundos)
