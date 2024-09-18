@@ -74,7 +74,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
             }
         }
 
-        public async Task<TerapistaQueryDto> GetTerapistasPorCedula(string Cedula, string RucCompania)
+        public async Task<TerapistaXcedulaXRucEmpresaQueryDto> GetTerapistasXCedulaXRucEmpresa(string Cedula, string RucEmpresa)
         {
             try
             {
@@ -82,7 +82,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 {
                     using (var jomaQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
                     {
-                        return await jomaQueryContext.GetTerapistasPorId(0);
+                        return await jomaQueryContext.GetTerapistasXCedulaXRucEmpresa(Cedula, RucEmpresa);
                         //return new LoginQueryDto();
                     };
                 };

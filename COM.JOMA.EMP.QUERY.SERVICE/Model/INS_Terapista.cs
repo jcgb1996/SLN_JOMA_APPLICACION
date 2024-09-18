@@ -1,5 +1,8 @@
-﻿using COM.JOMA.EMP.DOMAIN.Entities;
+﻿using COM.JOMA.EMP.DOMAIN.Constants;
+using COM.JOMA.EMP.DOMAIN.Entities;
+using COM.JOMA.EMP.QUERY.Parameters;
 using COM.JOMA.EMP.QUERY.SERVICE.Extensions;
+using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
@@ -7,59 +10,76 @@ using System.Data;
 
 namespace COM.JOMA.EMP.QUERY.SERVICE.Model
 {
-    public sealed partial class JomaQueryContext
+    public partial class JomaQueryContext : JomaQueryContextEF
     {
         internal bool InsertarTerapista(Terapista terapista)
         {
-            //List<SqlParameter> parameters = new List<SqlParameter>();
-            //parameters.Add(proceso.IdCompania);
-            //parameters.Add(proceso.Estado);
-            //parameters.Add(proceso.Observacion);
-            //parameters.Add(proceso.Ruta?.Replace("//", "/"));
-            //parameters.Add(proceso.EstadoMr);
-            //parameters.Add(proceso.Email);
-            //parameters.Add(proceso.FechaAutorizacion);
-            //parameters.Add(proceso.Ambiente);
-            //parameters.Add(proceso.EstadoEdoc);
-            //parameters.Add(proceso.IdDocumento);
-            //parameters.Add(proceso.TipoDocSustento);
-            //parameters.Add(proceso.CufeSustento);
-            //parameters.Add(proceso.NumAutSustento);
-            //parameters.Add(proceso.Error);
-            //parameters.Add(proceso.ErrorCodigo);
-            //parameters.Add(proceso.IdUsuarioTransmite);
-            //parameters.Add(proceso.LogIp);
-            //parameters.Add(proceso.LogNombreIntegracion);
-            //parameters.Add(proceso.LogVersion);
-            //parameters.Add(proceso.LogNombreApp);
-            //parameters.Add(proceso.IdContenedorNubeXml);
-            //parameters.Add(proceso.RutaRequest?.Replace("//", "/"));
-            //parameters.Add(proceso.RutaLog?.Replace("//", "/"));
-            //parameters.Add(proceso.IdContenedorNubeRequest);
-            //parameters.Add(proceso.IdContenedorNubeLog);
-            //parameters.Add(proceso.IdContenedorNubeTracking);
-            //parameters.Add(proceso.RutaTracking?.Replace("//", "/"));
-            //parameters.Add(proceso.ErrorReal);
-            //parameters.Add(proceso.IdContenedorNubeResponse);
-            //parameters.Add(proceso.RutaResponse?.Replace("//", "/"));
-            //parameters.Add(proceso.IdContenedorNubeRequestent);
-            //parameters.Add(proceso.RutaRequestEnt?.Replace("//", "/"));
-            //parameters.Add(proceso.IdContenedorNubeResponseEnt);
-            //parameters.Add(proceso.RutaResponseEnt?.Replace("//", "/"));
-            //var IdParameter = new SqlParameter
-            //{
-            //    ParameterName = $"@p{parameters.Count}",
-            //    DbType = DbType.Int64,
-            //    SqlDbType = SqlDbType.BigInt,
-            //    Direction = ParameterDirection.Output
-            //};
-            //parameters.Add(IdParameter);
-            //var command = $"[INS_Anulacion_5.11] {parameters.GetParameters()}";
-            //var result = Database.ExecuteSqlRaw(command, parameters: parameters.ToArray());
-            ////if (result != 0)
-            ////    proceso.IdAnulacion = (long)IdParameter.Value;
-            //return result != 0;
-            return true;
+            string SP_NAME = "[JM].[INS_Terapistas]";
+            switch (QueryParameters.TipoORM)
+            {
+                case JOMATipoORM.EntityFramework:
+                    {
+                        List<SqlParameter> parameters = new List<SqlParameter>()
+                {
+                    new SqlParameter("@RolId", terapista.IdRol),
+                    new SqlParameter("@Nombre", terapista.Nombre),
+                    new SqlParameter("@Apellido", terapista.Apellido),
+                    new SqlParameter("@Email", terapista.Email),
+                    new SqlParameter("@Contrasena", terapista.Contrasena),
+                    new SqlParameter("@UsuarioCreacion", terapista.UsuarioCreacion ?? (object)DBNull.Value),
+                    //new SqlParameter("@FechaCreacion", terapista.FechaCreacion),
+                    //new SqlParameter("@Estado", terapista.Estado),
+                    new SqlParameter("@NombreUsuario", terapista.NombreUsuario),
+                    //new SqlParameter("@NumeroIntentos", terapista.NumeroIntentos),
+                    //new SqlParameter("@Bloqueo", terapista.Bloqueo),
+                    new SqlParameter("@idEmpresa", terapista.IdEmpresa),
+                    new SqlParameter("@Cedula", terapista.Cedula),
+                    new SqlParameter("@Genero", terapista.Genero),
+                    new SqlParameter("@FechaNacimiento", terapista.FechaNacimiento),
+                    new SqlParameter("@TelefonoContacto", terapista.TelefonoContacto ?? (object)DBNull.Value),
+                    new SqlParameter("@TelefonoContactoEmergencia", terapista.TelefonoContactoEmergencia ?? (object)DBNull.Value),
+                    new SqlParameter("@Direccion", terapista.Direccion ?? (object)DBNull.Value),
+                    new SqlParameter("@IdSucursal", terapista.IdSucursal),
+                    new SqlParameter("@IdTipoTerapia", terapista.IdTipoTerapia)
+                };
+
+                        var result = Database.ExecuteSqlRaw($"EXEC {SP_NAME}", parameters.ToArray());
+                        return result != 0;
+                    }
+                case JOMATipoORM.Dapper:
+                    {
+                        using (var connection = jomaQueryContextDP.CreateConnection())
+                        {
+                            var parameters = new DynamicParameters();
+                            parameters.Add("@RolId", terapista.IdRol);
+                            parameters.Add("@Nombre", terapista.Nombre);
+                            parameters.Add("@Apellido", terapista.Apellido);
+                            parameters.Add("@Email", terapista.Email);
+                            parameters.Add("@Contrasena", terapista.Contrasena);
+                            parameters.Add("@UsuarioCreacion", terapista.UsuarioCreacion);
+                            //parameters.Add("@FechaCreacion", terapista.FechaCreacion);
+                            //parameters.Add("@Estado", terapista.Estado);
+                            parameters.Add("@NombreUsuario", terapista.NombreUsuario);
+                            //parameters.Add("@NumeroIntentos", terapista.NumeroIntentos);
+                            //parameters.Add("@Bloqueo", terapista.Bloqueo);
+                            parameters.Add("@idEmpresa", terapista.IdEmpresa);
+                            parameters.Add("@Cedula", terapista.Cedula);
+                            parameters.Add("@Genero", terapista.Genero);
+                            parameters.Add("@FechaNacimiento", terapista.FechaNacimiento);
+                            parameters.Add("@TelefonoContacto", terapista.TelefonoContacto);
+                            parameters.Add("@TelefonoContactoEmergencia", terapista.TelefonoContactoEmergencia);
+                            parameters.Add("@Direccion", terapista.Direccion);
+                            parameters.Add("@IdSucursal", terapista.IdSucursal);
+                            parameters.Add("@IdTipoTerapia", terapista.IdTipoTerapia);
+
+                            var result = connection.Execute(SP_NAME, parameters, commandType: CommandType.StoredProcedure);
+                            return result != 0;
+                        }
+                    }
+                default:
+                    throw new Exception($"Tipo ORM {QueryParameters.TipoORM} no definido");
+            }
         }
+
     }
 }

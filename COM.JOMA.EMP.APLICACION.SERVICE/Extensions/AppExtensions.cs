@@ -228,5 +228,18 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.Extensions
 
             return mapper.Map<Sucursal>(obj);
         }
+
+
+        internal static TerapistaXcedulaXRucEmpresaQueryDto MapToTerapistaXcedulaXRucEmpresaQueryDto(this TerapistaQueryDto obj)
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<TerapistaQueryDto, TerapistaXcedulaXRucEmpresaQueryDto>();
+            });
+
+            var mapper = configuration.CreateMapper();
+
+            return mapper.Map<TerapistaXcedulaXRucEmpresaQueryDto>(obj);
+        }
     }
 }

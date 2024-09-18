@@ -48,9 +48,6 @@ var Terapista = {
                     },
                     complete: function () {
                         Site.CerrarLoading();
-                        Terapista.InitSelect2('Sucursal', 'Seleccione una Sucursal', undefined);
-                        Terapista.InitSelect2('Genero', 'Seleccione un género', Terapista.CmbGenero);
-                        Terapista.InitSelect2('TipoTerapia', 'Seleccione un tipo', Terapista.CmbTipoTerapista);
                     },
                     error: function (result) {
                         Site.CerrarLoading();
@@ -260,9 +257,9 @@ var Terapista = {
                 Site.CerrarLoading();
                 $("#ContenteModal").empty().html(response);
                 $("#ModalTerapista").modal('show');
-                Terapista.InitSelect2('Sucursal', 'Seleccione una sucursal', Terapista.CmbSucursales);
+                Terapista.InitSelect2('IdSucursal', 'Seleccione una Sucursal', Terapista.CmbSucursales);
                 Terapista.InitSelect2('Genero', 'Seleccione un género', Terapista.CmbGenero);
-                Terapista.InitSelect2('TipoTerapia', 'Seleccione un tipo', Terapista.CmbTipoTerapista);
+                Terapista.InitSelect2('IdTipoTerapia', 'Seleccione un tipo', Terapista.CmbTipoTerapista);
             },
             error: function (result) {
                 Site.AjaxError(result);
@@ -293,9 +290,9 @@ var Terapista = {
         });
     },
     NuevoTerapista: function () {
-        Terapista.InitSelect2('Sucursal', 'Seleccione una sucursal', Terapista.CmbSucursales);
+        Terapista.InitSelect2('IdSucursal', 'Seleccione una Sucursal', Terapista.CmbSucursales);
         Terapista.InitSelect2('Genero', 'Seleccione un género', Terapista.CmbGenero);
-        Terapista.InitSelect2('TipoTerapia', 'Seleccione un tipo', Terapista.CmbTipoTerapista);
+        Terapista.InitSelect2('IdTipoTerapia', 'Seleccione un tipo', Terapista.CmbTipoTerapista);
         $("#ModalTerapista").modal('show');
     },
 };

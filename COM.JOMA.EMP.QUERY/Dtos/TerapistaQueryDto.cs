@@ -18,7 +18,8 @@ namespace COM.JOMA.EMP.QUERY.Dtos
         public DateTime FechaNacimiento { get; set; }
         public string TelefonoContacto { get; set; }
         public string TelefonoContactoEmergencia { get; set; }
-        public long IdSucural { get; set; }
+        public long IdSucursal { get; set; }
+        public string NombreSucursal { get; set; }
         public long IdTipoTerapia { get; set; }
         public string NombreTerapia { get; set; }
         public string Direccion { get; set; }

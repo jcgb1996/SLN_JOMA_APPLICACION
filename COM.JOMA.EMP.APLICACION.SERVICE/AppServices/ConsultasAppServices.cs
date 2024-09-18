@@ -1,4 +1,5 @@
 ﻿using COM.JOMA.EMP.APLICACION.Interfaces;
+using COM.JOMA.EMP.APLICACION.SERVICE.Extensions;
 using COM.JOMA.EMP.CROSSCUTTING.ICrossCuttingServices;
 using COM.JOMA.EMP.DOMAIN;
 using COM.JOMA.EMP.DOMAIN.Constants;
@@ -105,13 +106,18 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 throw new Exception(Mensaje);
             }
         }
-        public async Task<TerapistaQueryDto> GetTerapistasXCedulaXRucEmpresa(string Cedula, string RucCompania)
+        public async Task<TerapistaXcedulaXRucEmpresaQueryDto?> GetTerapistasXCedulaXRucEmpresa(string Cedula, string RucCompania)
         {
             string seccion = string.Empty;
             try
             {
                 List<TerapistaQueryDto>? LstterapistaQueryDtos = null;
-                TerapistaQueryDto? terapistaQueryDtos = null;
+                TerapistaXcedulaXRucEmpresaQueryDto? terapistaQueryDtos = null;
+
+                seccion = "VERIFICAR SI EXISTE RUC COMPANIA";
+                var Compania = await GetCompaniaXidXRuc(0, RucCompania);
+                if (Compania == null) throw new JOMAException($"Compania no implementada");
+
                 seccion = "VERIFICAR SI HAY DATOS EN CACHE";
                 if (DomainParameters.CACHE_ENABLE_TERAPISTAS_COMPANIA)
                     LstterapistaQueryDtos = await cacheCrossCuttingService.GetObjectAsync<List<TerapistaQueryDto>>($"{DomainConstants.JOMA_CACHE_KEY_TERAPISTAS}_{RucCompania}");
@@ -120,13 +126,15 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 if (LstterapistaQueryDtos == null)
                 {
                     seccion = "CONSULTAR EN BASE";
-                    terapistaQueryDtos = await consultasQueryServices.GetTerapistasPorCedula(Cedula, RucCompania);
+                    terapistaQueryDtos = await consultasQueryServices.GetTerapistasXCedulaXRucEmpresa(Cedula, RucCompania);
                     return terapistaQueryDtos;
                 }
 
                 seccion = "PROCESO DE CONSULTA TERAPISTA EN CACHE";
                 if (LstterapistaQueryDtos.Any(x => x.Cedula == Cedula))
-                    return LstterapistaQueryDtos.First(x => x.Cedula == Cedula);
+                {
+                    return LstterapistaQueryDtos.First(x => x.Cedula == Cedula).MapToTerapistaXcedulaXRucEmpresaQueryDto();
+                }
 
 
                 return terapistaQueryDtos;

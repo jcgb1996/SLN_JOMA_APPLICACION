@@ -21,7 +21,7 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Trabajador.Controllers
         protected ITerapistaAppServices terapistaAppServices;
         protected IConsultasAppServices consultasAppServices;
 
-       
+
 
         public TerapistasController(ILogCrossCuttingService logService, GlobalDictionaryDto globalDictionary, ITerapistaAppServices terapistaAppServices, IConsultasAppServices consultasAppServices) : base(logService, globalDictionary)
         {
@@ -46,6 +46,10 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Trabajador.Controllers
         {
             try
             {
+                var loginDto = GetUsuarioSesion();
+                terapistaReqDto.IdEmpresa = loginDto.Id;
+                terapistaReqDto.UsuarioCreacion = loginDto.Usuario;
+                terapistaReqDto.IdRol = 2;
                 var Registrado = terapistaAppServices.RegistrarTerapista(terapistaReqDto);
                 return this.CrearRespuestaExitosa(Registrado);
             }
