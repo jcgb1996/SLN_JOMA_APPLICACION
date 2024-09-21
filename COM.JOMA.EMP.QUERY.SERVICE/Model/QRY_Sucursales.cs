@@ -14,7 +14,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
 
 
 
-            #region Descomentar
+            //#region Descomentar
             //var SP_NAME = "[QRY_Login]";
             //List<LoginQueryDto>? Result = new();
             //switch (QueryParameters.TipoORM)
@@ -39,22 +39,22 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
             //
             //
             //}
-            #endregion
-            var sucursales = new List<SucursalQueryDto>();
-            var tarea = Task.Run(() =>
-            {
-                sucursales = new List<SucursalQueryDto>
-                    {
-                        new SucursalQueryDto { Id = 8, Nombre = "Centro", RepresentanteLegal  = "Jennifer Gonzalez", Estado = 1,Maxrowcount=3 },
-                        new SucursalQueryDto { Id = 1, Nombre = "Sur", RepresentanteLegal = "Alejandro Castilla", Estado = 0,Maxrowcount=3 },
-                        new SucursalQueryDto { Id = 26, Nombre = "Playita del Guasmo", RepresentanteLegal = "Jennifer Gonzalez", Estado = 1 ,Maxrowcount=3},
-                    };
+            //#endregion
+            //var sucursales = new List<SucursalQueryDto>();
+            //var tarea = Task.Run(() =>
+            //{
+            //    sucursales = new List<SucursalQueryDto>
+            //        {
+            //            new SucursalQueryDto { Id = 8, Nombre = "Centro", RepresentanteLegal  = "Jennifer Gonzalez", Estado = 1,Maxrowcount=3 },
+            //            new SucursalQueryDto { Id = 1, Nombre = "Sur", RepresentanteLegal = "Alejandro Castilla", Estado = 0,Maxrowcount=3 },
+            //            new SucursalQueryDto { Id = 26, Nombre = "Playita del Guasmo", RepresentanteLegal = "Jennifer Gonzalez", Estado = 1 ,Maxrowcount=3},
+            //        };
 
-            });
+            //});
 
-            await tarea;
+            //await tarea;
 
-            return sucursales;
+            return new ();
         }
     }
 }
