@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace COM.JOMA.EMP.QUERY.Dtos
 {
-    public class TerapistasEmpresaQueryDto
+    public class TerapistasGridQueryDto
     {
         public long Id { get; set; }           
         public string Nombre { get; set; } 
