@@ -13,7 +13,8 @@ var Site = {
         // Remover clases de validación en todos los inputs, selects y textareas
         $('#' + IdFormulario).find('.form-control').each(function () {
             $(this).removeClass('is-invalid is-valid'); // Remover las clases de Bootstrap 5
-            $(this).closest('.form-group').find('.invalid-feedback').hide(); // Ocultar el mensaje de error
+            $(this).closest('.form-group').find('.invalid-feedback').hide(); // Ocultar el mensaje de error 
+            $(this).val('').trigger('change');
         });
 
         // Remover la clase `was-validated` del formulario si está presente

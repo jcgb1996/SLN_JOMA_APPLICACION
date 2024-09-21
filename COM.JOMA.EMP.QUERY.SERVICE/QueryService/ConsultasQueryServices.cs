@@ -1,4 +1,5 @@
-﻿using COM.JOMA.EMP.QUERY.Dtos;
+﻿using COM.JOMA.EMP.DOMAIN.Entities;
+using COM.JOMA.EMP.QUERY.Dtos;
 using COM.JOMA.EMP.QUERY.Interfaces;
 using COM.JOMA.EMP.QUERY.SERVICE.Model;
 using Microsoft.Data.SqlClient;
@@ -15,90 +16,6 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
     {
         public ConsultasQueryServices(IServiceScopeFactory serviceProvider) : base(serviceProvider)
         {
-        }
-
-        public async Task<List<TerapistaQueryDto>> GetTerapistasXRucEmpresa(string RucEmpresa)
-        {
-            try
-            {
-                using (var scope = serviceProvider.CreateScope())
-                {
-                    using (var jomaQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
-                    {
-                        return await jomaQueryContext.GetTerapistasXRucEmpresa(RucEmpresa);
-                    };
-                };
-
-
-
-
-            }
-            catch (SqlException sqlEx)
-            {
-                throw new Exception($"SQL Error: {sqlEx.Message} Error Number: {sqlEx.Number}");
-            }
-            catch (TimeoutException timeoutEx)
-            {
-                throw new Exception($"Timeout Error: {timeoutEx.Message}");
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public async Task<TerapistaQueryDto> GetTerapistasPorId(long IdTerapista)
-        {
-            try
-            {
-                using (var scope = serviceProvider.CreateScope())
-                {
-                    using (var jomaQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
-                    {
-                        return await jomaQueryContext.GetTerapistasPorId(IdTerapista);
-                        //return new LoginQueryDto();
-                    };
-                };
-            }
-            catch (SqlException sqlEx)
-            {
-                throw new Exception($"SQL Error: {sqlEx.Message} Error Number: {sqlEx.Number}");
-            }
-            catch (TimeoutException timeoutEx)
-            {
-                throw new Exception($"Timeout Error: {timeoutEx.Message}");
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public async Task<TerapistaXcedulaXRucEmpresaQueryDto> GetTerapistasXCedulaXRucEmpresa(string Cedula, string RucEmpresa)
-        {
-            try
-            {
-                using (var scope = serviceProvider.CreateScope())
-                {
-                    using (var jomaQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
-                    {
-                        return await jomaQueryContext.GetTerapistasXCedulaXRucEmpresa(Cedula, RucEmpresa);
-                        //return new LoginQueryDto();
-                    };
-                };
-            }
-            catch (SqlException sqlEx)
-            {
-                throw new Exception($"SQL Error: {sqlEx.Message} Error Number: {sqlEx.Number}");
-            }
-            catch (TimeoutException timeoutEx)
-            {
-                throw new Exception($"Timeout Error: {timeoutEx.Message}");
-            }
-            catch (Exception)
-            {
-                throw;
-            }
         }
 
         public async Task<EmpresaQueryDtos> GetCompaniaXidXRuc(long IdCompania, string Ruc)
@@ -184,8 +101,6 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 throw;
             }
         }
-
-
         public async Task<List<SucursalQueryDto>> GetSucursalesPorId(long IdCompania)
         {
             try
@@ -215,7 +130,6 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 throw;
             }
         }
-
         public async Task<List<TipoTerapiaQueryDto>> GetTipoTerapiasXIdEmpresa(long IdEmpresa)
         {
             try
@@ -246,5 +160,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 throw;
             }
         }
+
+        
     }
 }

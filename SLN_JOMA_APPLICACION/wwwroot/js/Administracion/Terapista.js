@@ -3,8 +3,8 @@ var CONTROLERNAME_TERAPISTA = ""
 
 var Terapista = {
     CmbGenero: "",
-    CmbTipoTerapista : "",
-    CmbSucursales : "",
+    CmbTipoTerapista: "",
+    CmbSucursales: "",
 
     Init: function (UrlBase, Controller) {
         debugger;
@@ -14,69 +14,33 @@ var Terapista = {
     },
 
     GetTerapistas: function () {
-        var table = $("#DataTableTerapistas").DataTable({
-                ajax: {
-                    url: Site.createUrl(URL_BASE_TERAPISTA, CONTROLERNAME_TERAPISTA, "/GetTerapistas"),
-                    type: "POST",
-                    dataType: "json",
-                    dataSrc: "data",
-                    data: function (d) {
-                        Site.IniciarLoading();
-                        //Eliminar parámetros de solicitud adicionales
-                        for (var key in d) {
-                            if (key.indexOf("columns") == 0 || key.indexOf("order") == 0) { // Los parámetros que comienzan con columnas se eliminan
-                                delete d[key];
-                            }
-                        }
+        debugger;
+        $.ajax({
+            url: Site.createUrl(URL_BASE_TERAPISTA, CONTROLERNAME_TERAPISTA, "/GetTerapistas"),
+            contentType: "application/json; charset=utf-8",
+            type: "POST",
+            dataType: "json",
+            success: function (response) {
+                Site.CerrarLoading();
+                $("#ModalTerapista").modal('hide');
+                if (response && response.success) {
+                } else if (response && response.message) {
+                    Site.mostrarNotificacion(response.message, 2);
+                } else {
+                    Site.mostrarNotificacion(response.message, 2);
+                }
 
-                        d.search = d.search.value;
-                        return d;
-                    },
-                    dataFilter: function (response) {// json son los datos devueltos por el servidor
-                        response = JSON.parse(response);
-                        if (!response.success) {
-                            Site.mostrarNotificacion(response.message);
-                        }
-
-                        response = response.response;
-                        var returnData = {};
-                        returnData.draw = response.draw;
-                        returnData.recordsTotal = response.recordsTotal;
-                        returnData.recordsFiltered = response.recordsFiltered;
-                        returnData.data = response.data; //JSON.stringify(response.data);
-                        return JSON.stringify(returnData);
-                    },
-                    complete: function () {
-                        Site.CerrarLoading();
-                    },
-                    error: function (result) {
-                        Site.CerrarLoading();
-                        Site.AjaxError(result);
-                    }
-                },
-
-                buttons: [
-                    {
-                        text: '<i title="Nuevo Terapsita" class="fa fa-plus-circle"></i> Nuevo Terapista',
-                        className: 'btn waves-effect waves-light btn-primary',
-                        action: function (e, dt, node, config) {
-                            Terapista.NuevoTerapista();
-                        },
-                        attr: {
-                            title: 'Nuevo Terapsita',
-                            'aria-label': 'Nuevo Terapsita'
-                        },
-
-                    }
-                ],
-                columns: [
-                    {
-                        data: null,
-                        title: 'Acciones',
-                        className: 'dt-center',
-                        width: '5px',
-                        render: function (data, type, row) {
-                            return `
+                $('#DataTableTerapistas').DataTable({
+                    data: response.response.data,
+                    destroy: true, // Utiliza 'destroy' para reinicializar si ya existe
+                    columns: [
+                        {
+                            data: null,
+                            title: 'Acciones',
+                            className: 'dt-center',
+                            width: '5px',
+                            render: function (data, type, row) {
+                                return `
                         <div class="dropdown dropstart">
                             <a href="javascript:void(0)" class="text-muted" id="dropdownMenuButton_${row.id}" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="ti ti-dots fs-5"></i>
@@ -96,99 +60,134 @@ var Terapista = {
                             </ul>
                         </div>
                     `;
-                        }
-                    },
-                    {
-                        data: 'id',
-                        title: 'ID',
-                        className: 'dt-center',
-                        visible: false,
-                    },
-                    {
-                        data: 'nombre',
-                        title: 'Nombre', render: function (data, type, row) {
-                            return '<img src="../assets/images/profile/user-5.jpg" width="45" class="rounded-circle">  ' + data;
-                        }
-                    },
-                    {
-                        data: 'nombreTerapia',
-                        className: 'dt-center',
-                        title: 'Área Designada'
-                    },
-                    {
-                        data: 'estado',
-                        className: 'dt-center',
-                        title: 'Estado', render: function (data, type, row) {
+                            }
+                        },
+                        {
+                            data: 'id',
+                            title: 'ID',
+                            className: 'dt-center',
+                            visible: false,
+                        },
+                        {
+                            data: 'nombre',
+                            title: 'Nombre', render: function (data, type, row) {
+                                return '<img src="../assets/images/profile/user-5.jpg" width="30" class="rounded-circle">  ' + row.nombre + " " + row.apellido;
+                            }
+                        },
+                        {
+                            data: 'nombreTerapia',
+                            className: 'dt-center',
+                            title: 'Tipo Terapia'
+                        },
+                        {
+                            data: 'nombreRol',
+                            className: 'dt-center',
+                            title: 'Rol'
+                        },
+                        {
+                            data: 'email',
+                            className: 'dt-center',
+                            title: 'Correo'
+                        },
+                        {
+                            data: 'telefonoContacto',
+                            className: 'dt-center',
+                            title: 'Teléfono'
+                        },
+                        {
+                            data: 'estado',
+                            className: 'dt-center',
+                            title: 'Estado', render: function (data, type, row) {
 
 
-                            if (data === 1) {
-                                var Estado = "Activo";
-                                return `
+                                if (data === 1) {
+                                    var Estado = "Activo";
+                                    return `
                         <span class="badge bg-success-subtle text-success fw-semibold fs-2 gap-1 d-inline-flex align-items-center">
                           <i class="ti ti-circle fs-3"></i>${Estado}
                         </span>
                     `;
-                            }
+                                }
 
-                            if (data === 0) {
-                                var Estado = "Inactivo";
-                                return `
+                                if (data === 0) {
+                                    var Estado = "Inactivo";
+                                    return `
                         <span class="badge text-bg-light text-dark fw-semibold fs-2 gap-1 d-inline-flex align-items-center">
                           <i class="ti ti-circle fs-3"></i>${Estado}
                         </span>
                     `;
-                            }
+                                }
 
+
+                            }
+                        }
+                    ],
+                    buttons: [
+                        {
+                            text: '<i title="Nuevo Terapsita" class="fa fa-plus-circle"></i> Nuevo Terapista',
+                            className: 'btn waves-effect waves-light btn-primary',
+                            action: function (e, dt, node, config) {
+                                Terapista.NuevoTerapista();
+                            },
+                            attr: {
+                                title: 'Nuevo Terapsita',
+                                'aria-label': 'Nuevo Terapsita'
+                            },
 
                         }
-                    }
-                ],
-                dom: 'Bfrtip',
-                select: {
-                    style: 'os',
-                    selector: 'td:first-child'
-                },
-                colReorder: true,
-                processing: false,
-                serverSide: true,
-                paging: true,
-                scrollX: true,
-                ordering: false,
-                info: true,
-                pageLength: 10,
-                searching: true,
-                responsive: true,
-                destroy: true,
-                select: false,
-                language: {
-                    processing: "Procesando...",
-                    search: "Buscar: _INPUT_",
-                    lengthMenu: '   Mostrar _MENU_',
-                    info: 'Mostrando desde _START_ al _END_ de _TOTAL_ registros',
-                    infoEmpty: 'Mostrando ningún elemento.',
-                    infoFiltered: '(filtrado _MAX_ elementos total)',
-                    infoPostFix: '',
-                    loadingRecords: 'Cargando registros...',
-                    zeroRecords: 'No se encontraron registros',
-                    emptyTable: 'No hay datos disponibles en la tabla',
-                    paginate: {
-                        first: 'Primero',
-                        previous: 'Anterior',
-                        next: 'Siguiente',
-                        last: 'Último'
-                    }
-                },
-                lengthChange: false,
-
-            });
-
-
-
+                    ],
+                    dom: 'Bfrtip',
+                    colReorder: true,
+                    processing: false,
+                    serverSide: false,
+                    paging: false,
+                    scrollX: true,
+                    ordering: false,
+                    info: true,
+                    pageLength: 10,
+                    searching: true,
+                    responsive: true,
+                    select: false,
+                    language: {
+                        processing: "Procesando...",
+                        search: "Buscar: _INPUT_",
+                        lengthMenu: '   Mostrar _MENU_',
+                        info: 'Mostrando desde _START_ al _END_ de _TOTAL_ registros',
+                        infoEmpty: 'Mostrando ningún elemento.',
+                        infoFiltered: '(filtrado _MAX_ elementos total)',
+                        infoPostFix: '',
+                        loadingRecords: 'Cargando registros...',
+                        zeroRecords: 'No se encontraron registros',
+                        emptyTable: 'No hay datos disponibles en la tabla',
+                        paginate: {
+                            first: 'Primero',
+                            previous: 'Anterior',
+                            next: 'Siguiente',
+                            last: 'Último'
+                        }
+                    },
+                    lengthChange: false,
+                });
+            },
+            error: function (xhr, status, error) {
+                Site.CerrarLoading();
+                Site.AjaxError(result);
+            }
+        });
     },
 
-    InitSelect2: function (id, placeholder, Data) {
+    procesarDatos: function (datos) {
+        // Aquí puedes agregar cualquier lógica de procesamiento de datos necesaria
+        // Por ejemplo, podrías querer modificar, agregar o eliminar ciertos campos
+        return datos.map(function (item) {
+            // Supongamos que queremos agregar un nuevo campo
+            item.nombreCompleto = item.nombre + " " + item.apellido;
+            return item;
+        });
+    },
+
+    InitSelect2: function (id, placeholder, Data, selectedId) {
         if (!Data || Data.length === 0) {
-            // Si está vacío, mostramos un mensaje de "No hay datos que mostrar"
             Data = [{
                 id: '',
                 text: 'No hay datos que mostrar'
@@ -196,34 +195,47 @@ var Terapista = {
         }
 
         $("#" + id).select2({
-            placeholder: placeholder,  // Mensaje de placeholder
+            placeholder: placeholder,
             dropdownParent: $("#ModalTerapista"),
-            width: '100%', // Hace que el Select2 ocupe todo el ancho del contenedor
+            width: '100%',
             language: {
                 noResults: function () {
-                    return "No se encontraron resultados";  // Traducción personalizada
+                    return "No se encontraron resultados";
                 }
             },
             data: Data.map(function (terapia) {
-                // Mapea el JSON para que coincida con el formato que necesita Select2
                 return {
-                    id: terapia.id || '', // Si el Id es nulo, dejamos el valor vacío
-                    text: terapia.Nombre || terapia.text // Si el nombre es nulo, usamos el texto de fallback
+                    id: terapia.id || '',
+                    text: terapia.Nombre || terapia.text
                 };
             })
         });
 
+        if (selectedId) {
+            $("#" + id).val(selectedId).trigger('change');
+        }
     },
-    GuardarDatos: function (id, event) {
+
+    GuardarDatos: function (id, event, idTerapista) {
         debugger;
         if (!Site.ValidarForumarioById(id, event))
             return;
 
         var formDataObj = Site.GetObjetoFormularioById(id);
+        formDataObj.NombreTerapia = $('#IdTipoTerapia option:selected').text();
+        formDataObj.NombreRol = "UsuarioRegular";
+
+
         Site.IniciarLoading();
+
+        var con = "/GuardarTerapista";
+        if (idTerapista > 0) {
+            con = "/EditarTerapista";
+        }
+
         $.ajax({
             type: "POST",
-            url: Site.createUrl(URL_BASE_TERAPISTA, CONTROLERNAME_TERAPISTA, "/GuardarTerapista"),
+            url: Site.createUrl(URL_BASE_TERAPISTA, CONTROLERNAME_TERAPISTA, con),
             data: JSON.stringify(formDataObj),
             contentType: "application/json; charset=utf-8",
             //dataType: "json",
@@ -232,6 +244,7 @@ var Terapista = {
                 $("#ModalTerapista").modal('hide');
                 if (response && response.success) {
                     Site.mostrarNotificacion(response.message, 1);
+                    Terapista.GetTerapistas();
                 } else if (response && response.message) {
                     Site.mostrarNotificacion("Error al guardar los datos: " + response.message, 2);
                 } else {
@@ -257,9 +270,6 @@ var Terapista = {
                 Site.CerrarLoading();
                 $("#ContenteModal").empty().html(response);
                 $("#ModalTerapista").modal('show');
-                Terapista.InitSelect2('IdSucursal', 'Seleccione una Sucursal', Terapista.CmbSucursales);
-                Terapista.InitSelect2('Genero', 'Seleccione un género', Terapista.CmbGenero);
-                Terapista.InitSelect2('IdTipoTerapia', 'Seleccione un tipo', Terapista.CmbTipoTerapista);
             },
             error: function (result) {
                 Site.AjaxError(result);
@@ -295,4 +305,7 @@ var Terapista = {
         Terapista.InitSelect2('IdTipoTerapia', 'Seleccione un tipo', Terapista.CmbTipoTerapista);
         $("#ModalTerapista").modal('show');
     },
+    AsiganarValorDireccion: function (Direccion) {
+        $("#Direccion").val(Direccion).trigger('change');
+    }
 };

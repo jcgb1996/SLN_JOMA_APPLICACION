@@ -16,10 +16,11 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
         public DbSet<ActualizarContrasenaQueryDto> actualizarContrasenaQueryDto { get; set; }
         public DbSet<MenuQueryDto> ventanaLoginQueryDto { get; set; }
         public DbSet<MailRecuperarContrasenaQueryDto> mailRecuperarContrasenaQueryDto { get; set; }
-        public DbSet<TerapistaQueryDto> lstTerapistaQueryDto { get; set; }
+        public DbSet<TerapistasEmpresaQueryDto> lstTerapistasEmpresaQueryDto { get; set; }
         public DbSet<TipoTerapiaQueryDto> lstTipoTerapiaQueryDto { get; set; }
         public DbSet<SucursalQueryDto> sucursalQueryDto { get; set; }
-        public DbSet<TerapistaXcedulaXRucEmpresaQueryDto> terapistaXcedulaXRucEmpresaQueryDto { get; set; }
+        public DbSet<ValidaTerapistaQueryDto> validaTerapistaQueryDto { get; set; }
+        public DbSet<TerapistaQueryDto> terapistaQueryDto { get; set; }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder)
         {
@@ -29,9 +30,10 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
             modelBuilder.Entity<ValidacionUsuarioQueryDto>().HasNoKey().ToView(null);
             modelBuilder.Entity<MenuQueryDto>().HasNoKey().ToView(null);
             modelBuilder.Entity<MailRecuperarContrasenaQueryDto>().HasNoKey().ToView(null);
-            modelBuilder.Entity<TerapistaQueryDto>().HasNoKey().ToView(null);
+            modelBuilder.Entity<TerapistasEmpresaQueryDto>().HasNoKey().ToView(null);
             modelBuilder.Entity<TipoTerapiaQueryDto>().HasNoKey().ToView(null);
-            modelBuilder.Entity<TerapistaXcedulaXRucEmpresaQueryDto>().HasNoKey().ToView(null);
+            modelBuilder.Entity<ValidaTerapistaQueryDto>().HasNoKey().ToView(null);
+            modelBuilder.Entity<TerapistaQueryDto>().HasNoKey().ToView(null);
         }
     }
 }

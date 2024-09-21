@@ -42,15 +42,44 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Trabajador.Controllers
         }
 
         [HttpPost]
-        public IActionResult GuardarTerapista([FromBody] TerapistaReqDto terapistaReqDto)
+        public async Task<IActionResult> GuardarTerapista([FromBody] SaveTerapistaReqDto terapistaReqDto)
+        {
+            try
+            {
+                var cont = terapistaReqDto.Contrasena;
+                var loginDto = GetUsuarioSesion();
+                terapistaReqDto.IdEmpresa = loginDto.Id;
+                terapistaReqDto.UsuarioCreacion = loginDto.Usuario;
+                terapistaReqDto.RucEmpresa = loginDto.Ruc;
+                terapistaReqDto.IdRol = 2;
+                var Registrado = await terapistaAppServices.RegistrarTerapista(terapistaReqDto);
+                return this.CrearRespuestaExitosa(Registrado);
+            }
+            catch (JOMAException ex)
+            {
+                return this.CrearRespuestaError(ex.Message, JOMAStatusCode.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                return this.CrearRespuestaError(ex.Message.ToString(), JOMAStatusCode.InternalServerError, ex.Message);
+            }
+            finally
+            {
+                logService.GuardarLogs();
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditarTerapista([FromBody] EditTerapistaReqDto terapistaReqDto)
         {
             try
             {
                 var loginDto = GetUsuarioSesion();
                 terapistaReqDto.IdEmpresa = loginDto.Id;
                 terapistaReqDto.UsuarioCreacion = loginDto.Usuario;
+                terapistaReqDto.RucEmpresa = loginDto.Ruc;
                 terapistaReqDto.IdRol = 2;
-                var Registrado = terapistaAppServices.RegistrarTerapista(terapistaReqDto);
+                var Registrado = await terapistaAppServices.EditarTerapista(terapistaReqDto);
                 return this.CrearRespuestaExitosa(Registrado);
             }
             catch (JOMAException ex)
@@ -72,17 +101,10 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Trabajador.Controllers
         {
             try
             {
-                string? draw = Request.Form.ContainsKey("draw") ? Request.Form["draw"][0] : null;
-                short startRec = Request.Form.ContainsKey("start") ? Convert.ToInt16(Request.Form["start"][0]) : (short)0;
-                short pagTam = Request.Form.ContainsKey("length") ? Convert.ToInt16(Request.Form["length"][0]) : (short)0;
-                var pagIdx = (startRec / (pagTam == 0 ? 1 : pagTam));
                 var loginDto = GetUsuarioSesion();
-                var LstTerapista = await consultasAppServices.GetTerapistasXRucEmpresa(loginDto.Ruc);
+                var LstTerapista = await terapistaAppServices.GetTerapistasXRucEmpresa(loginDto.Ruc);
                 return this.CrearRespuestaExitosa(string.Empty, new
                 {
-                    draw = Convert.ToInt32(draw),
-                    recordsTotal = LstTerapista.FirstOrDefault()?.Maxrowcount ?? 0,
-                    recordsFiltered = LstTerapista.FirstOrDefault()?.Maxrowcount ?? 0,
                     data = LstTerapista
                 });
             }
@@ -106,8 +128,8 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Trabajador.Controllers
             try
             {
                 var loginDto = GetUsuarioSesion();
-                var Terapista = await consultasAppServices.GetTerapistasPorId(IdTerapista, loginDto.Ruc);
-                return PartialView("ModalTerapistaPartialView");
+                var Terapista = await terapistaAppServices.GetTerapistasPorId(IdTerapista, loginDto.Ruc);
+                return PartialView("ModalTerapistaPartialView", Terapista);
             }
             catch (JOMAException ex)
             {

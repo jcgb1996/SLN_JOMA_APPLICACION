@@ -1,7 +1,6 @@
 ﻿using COM.JOMA.EMP.DOMAIN.Constants;
 using COM.JOMA.EMP.DOMAIN.Entities;
 using COM.JOMA.EMP.QUERY.Parameters;
-using COM.JOMA.EMP.QUERY.SERVICE.Extensions;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +13,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
     {
         internal bool InsertarTerapista(Terapista terapista)
         {
-            string SP_NAME = "[JM].[INS_Terapistas]";
+            string SP_NAME = "[dbo].[INS_Terapistas]";
             switch (QueryParameters.TipoORM)
             {
                 case JOMATipoORM.EntityFramework:
@@ -27,11 +26,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
                     new SqlParameter("@Email", terapista.Email),
                     new SqlParameter("@Contrasena", terapista.Contrasena),
                     new SqlParameter("@UsuarioCreacion", terapista.UsuarioCreacion ?? (object)DBNull.Value),
-                    //new SqlParameter("@FechaCreacion", terapista.FechaCreacion),
-                    //new SqlParameter("@Estado", terapista.Estado),
                     new SqlParameter("@NombreUsuario", terapista.NombreUsuario),
-                    //new SqlParameter("@NumeroIntentos", terapista.NumeroIntentos),
-                    //new SqlParameter("@Bloqueo", terapista.Bloqueo),
                     new SqlParameter("@idEmpresa", terapista.IdEmpresa),
                     new SqlParameter("@Cedula", terapista.Cedula),
                     new SqlParameter("@Genero", terapista.Genero),
@@ -57,11 +52,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
                             parameters.Add("@Email", terapista.Email);
                             parameters.Add("@Contrasena", terapista.Contrasena);
                             parameters.Add("@UsuarioCreacion", terapista.UsuarioCreacion);
-                            //parameters.Add("@FechaCreacion", terapista.FechaCreacion);
-                            //parameters.Add("@Estado", terapista.Estado);
                             parameters.Add("@NombreUsuario", terapista.NombreUsuario);
-                            //parameters.Add("@NumeroIntentos", terapista.NumeroIntentos);
-                            //parameters.Add("@Bloqueo", terapista.Bloqueo);
                             parameters.Add("@idEmpresa", terapista.IdEmpresa);
                             parameters.Add("@Cedula", terapista.Cedula);
                             parameters.Add("@Genero", terapista.Genero);

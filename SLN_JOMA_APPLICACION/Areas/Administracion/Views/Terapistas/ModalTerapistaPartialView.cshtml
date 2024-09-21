@@ -1,13 +1,19 @@
-﻿
+﻿@model COM.JOMA.EMP.QUERY.Dtos.TerapistaQueryDto
 
 
 <style>
-    .form-control, .form-select {
-        height: 56px !important; /* Ajusta según el tamaño deseado */
-    }
+    /* .form-control, .form-select {
+                            height: 56px !important;
+                        } */
 
     .select2-selection, .select2-selection {
         height: 56px !important; /* Ajusta según el tamaño deseado */
+    }
+
+    table#DataTableTerapistas td {
+        font-size: 11px !important;
+        padding: 5px 8px !important;
+        vertical-align: middle !important;
     }
 </style>
 
@@ -16,7 +22,7 @@
         <div class="modal-content">
             <div class="modal-header modal-colored-header bg-primary text-white pt-2 pb-2 m-0">
                 <h1 class="modal-title card-title text-center p-0 fs-4" id="">Registo de un Terapista</h1>
-                <button type="button" class="btn-close" id="CerrarModal" data-bs-dismiss="modal" onclick="Site.limpiarFormularioById('RegistrarTrabajador');" aria-label="Close"></button>
+                <button type="button" class="btn-close" id="CerrarModal" data-bs-dismiss="modal" onclick="Site.limpiarFormularioById('RegistrarTerapista',event);" aria-label="Close"></button>
             </div>
             <div class="modal-body pt-1 pb-1">
                 <div class="card-body">
@@ -26,9 +32,14 @@
                     </div>
 
                     <form class="row g-3 needs-validation" id="RegistrarTerapista" novalidate>
+
+                        <input type="hidden" name="IdTerapista" for="IdTerapista" value="@Model.Id" id="IdTerapista" />
+                        <input type="hidden" name="NombreTerapia" for="NombreTerapia" value="" id="IdTerapista" />
+                        <input type="hidden" name="NombreRol" for="NombreRol" value="" id="IdTerapista" />
+
                         <div class="col-xl-4 col-md-4 col-sm-4 col-12">
                             <div class="form-floating">
-                                <input type="text" name="Nombre" class="form-control" id="Nombre" placeholder="Nombre" required>
+                                <input type="text" name="Nombre" value="@Model.Nombre" class="form-control" id="Nombre" placeholder="Nombre" required>
                                 <label for="Nombre">Nombre</label>
                                 <div class="invalid-feedback">Por favor, ingrese sus nombres.</div>
                             </div>
@@ -36,7 +47,7 @@
 
                         <div class="col-xl-4 col-md-4 col-sm-4 col-12">
                             <div class="form-floating">
-                                <input type="text" name="Apellido" class="form-control" id="Apellido" placeholder="Apellidos" required>
+                                <input type="text" name="Apellido" value="@Model.Apellido" class="form-control" id="Apellido" placeholder="Apellidos" required>
                                 <label for="Apellido">Apellidos</label>
                                 <div class="invalid-feedback">Por favor, ingrese sus apellidos.</div>
                             </div>
@@ -44,7 +55,7 @@
 
                         <div class="col-xl-4 col-md-4 col-sm-4 col-12">
                             <div class="form-floating">
-                                <input type="text" name="Cedula" class="form-control" id="Cedula" placeholder="Cédula" required>
+                                <input type="text" name="Cedula" class="form-control" value="@Model.Cedula" id="Cedula" placeholder="Cédula" required>
                                 <label for="Cedula">Cédula</label>
                                 <div class="invalid-feedback">Por favor, ingrese su cédula.</div>
                             </div>
@@ -52,8 +63,8 @@
 
                         <div class="col-xl-4 col-md-4 col-sm-4 col-12">
                             <div class="form-floating">
-                                <input type="email" name="Correo" class="form-control " id="Correo" placeholder="Correo" required>
-                                <label for="Correo">Correo</label>
+                                <input type="email" name="Email" class="form-control " value="@Model.Email" id="Email" placeholder="Email" required>
+                                <label for="Email">Correo</label>
                                 <div class="invalid-feedback">Por favor, ingrese su correo electrónico.</div>
                             </div>
                         </div>
@@ -70,7 +81,7 @@
 
                         <div class="col-xl-4 col-md-4 col-sm-4 col-12">
                             <div class="form-floating">
-                                <input type="date" name="FechaNacimiento" class="form-control" placeholder="Fecha nacimiento" id="FechaNacimiento" required>
+                                <input type="date" name="FechaNacimiento" value="@Model.FechaNacimiento" class="form-control" placeholder="Fecha nacimiento" id="FechaNacimiento" required>
                                 <label for="FechaNacimiento">Fecha Nacimiento</label>
                                 <div class="invalid-feedback">Por favor, seleccione su fecha de nacimiento.</div>
                             </div>
@@ -78,7 +89,7 @@
 
                         <div class="col-xl-4 col-md-4 col-sm-4 col-12">
                             <div class="form-floating">
-                                <input type="number" name="TelefonoContacto" class="form-control" id="TelefonoContacto" placeholder="Teléfono contacto" required>
+                                <input type="number" name="TelefonoContacto" value="@Model.TelefonoContacto" class="form-control" id="TelefonoContacto" placeholder="Teléfono contacto" required>
                                 <label for="TelefonoContacto">Teléfono de contacto</label>
                                 <div class="invalid-feedback">Por favor, ingrese su teléfono de contacto.</div>
                             </div>
@@ -86,7 +97,7 @@
 
                         <div class="col-xl-4 col-md-4 col-sm-4 col-12">
                             <div class="form-floating">
-                                <input type="number" name="TelefonoContactoEmergencia" class="form-control" id="TelefonoContactoEmergencia" placeholder="Contacto de emergencia" required>
+                                <input type="number" name="TelefonoContactoEmergencia" value="@Model.TelefonoContactoEmergencia" class="form-control" id="TelefonoContactoEmergencia" placeholder="Contacto de emergencia" required>
                                 <label for="TelefonoContactoEmergencia">Contacto de emergencia</label>
                                 <div class="invalid-feedback">Por favor, ingrese un contacto de emergencia.</div>
                             </div>
@@ -114,7 +125,7 @@
 
                         <div class="col-12">
                             <div class="form-floating">
-                                <textarea class="form-control" name="Direccion" placeholder="Dirección" id="Direccion" style="height: 100px;" required></textarea>
+                                <textarea class="form-control" name="Direccion" value="@Model.Direccion" placeholder="Dirección" id="Direccion" style="height: 100px;" required></textarea>
                                 <label for="Direccion">Dirección</label>
                                 <div class="invalid-feedback">Por favor, ingrese su dirección.</div>
                             </div>
@@ -127,11 +138,22 @@
             </div>
             <div class="modal-footer">
                 <button type="button" onclick="Site.limpiarFormularioById('RegistrarTerapista');" data-bs-dismiss="modal" class="btn btn-secondary">Cancelar</button>
-                <button type="button" onclick="Terapista.GuardarDatos('RegistrarTerapista',event);" class="btn btn-primary">Guardar</button>
+                <button type="button" onclick="Terapista.GuardarDatos('RegistrarTerapista',event, @Model.Id);" class="btn btn-primary">Guardar</button>
             </div>
         </div>
     </div>
 </div>
+
+@if (Model.Id > 0)
+{
+    <script type="text/javascript">
+        Terapista.InitSelect2('IdSucursal', 'Seleccione una Sucursal', Terapista.CmbSucursales, '@Model.IdTipoTerapia');
+        Terapista.InitSelect2('Genero', 'Seleccione un género', Terapista.CmbGenero, '@Model.IdTipoTerapia');
+        Terapista.InitSelect2('IdTipoTerapia', 'Seleccione un tipo', Terapista.CmbTipoTerapista, '@Model.IdTipoTerapia');
+        Terapista.AsiganarValorDireccion('@Model.Direccion');
+    </script>
+
+}
 
 
 

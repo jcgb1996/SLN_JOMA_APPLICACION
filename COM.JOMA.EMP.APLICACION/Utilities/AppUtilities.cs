@@ -129,5 +129,12 @@ namespace COM.JOMA.EMP.APLICACION.Utilities
             }
             return contraseniaAleatoria;
         }
+
+        public static bool EsMenor(DateTime FechaNacimiento)
+        {
+            int DifAnios = DateTime.Today.Year - FechaNacimiento.Year;
+            if (FechaNacimiento > DateTime.Today.AddYears(-DifAnios)) DifAnios--;
+            return DifAnios < DomainConstants.JOMA_MENOR_EDAD;
+        }
     }
 }

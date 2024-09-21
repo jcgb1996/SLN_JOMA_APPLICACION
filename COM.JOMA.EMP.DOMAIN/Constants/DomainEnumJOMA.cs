@@ -85,8 +85,6 @@ namespace COM.JOMA.EMP.DOMAIN.Constants
         NoEnviados = 1,
         [Description("NO CONFIRMADOS")]
         NoConfirmados = 2,
-        //[Description("RESPONSABLE")]
-        //Responsable = 3,
         [Description("REENVIO")]
         Reenvio = 10
     }
@@ -132,5 +130,11 @@ namespace COM.JOMA.EMP.DOMAIN.Constants
         Agenero,
         [Description("Otros")]
         Otro
+    }
+
+    public enum JOMAEstado: int
+    {
+        Activo = 1,
+        Inactivo = 0
     }
 }

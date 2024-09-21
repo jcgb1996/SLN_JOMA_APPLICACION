@@ -11,7 +11,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
 {
     public partial class JomaQueryContext : JomaQueryContextEF
     {
-        internal async Task<List<MenuQueryDto>> QRY_OpcionesManuPorIdUsuario(long IdUsuario)
+        internal async Task<List<MenuQueryDto>> GetMenuPorIdUsuario(long IdUsuario)
         {
             var SP_NAME = "[QRY_GetMenuPorIdUsuario]";
             List<MenuQueryDto> Result = new();

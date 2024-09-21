@@ -6,6 +6,10 @@ namespace COM.JOMA.EMP.APLICACION.Interfaces
 {
     public interface ITerapistaAppServices
     {
-        public JOMAResponse RegistrarTerapista(TerapistaReqDto pacienteReqtDto);
+        public Task<JOMAResponse> RegistrarTerapista(SaveTerapistaReqDto TerapistaReqtDto);
+        public Task<JOMAResponse> EditarTerapista(EditTerapistaReqDto TerapistaReqtDto);
+        public Task<TerapistaQueryDto> GetTerapistasPorId(long IdTerapista, string RucCompania);
+        public Task<List<TerapistasEmpresaQueryDto>> GetTerapistasXRucEmpresa(string RucEmpresa);
+        public Task<(bool, bool)> ValidaTerapistaXCedulaXRucEmpresaXCorreo(string Cedula, string RucEmpresa, string Correo);
     }
 }

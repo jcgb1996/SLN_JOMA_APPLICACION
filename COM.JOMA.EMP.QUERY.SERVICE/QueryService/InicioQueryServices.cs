@@ -24,7 +24,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 {
                     using (var jomaQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
                     {
-                        return await jomaQueryContext.QRY_OpcionesManuPorIdUsuario(IdUsuario);
+                        return await jomaQueryContext.GetMenuPorIdUsuario(IdUsuario);
                         //return new LoginQueryDto();
                     };
                 };

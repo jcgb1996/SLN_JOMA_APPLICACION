@@ -9,14 +9,12 @@ namespace COM.JOMA.EMP.QUERY.Interfaces
 {
     public interface IConsultasQueryServices
     {
-        public Task<List<TerapistaQueryDto>> GetTerapistasXRucEmpresa(string RucEmpresa);
-        public Task<TerapistaQueryDto> GetTerapistasPorId(long IdTerapista);
         public Task<EmpresaQueryDtos> GetCompaniaXidXRuc(long IdCompania, string Ruc);
         /*Revisar con alan si este metodo queda en desuso GetSucursalesXIdCompañia*/
         public Task<SucursalQueryDto> GetSucursalesXIdCompañia(long IdSucursal);
         public Task<List<SucursalQueryDto>> GetSucursalesXIdEmpresa(long IdEmpresa);
         public Task<List<SucursalQueryDto>> GetSucursalesPorId(long IdCompania);
-        public Task<TerapistaXcedulaXRucEmpresaQueryDto> GetTerapistasXCedulaXRucEmpresa(string Cedula, string RucEmpresa);
         public Task<List<TipoTerapiaQueryDto>> GetTipoTerapiasXIdEmpresa(long IdEmpresa);
+        
     }
 }

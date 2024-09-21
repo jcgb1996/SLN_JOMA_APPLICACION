@@ -14,16 +14,15 @@ namespace COM.JOMA.EMP.QUERY.Dtos
         public string Apellido { get; set; }
         public string Cedula { get; set; }
         public string Email { get; set; }
-        public JOMAGenero Genero { get; set; }
-        public DateTime FechaNacimiento { get; set; }
         public string TelefonoContacto { get; set; }
+        public string Estado { get; set; }
+        public string NombreUsuario { get; set; }
+        public string Contrasena { get; set; }
+        public string Genero { get; set; }
+        public DateTime FechaNacimiento { get; set; }
         public string TelefonoContactoEmergencia { get; set; }
         public long IdSucursal { get; set; }
-        public string NombreSucursal { get; set; }
         public long IdTipoTerapia { get; set; }
-        public string NombreTerapia { get; set; }
         public string Direccion { get; set; }
-        public int Maxrowcount { get; set; }
-        public int Estado { get; set; }
     }
 }
