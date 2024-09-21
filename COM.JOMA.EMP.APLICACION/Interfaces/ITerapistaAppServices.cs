@@ -11,5 +11,5 @@ namespace COM.JOMA.EMP.APLICACION.Interfaces
         public Task<TerapistaQueryDto> GetTerapistasPorId(long IdTerapista, string RucCompania);
         public Task<List<TerapistasEmpresaQueryDto>> GetTerapistasXRucEmpresa(string RucEmpresa);
         public Task<(bool, bool)> ValidaTerapistaXCedulaXRucEmpresaXCorreo(string Cedula, string RucEmpresa, string Correo);
-    }
+    } 
 }

@@ -25,11 +25,10 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
                             sucursal.Nombre,
                             sucursal.Direccion,
                             sucursal.Telefono,
-                            sucursal.CorreoElectronico,
+                            sucursal.Email,
                             sucursal.RUC,
                             sucursal.RepresentanteLegal,
                             sucursal.CedulaRepresentante,
-                            sucursal.ActividadEconomica,
                             //mail.FechaEnvio ?? (object)DBNull.Value,
                         };
 
@@ -45,11 +44,10 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
                             parameters.Add("@Nombre", sucursal.Nombre);
                             parameters.Add("@Direccion", sucursal.Direccion);
                             parameters.Add("@Telefono", sucursal.Telefono);
-                            parameters.Add("@CorreoElectronico", sucursal.CorreoElectronico);
+                            parameters.Add("@Email", sucursal.Email);
                             parameters.Add("@RUC", sucursal.RUC);
                             parameters.Add("@RepresentanteLegal", sucursal.RepresentanteLegal);
                             parameters.Add("@CedulaRepresentante", sucursal.CedulaRepresentante);
-                            parameters.Add("@ActividadEconomica", sucursal.ActividadEconomica);
                             //parameters.Add("@FechaEnvio", mail.FechaEnvio);
 
 

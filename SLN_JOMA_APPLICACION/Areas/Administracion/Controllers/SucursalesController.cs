@@ -111,25 +111,29 @@ namespace SLN_JOMA_APPLICACION.Areas.Administracion.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult GuardarSucursal([FromBody] SucursalReqDto sucursalReqDto)
+		public async Task<IActionResult> GuardarSucursal([FromBody] SucursalReqDto sucursalReqDto)
 		{
 			try
 			{
-				var Registrado = sucursalAppServices.RegistrarSucursal(sucursalReqDto);
-				return this.CrearRespuestaExitosa(Registrado);
-			}
-			catch (JOMAException ex)
-			{
-				return this.CrearRespuestaError(ex.Message, JOMAStatusCode.BadRequest);
-			}
-			catch (Exception ex)
-			{
-				return this.CrearRespuestaError(ex.Message.ToString(), JOMAStatusCode.InternalServerError, ex.Message);
-			}
-			finally
-			{
-				logService.GuardarLogs();
-			}
-		}
+                var loginDto = GetUsuarioSesion();
+                sucursalReqDto.IdEmpresa = loginDto.Id;
+                sucursalReqDto.UsuarioCreacion = loginDto.Usuario;
+                sucursalReqDto.RUC = loginDto.Ruc;
+                var Registrado = await sucursalAppServices.RegistrarSucursal(sucursalReqDto);
+                return this.CrearRespuestaExitosa(Registrado);
+            }
+            catch (JOMAException ex)
+            {
+                return this.CrearRespuestaError(ex.Message, JOMAStatusCode.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                return this.CrearRespuestaError(ex.Message.ToString(), JOMAStatusCode.InternalServerError, ex.Message);
+            }
+            finally
+            {
+                logService.GuardarLogs();
+            }
+        }
 	}
 }
