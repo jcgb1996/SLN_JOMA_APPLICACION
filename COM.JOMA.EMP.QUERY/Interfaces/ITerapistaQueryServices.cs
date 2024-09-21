@@ -10,9 +10,9 @@ namespace COM.JOMA.EMP.QUERY.Interfaces
 {
     public interface ITerapistaQueryServices
     {
-        bool RegistrarTerapista(Terapista terapista);
+        Task<long> RegistrarTerapista(Terapista terapista);
         Task<bool> EditarTerapista(Terapista terapista);
-        Task<List<TerapistasEmpresaQueryDto>> GetTerapistasXRucEmpresa(string RucEmpresa);
+        Task<List<TerapistasGridQueryDto>> GetTerapistasXRucEmpresa(string RucEmpresa);
         Task<ValidaTerapistaQueryDto> ValidaTerapistaXCedulaXCorreo(string Cedula, string RucEmpresa, string Correo);
         Task<TerapistaQueryDto> GetTerapistasXIdXIdEmpresa(long IdTerapista, long IdEmpresa);
     }

@@ -25,4 +25,8 @@
     <ProjectReference Include="..\COM.JOMA.EMP.QUERY\COM.JOMA.EMP.QUERY.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Scripts\" />
+  </ItemGroup>
+
 </Project>

@@ -168,6 +168,17 @@ var Terapista = {
                     },
                     lengthChange: false,
                 });
+                $('.datepicker').datepicker({
+                    language: 'es',
+                    format: 'dd/mm/yyyy',
+                    clearBtn: false,
+                    todayHighlight: false,
+                    daysOfWeekHighlighted: "0,6",
+                    autoclose: true,
+                    todayBtn: "linked",
+                    title: "Selecciona una fecha"
+                });
+                
             },
             error: function (xhr, status, error) {
                 Site.CerrarLoading();

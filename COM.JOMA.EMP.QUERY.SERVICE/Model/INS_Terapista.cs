@@ -11,7 +11,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
 {
     public partial class JomaQueryContext : JomaQueryContextEF
     {
-        internal bool InsertarTerapista(Terapista terapista)
+        public async Task<long> InsertarTerapista(Terapista terapista)
         {
             string SP_NAME = "[dbo].[INS_Terapistas]";
             switch (QueryParameters.TipoORM)
@@ -35,11 +35,18 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
                     new SqlParameter("@TelefonoContactoEmergencia", terapista.TelefonoContactoEmergencia ?? (object)DBNull.Value),
                     new SqlParameter("@Direccion", terapista.Direccion ?? (object)DBNull.Value),
                     new SqlParameter("@IdSucursal", terapista.IdSucursal),
-                    new SqlParameter("@IdTipoTerapia", terapista.IdTipoTerapia)
+                    new SqlParameter("@IdTipoTerapia", terapista.IdTipoTerapia),
+                    new SqlParameter
+                    {
+                        ParameterName = "@id",
+                        SqlDbType = SqlDbType.BigInt,
+                        Direction = ParameterDirection.Output
+                    }
                 };
 
-                        var result = Database.ExecuteSqlRaw($"EXEC {SP_NAME}", parameters.ToArray());
-                        return result != 0;
+                       await  Database.ExecuteSqlRawAsync($"EXEC {SP_NAME} @RolId, @Nombre, @Apellido, @Email, @Contrasena, @UsuarioCreacion, @NombreUsuario, @idEmpresa, @Cedula, @Genero, @FechaNacimiento, @TelefonoContacto, @TelefonoContactoEmergencia, @Direccion, @IdSucursal, @IdTipoTerapia, @id OUTPUT", parameters.ToArray());
+                        long newId = (long)parameters.Last(p => p.ParameterName == "@id").Value;
+                        return newId;
                     }
                 case JOMATipoORM.Dapper:
                     {
@@ -62,15 +69,18 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
                             parameters.Add("@Direccion", terapista.Direccion);
                             parameters.Add("@IdSucursal", terapista.IdSucursal);
                             parameters.Add("@IdTipoTerapia", terapista.IdTipoTerapia);
+                            parameters.Add("@id", dbType: DbType.Int64, direction: ParameterDirection.Output);
 
-                            var result = connection.Execute(SP_NAME, parameters, commandType: CommandType.StoredProcedure);
-                            return result != 0;
+                           await connection.ExecuteAsync(SP_NAME, parameters, commandType: CommandType.StoredProcedure);
+                            long newId = parameters.Get<long>("@id");
+                            return newId;
                         }
                     }
                 default:
                     throw new Exception($"Tipo ORM {QueryParameters.TipoORM} no definido");
             }
         }
+
 
     }
 }

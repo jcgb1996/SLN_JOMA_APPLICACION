@@ -3,8 +3,8 @@
 
 <style>
     /* .form-control, .form-select {
-                            height: 56px !important;
-                        } */
+                                    height: 56px !important;
+                                } */
 
     .select2-selection, .select2-selection {
         height: 56px !important; /* Ajusta según el tamaño deseado */
@@ -81,7 +81,8 @@
 
                         <div class="col-xl-4 col-md-4 col-sm-4 col-12">
                             <div class="form-floating">
-                                <input type="date" name="FechaNacimiento" value="@Model.FechaNacimiento" class="form-control" placeholder="Fecha nacimiento" id="FechaNacimiento" required>
+                                @* <input type="date" name="FechaNacimiento" value="@Model.FechaNacimiento" class="form-control"  id="FechaNacimiento" required> *@
+                                <input type="text" name="FechaNacimiento" value="@Model.FechaNacimiento.ToString("yyyy-MM-dd")" id="FechaNacimiento" class="form-control datepicker" placeholder="Fecha nacimiento" required>
                                 <label for="FechaNacimiento">Fecha Nacimiento</label>
                                 <div class="invalid-feedback">Por favor, seleccione su fecha de nacimiento.</div>
                             </div>
@@ -147,8 +148,8 @@
 @if (Model.Id > 0)
 {
     <script type="text/javascript">
-        Terapista.InitSelect2('IdSucursal', 'Seleccione una Sucursal', Terapista.CmbSucursales, '@Model.IdTipoTerapia');
-        Terapista.InitSelect2('Genero', 'Seleccione un género', Terapista.CmbGenero, '@Model.IdTipoTerapia');
+        Terapista.InitSelect2('IdSucursal', 'Seleccione una Sucursal', Terapista.CmbSucursales, '@Model.IdSucursal');
+        Terapista.InitSelect2('Genero', 'Seleccione un género', Terapista.CmbGenero, '@Model.Genero');
         Terapista.InitSelect2('IdTipoTerapia', 'Seleccione un tipo', Terapista.CmbTipoTerapista, '@Model.IdTipoTerapia');
         Terapista.AsiganarValorDireccion('@Model.Direccion');
     </script>

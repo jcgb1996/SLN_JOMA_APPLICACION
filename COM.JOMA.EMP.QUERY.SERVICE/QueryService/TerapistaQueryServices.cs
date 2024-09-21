@@ -42,7 +42,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 throw;
             }
         }
-        public bool RegistrarTerapista(Terapista terapista)
+        public async Task<long> RegistrarTerapista(Terapista terapista)
         {
             try
             {
@@ -50,7 +50,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 {
                     using (var jomaQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
                     {
-                        return jomaQueryContext.InsertarTerapista(terapista);
+                        return await jomaQueryContext.InsertarTerapista(terapista);
                     };
                 };
             }
@@ -93,7 +93,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 throw;
             }
         }
-        public async Task<List<TerapistasEmpresaQueryDto>> GetTerapistasXRucEmpresa(string RucEmpresa)
+        public async Task<List<TerapistasGridQueryDto>> GetTerapistasXRucEmpresa(string RucEmpresa)
         {
             try
             {

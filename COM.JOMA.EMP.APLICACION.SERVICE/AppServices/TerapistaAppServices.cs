@@ -31,18 +31,18 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
         }
 
         #region Metodos ayudantes
-        public async Task<List<TerapistasEmpresaQueryDto>?> ObtenerCacheListTerapistasAsync(string RucEmpresa)
+        public async Task<List<TerapistasGridQueryDto>?> ObtenerCacheListTerapistasAsync(string RucEmpresa)
         {
-            List<TerapistasEmpresaQueryDto>? terapistaQueryDtos = null;
+            List<TerapistasGridQueryDto>? terapistaQueryDtos = null;
             if (DomainParameters.CACHE_ENABLE_TERAPISTAS_COMPANIA)
-                terapistaQueryDtos = await cacheCrossCuttingService.GetObjectAsync<List<TerapistasEmpresaQueryDto>>($"{DomainConstants.JOMA_CACHE_KEY_TERAPISTAS}_{RucEmpresa}");
+                terapistaQueryDtos = await cacheCrossCuttingService.GetObjectAsync<List<TerapistasGridQueryDto>>($"{DomainConstants.JOMA_CACHE_KEY_TERAPISTAS}_{RucEmpresa}");
 
             return terapistaQueryDtos;
 
         }
-        private async Task<List<TerapistasEmpresaQueryDto>> ActualizarCacheTerapistaAsync(string RucEmpresa)
+        private async Task<List<TerapistasGridQueryDto>> ActualizarCacheTerapistaAsync(string RucEmpresa)
         {
-            List<TerapistasEmpresaQueryDto>? terapistaQueryDtos = await terapistaQueryServices.GetTerapistasXRucEmpresa(RucEmpresa);
+            List<TerapistasGridQueryDto>? terapistaQueryDtos = await terapistaQueryServices.GetTerapistasXRucEmpresa(RucEmpresa);
             if (DomainParameters.CACHE_ENABLE_TERAPISTAS_COMPANIA)
                 await cacheCrossCuttingService.AddObjectAsync($"{DomainConstants.JOMA_CACHE_KEY_TERAPISTAS}_{RucEmpresa}", terapistaQueryDtos, DomainParameters.CACHE_TIEMPO_EXP_TERAPISTA_COMPANIA);
 
@@ -68,11 +68,21 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
 
                 seccion = "REALIZAR MAP";
                 var terapista = terapistaReqtDto.MapToSaveTerapistaReqDto();
-                var Registrado = terapistaQueryServices.RegistrarTerapista(terapista);
-                if (!Registrado) new JOMAException($"No se pudo registrar al Terpista con cédula: {terapista.Cedula}");
+                var IdTerapista = await terapistaQueryServices.RegistrarTerapista(terapista);
+                if (!(IdTerapista != 0)) new JOMAException($"No se pudo registrar al Terpista con cédula: {terapista.Cedula}");
 
-                /*Realizar proceso para elnvio del correo con las credenciales*/
+                List<TerapistasGridQueryDto>? LstterapistaQueryDtos = await ObtenerCacheListTerapistasAsync(terapistaReqtDto.RucEmpresa);
+                if (LstterapistaQueryDtos != null)
+                {
+                    seccion = "ACTUALIZAR LA CACHE";
+                    var terapistaAppDto = terapistaReqtDto.MapToTerapistasEmpresaQueryDto(IdTerapista);
+                    LstterapistaQueryDtos.Add(terapistaAppDto);
+                    await cacheCrossCuttingService.RemoveAsync($"{DomainConstants.JOMA_CACHE_KEY_TERAPISTAS}_{terapistaReqtDto.RucEmpresa}");
+                    await cacheCrossCuttingService.AddObjectAsync($"{DomainConstants.JOMA_CACHE_KEY_TERAPISTAS}_{terapistaReqtDto.RucEmpresa}", LstterapistaQueryDtos, DomainParameters.CACHE_TIEMPO_EXP_TERAPISTA_COMPANIA);
 
+                }
+
+                /* Aqui va el proceso del correo de bienvenida */
 
                 seccion = "RETRONAR RESPUESTA";
                 return new();
@@ -106,7 +116,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
 
 
                 seccion = "VERIFICAR SI HAY DATOS EN CACHE";
-                List<TerapistasEmpresaQueryDto>? LstterapistaQueryDtos = await ObtenerCacheListTerapistasAsync(terapistaReqtDto.RucEmpresa);
+                List<TerapistasGridQueryDto>? LstterapistaQueryDtos = await ObtenerCacheListTerapistasAsync(terapistaReqtDto.RucEmpresa);
                 if (LstterapistaQueryDtos != null)
                 {
                     seccion = "ACTUALIZAR LA CACHE";
@@ -152,7 +162,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
             string seccion = string.Empty;
             try
             {
-                List<TerapistasEmpresaQueryDto>? LstterapistaQueryDtos = null;
+                List<TerapistasGridQueryDto>? LstterapistaQueryDtos = null;
                 TerapistaQueryDto? terapistaQueryDtos = null;
 
                 seccion = "VERIFICAR SI EXISTE RUC COMPANIA";
@@ -161,7 +171,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
 
                 seccion = "VERIFICAR SI HAY DATOS EN CACHE";
                 if (DomainParameters.CACHE_ENABLE_TERAPISTAS_COMPANIA)
-                    LstterapistaQueryDtos = await cacheCrossCuttingService.GetObjectAsync<List<TerapistasEmpresaQueryDto>>($"{DomainConstants.JOMA_CACHE_KEY_TERAPISTAS}_{RucCompania}");
+                    LstterapistaQueryDtos = await cacheCrossCuttingService.GetObjectAsync<List<TerapistasGridQueryDto>>($"{DomainConstants.JOMA_CACHE_KEY_TERAPISTAS}_{RucCompania}");
 
                 seccion = "PROCESO DE CONSULTA";
                 if (LstterapistaQueryDtos == null)
@@ -191,7 +201,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
             string seccion = string.Empty;
             try
             {
-                List<TerapistasEmpresaQueryDto>? LstterapistaQueryDtos = null;
+                List<TerapistasGridQueryDto>? LstterapistaQueryDtos = null;
                 //TerapistaXcedulaXRucEmpresaQueryDto? terapistaQueryDtos = null;
 
                 seccion = "VERIFICAR SI EXISTE RUC COMPANIA";
@@ -200,7 +210,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
 
                 seccion = "VERIFICAR SI HAY DATOS EN CACHE";
                 if (DomainParameters.CACHE_ENABLE_TERAPISTAS_COMPANIA)
-                    LstterapistaQueryDtos = await cacheCrossCuttingService.GetObjectAsync<List<TerapistasEmpresaQueryDto>>($"{DomainConstants.JOMA_CACHE_KEY_TERAPISTAS}_{RucEmpresa}");
+                    LstterapistaQueryDtos = await cacheCrossCuttingService.GetObjectAsync<List<TerapistasGridQueryDto>>($"{DomainConstants.JOMA_CACHE_KEY_TERAPISTAS}_{RucEmpresa}");
 
                 seccion = "PROCESO DE CONSULTA";
                 if (LstterapistaQueryDtos == null)
@@ -223,7 +233,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 throw;
             }
         }
-        public async Task<List<TerapistasEmpresaQueryDto>> GetTerapistasXRucEmpresa(string RucEmpresa)
+        public async Task<List<TerapistasGridQueryDto>> GetTerapistasXRucEmpresa(string RucEmpresa)
         {
             string seccion = string.Empty;
             try
@@ -233,7 +243,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 if (Compania == null) throw new JOMAException($"Compania {RucEmpresa} no implementada");
 
                 seccion = "VERIFICAR SI HAY DATOS EN CACHE";
-                List<TerapistasEmpresaQueryDto>? terapistaQueryDtos = await ObtenerCacheListTerapistasAsync(RucEmpresa);
+                List<TerapistasGridQueryDto>? terapistaQueryDtos = await ObtenerCacheListTerapistasAsync(RucEmpresa);
 
 
                 if (terapistaQueryDtos == null)
