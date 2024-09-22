@@ -1,14 +1,12 @@
-﻿using COM.JOMA.EMP.APLICACION.Dto.Request.Administracion.PacienteDto;
-using COM.JOMA.EMP.APLICACION.Dto.Request.Administracion.TerapistaDto;
+﻿using COM.JOMA.EMP.APLICACION.Dto.Request.Administracion.TerapistaDto;
+using COM.JOMA.EMP.APLICACION.Dto.Request.Mail;
 using COM.JOMA.EMP.APLICACION.Interfaces;
-using COM.JOMA.EMP.APLICACION.SERVICE.AppServices;
 using COM.JOMA.EMP.APLICACION.SERVICE.Constants;
 using COM.JOMA.EMP.CROSSCUTTING.ICrossCuttingServices;
 using COM.JOMA.EMP.DOMAIN;
 using COM.JOMA.EMP.DOMAIN.Constants;
 using COM.JOMA.EMP.DOMAIN.JomaExtensions;
 using COM.JOMA.EMP.DOMAIN.Tools;
-using COM.JOMA.EMP.QUERY.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using SLN_COM_JOMA_APPLICACION.Controllers;
 using SLN_COM_JOMA_APPLICACION.Extensions;
@@ -20,24 +18,29 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Trabajador.Controllers
     {
         protected ITerapistaAppServices terapistaAppServices;
         protected IConsultasAppServices consultasAppServices;
+        protected IEnvioMailEnLineaAppServices envioMailEnLineaAppServices;
 
 
 
-        public TerapistasController(ILogCrossCuttingService logService, GlobalDictionaryDto globalDictionary, ITerapistaAppServices terapistaAppServices, IConsultasAppServices consultasAppServices) : base(logService, globalDictionary)
+        public TerapistasController(ILogCrossCuttingService logService, GlobalDictionaryDto globalDictionary, ITerapistaAppServices terapistaAppServices,
+            IConsultasAppServices consultasAppServices, IEnvioMailEnLineaAppServices envioMailEnLineaAppServices) : base(logService, globalDictionary)
         {
             this.terapistaAppServices = terapistaAppServices;
             this.consultasAppServices = consultasAppServices;
+            this.envioMailEnLineaAppServices = envioMailEnLineaAppServices;
         }
 
         public async Task<IActionResult> IndexAsync()
         {
             var loginDto = GetUsuarioSesion();
             var CmbGenero = JOMAExtensions.GetGeneros<JOMAGenero>();
+            var CmbEstado = JOMAExtensions.GetGeneros<JOMAEstado>();
             var CmbTipoServicio = await consultasAppServices.GetTipoTerapiasXIdEmpresa(loginDto.IdCompania);
             var CmbSucursales = await consultasAppServices.GetSucursalesPorIdEmpresa(loginDto.IdCompania);
             ViewData["CmgGenero"] = CmbGenero;
             ViewData["CbmTipoTerapias"] = CmbTipoServicio;
             ViewData["CmbSucursales"] = CmbSucursales;
+            ViewData["CmbEstado"] = CmbEstado;
             return View();
         }
 
@@ -146,11 +149,19 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Trabajador.Controllers
         }
 
         [HttpPost]
-        public IActionResult InactivarTerapista(long IdTerapista)
+        public async Task<IActionResult> ReenvioMailBienvenida([FromQuery] string cedula, string nombreUsuario)
         {
             try
             {
-                return this.CrearRespuestaExitosa();
+                var loginDto = GetUsuarioSesion();
+                var Result = await envioMailEnLineaAppServices.EnviarCorreoBienvenida(new EnvioMailEnLineaBienvenidaAppDto()
+                {
+                    Cedula = cedula,
+                    Usuario = nombreUsuario,
+                    Ruc = loginDto.Ruc
+                });
+
+                return this.CrearRespuestaExitosa("Correo enviado exitosamente", Result.StatusCode);
             }
             catch (JOMAException ex)
             {

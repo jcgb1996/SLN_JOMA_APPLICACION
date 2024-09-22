@@ -5,6 +5,7 @@ var Terapista = {
     CmbGenero: "",
     CmbTipoTerapista: "",
     CmbSucursales: "",
+    CmbEstado: "",
 
     Init: function (UrlBase, Controller) {
         debugger;
@@ -53,8 +54,13 @@ var Terapista = {
                                     </a>
                                 </li>
                                 <li>
+                                    <a class="dropdown-item d-flex align-items-center gap-3" onclick="Terapista.ReenvioMailBienvenida('${row.cedula}', '${row.nombreUsuario}');" href="javascript:void(0)">
+                                        <i class="ti ti-mail"></i> Reenviar correo bienvenida
+                                    </a>
+                                </li>
+                                <li>
                                     <a class="dropdown-item d-flex align-items-center gap-3" onclick="Terapista.InactivarTerapista('${row.id}');" href="javascript:void(0)">
-                                        <i class="fs-4 ti ti-trash"></i> Inactivar
+                                        <i class="ti ti-user-plus"></i> Asignar pacientes
                                     </a>
                                 </li>
                             </ul>
@@ -75,24 +81,24 @@ var Terapista = {
                             }
                         },
                         {
-                            data: 'nombreTerapia',
-                            className: 'dt-center',
-                            title: 'Tipo Terapia'
-                        },
-                        {
-                            data: 'nombreRol',
-                            className: 'dt-center',
-                            title: 'Rol'
+                            data: 'cedula',
+                            title: 'Cedula',
                         },
                         {
                             data: 'email',
-                            className: 'dt-center',
                             title: 'Correo'
                         },
                         {
                             data: 'telefonoContacto',
-                            className: 'dt-center',
                             title: 'Teléfono'
+                        },
+                        {
+                            data: 'nombreTerapia',
+                            title: 'Tipo Terapia'
+                        },
+                        {
+                            data: 'nombreRol',
+                            title: 'Rol'
                         },
                         {
                             data: 'estado',
@@ -168,17 +174,8 @@ var Terapista = {
                     },
                     lengthChange: false,
                 });
-                $('.datepicker').datepicker({
-                    language: 'es',
-                    format: 'dd/mm/yyyy',
-                    clearBtn: false,
-                    todayHighlight: false,
-                    daysOfWeekHighlighted: "0,6",
-                    autoclose: true,
-                    todayBtn: "linked",
-                    title: "Selecciona una fecha"
-                });
-                
+
+
             },
             error: function (xhr, status, error) {
                 Site.CerrarLoading();
@@ -197,7 +194,7 @@ var Terapista = {
         });
     },
 
-    InitSelect2: function (id, placeholder, Data, selectedId) {
+    InitSelect2: function (id, placeholder, Data, values) {
         if (!Data || Data.length === 0) {
             Data = [{
                 id: '',
@@ -222,9 +219,27 @@ var Terapista = {
             })
         });
 
-        if (selectedId) {
-            $("#" + id).val(selectedId).trigger('change');
+        if (values) {
+            $("#" + id).val(values).trigger('change');
         }
+    },
+
+    InitDataPicker: function () {
+        $('.datepicker').datepicker({
+            language: 'es',
+            format: 'yyyy-mm-dd',
+            clearBtn: false,
+            todayHighlight: false,
+            daysOfWeekHighlighted: "0,6",
+            autoclose: true,
+            todayBtn: "linked",
+            title: "Selecciona una fecha",
+            uiLibrary: 'bootstrap5'
+        }).on('show', function (e) {
+            if ($(this).val() === '0001-01-01' || $(this).val() === '') {
+                $(this).datepicker('update', ''); // Limpia el valor si es inválido
+            }
+        });
     },
 
     GuardarDatos: function (id, event, idTerapista) {
@@ -235,6 +250,7 @@ var Terapista = {
         var formDataObj = Site.GetObjetoFormularioById(id);
         formDataObj.NombreTerapia = $('#IdTipoTerapia option:selected').text();
         formDataObj.NombreRol = "UsuarioRegular";
+        formDataObj.Estado = formDataObj.Estado == "99" ? 0 : formDataObj.Estado;
 
 
         Site.IniciarLoading();
@@ -263,6 +279,7 @@ var Terapista = {
                 }
             },
             error: function (result) {
+                Site.CerrarLoading();
                 Site.AjaxError(result);
             }
         });
@@ -279,20 +296,24 @@ var Terapista = {
             //dataType: "json",
             success: function (response) {
                 Site.CerrarLoading();
+                Terapista.LimpiarComponentes();
                 $("#ContenteModal").empty().html(response);
                 $("#ModalTerapista").modal('show');
             },
             error: function (result) {
+                Site.CerrarLoading();
                 Site.AjaxError(result);
             }
         });
     },
-    InactivarTerapista: function (Id) {
+    ReenvioMailBienvenida: function (cedula, nombreUsuario) {
+        debugger;
         Site.IniciarLoading();
+        var url = Site.createUrl(URL_BASE_TERAPISTA, CONTROLERNAME_TERAPISTA, "/ReenvioMailBienvenida") + "?cedula=" + encodeURIComponent(cedula) + "&nombreUsuario=" + encodeURIComponent(nombreUsuario);
+        console.log("URL de la solicitud:", url); // Imprime la URL para verificar
         $.ajax({
             type: "POST",
-            url: Site.createUrl(URL_BASE_TERAPISTA, CONTROLERNAME_TERAPISTA, "/InactivarTerapista"),
-            data: { Id: Id },
+            url: Site.createUrl(URL_BASE_TERAPISTA, CONTROLERNAME_TERAPISTA, "/ReenvioMailBienvenida") + "?cedula=" + encodeURIComponent(cedula) + "&nombreUsuario=" + encodeURIComponent(nombreUsuario),
             contentType: "application/json; charset=utf-8",
             //dataType: "json",
             success: function (response) {
@@ -306,14 +327,30 @@ var Terapista = {
                 }
             },
             error: function (result) {
+                Site.CerrarLoading();
                 Site.AjaxError(result);
             }
         });
     },
+
+    LimpiarComponentes: function () {
+        Terapista.Limpiar("IdSucursal");
+        Terapista.Limpiar("Genero");
+        Terapista.Limpiar("IdTipoTerapia");
+        Terapista.Limpiar("Estado");
+    },
+
+    Limpiar: function (id) {
+        var $select = $('#' + id).select2();
+        $select.empty();
+    },
     NuevoTerapista: function () {
+        Terapista.LimpiarComponentes();
         Terapista.InitSelect2('IdSucursal', 'Seleccione una Sucursal', Terapista.CmbSucursales);
         Terapista.InitSelect2('Genero', 'Seleccione un género', Terapista.CmbGenero);
         Terapista.InitSelect2('IdTipoTerapia', 'Seleccione un tipo', Terapista.CmbTipoTerapista);
+        Terapista.InitSelect2('Estado', 'Seleccione un Estado', Terapista.CmbEstado, 1);
+        Terapista.InitDataPicker();
         $("#ModalTerapista").modal('show');
     },
     AsiganarValorDireccion: function (Direccion) {

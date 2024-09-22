@@ -118,7 +118,7 @@ namespace COM.JOMA.EMP.DOMAIN.Constants
         EnviadoParcialmente
     }
 
-    public enum JOMAGenero: int
+    public enum JOMAGenero : int
     {
         [Description("Masculino")]
         Masculino = 1,
@@ -132,9 +132,11 @@ namespace COM.JOMA.EMP.DOMAIN.Constants
         Otro
     }
 
-    public enum JOMAEstado: int
+    public enum JOMAEstado : int
     {
+        [Description("Activo")]
         Activo = 1,
+        [Description("Inactivo")]
         Inactivo = 0
     }
 }

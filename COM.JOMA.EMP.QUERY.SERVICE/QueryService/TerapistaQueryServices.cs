@@ -143,7 +143,30 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 throw;
             }
         }
-
-
+        public async Task<TerapistaQueryDto> GetTerapistasXCedulaXIdEmpresa(string Cedula, long IdEmpresa)
+        {
+            try
+            {
+                using (var scope = serviceProvider.CreateScope())
+                {
+                    using (var jomaQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
+                    {
+                        return await jomaQueryContext.GetTerapistasXCedulaXIdEmpresa(Cedula, IdEmpresa);
+                    };
+                };
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception($"SQL Error: {sqlEx.Message} Error Number: {sqlEx.Number}");
+            }
+            catch (TimeoutException timeoutEx)
+            {
+                throw new Exception($"Timeout Error: {timeoutEx.Message}");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

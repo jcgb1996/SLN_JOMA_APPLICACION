@@ -96,7 +96,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.Extensions
                 .ForMember(dest => dest.Email, act => act.MapFrom(src => src.Email))
                 .ForMember(dest => dest.NombreTerapia, act => act.MapFrom(src => src.NombreTerapia))
                 .ForMember(dest => dest.NombreRol, act => act.MapFrom(src => src.NombreRol))
-                .ForMember(dest => dest.Estado, act => act.MapFrom(src => JOMAEstado.Activo))
+                .ForMember(dest => dest.Estado, act => act.MapFrom(src => src.Estado))
                 .ForMember(dest => dest.Direccion, act => act.MapFrom(src => src.Direccion))
                 .ForMember(dest => dest.TelefonoContactoEmergencia, act => act.MapFrom(src => src.TelefonoContactoEmergencia))
                 .ForMember(dest => dest.TelefonoContacto, act => act.MapFrom(src => src.TelefonoContacto))
@@ -132,6 +132,28 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.Extensions
             var mapper = configuration.CreateMapper();
 
             return mapper.Map<TerapistasGridQueryDto>(obj);
+        }
+
+        internal static EnvioMailAppDto MapToEnvioMailAppDto(this MailBienvenidaQueryDto obj, JOMATipoMail TipoMail)
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.AllowNullCollections = true;
+                cfg.AllowNullDestinationValues = true;
+                cfg.CreateMap<MailBienvenidaQueryDto, EnvioMailAppDto>()
+                .ForMember(dest => dest.Asunto, m => m.MapFrom(src => src.Asunto))
+                .ForMember(dest => dest.Cuerpo, m => m.MapFrom(src => src.Cuerpo))
+                .ForMember(dest => dest.Destinatario, m => m.MapFrom(src => src.Destinatario))
+                .ForMember(dest => dest.IdEmpresa, m => m.MapFrom(src => src.IdEmpresa))
+                .ForMember(dest => dest.IdMail, m => m.MapFrom(src => 0))
+                .ForMember(dest => dest.TipoConsultaMail, m => m.MapFrom(src => JOMATipoConsultaMail.Reenvio))
+                .ForMember(dest => dest.RucCompania, m => m.MapFrom(src => src.RucCompania))
+                .ForMember(dest => dest.TipoMail, m => m.MapFrom(src => (byte)TipoMail))
+                .ForMember(dest => dest.TipoEnvioMail, m => m.MapFrom(src => (JOMATipoEnvioMail)src.TipoEnvioMail))
+                ;
+            });
+            var mapper = configuration.CreateMapper();
+            return mapper.Map<EnvioMailAppDto>(obj);
         }
 
         internal static EnvioMailAppDto MapToEnvioMailAppDto(this MailRecuperarContrasenaQueryDto obj, JOMATipoMail TipoMail)
@@ -278,7 +300,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.Extensions
             var mapper = configuration.CreateMapper();
             return mapper.Map<ValidarUsuarioAppDto>(obj);
         }
-        
+
         internal static Sucursal MapToSucursalReqDto(this SucursalReqDto obj)
         {
             var configuration = new MapperConfiguration(cfg =>

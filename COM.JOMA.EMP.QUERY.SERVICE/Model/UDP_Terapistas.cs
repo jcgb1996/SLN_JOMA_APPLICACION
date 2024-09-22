@@ -32,7 +32,8 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
                      new SqlParameter("@TelefonoContactoEmergencia", terapista.TelefonoContactoEmergencia ?? (object)DBNull.Value),
                      new SqlParameter("@Direccion", terapista.Direccion ?? (object)DBNull.Value),
                      new SqlParameter("@IdSucursal", terapista.IdSucursal),
-                     new SqlParameter("@IdTipoTerapia", terapista.IdTipoTerapia)
+                     new SqlParameter("@IdTipoTerapia", terapista.IdTipoTerapia),
+                     new SqlParameter("@Estado", terapista.Estado)
                  };
 
                         var result =await Database.ExecuteSqlRawAsync($"EXEC {SP_NAME}", parameters.ToArray());
@@ -56,6 +57,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
                             parameters.Add("@Direccion", terapista.Direccion);
                             parameters.Add("@IdSucursal", terapista.IdSucursal);
                             parameters.Add("@IdTipoTerapia", terapista.IdTipoTerapia);
+                            parameters.Add("@Estado", terapista.Estado);
 
                             var result =await connection.ExecuteAsync(SP_NAME, parameters, commandType: CommandType.StoredProcedure);
                             return result != 0;
