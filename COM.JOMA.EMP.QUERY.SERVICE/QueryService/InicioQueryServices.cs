@@ -25,13 +25,8 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                     using (var jomaQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
                     {
                         return await jomaQueryContext.GetMenuPorIdUsuario(IdUsuario);
-                        //return new LoginQueryDto();
                     };
                 };
-
-
-
-
             }
             catch (SqlException sqlEx)
             {
@@ -46,6 +41,33 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 throw;
             }
         }
+
+        public async Task<List<MenuQueryDto>> GetOpcionesMenuPorRol(long IdUsuario)
+        {
+            try
+            {
+                using (var scope = serviceProvider.CreateScope())
+                {
+                    using (var jomaQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
+                    {
+                        return await jomaQueryContext.GetMenuPorIdRol(IdUsuario);
+                    };
+                };
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception($"SQL Error: {sqlEx.Message} Error Number: {sqlEx.Number}");
+            }
+            catch (TimeoutException timeoutEx)
+            {
+                throw new Exception($"Timeout Error: {timeoutEx.Message}");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public async Task<List<LoginQueryDto>> Login(string Usuario, string Clave, string Cedula)
         {
             try

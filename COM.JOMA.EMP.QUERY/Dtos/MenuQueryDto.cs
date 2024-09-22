@@ -11,6 +11,7 @@ namespace COM.JOMA.EMP.QUERY.Dtos
         public int Id { get; set; }
         public int? MenuPadreId { get; set; }
         public int IdUario { get; set; }
+        public int IdRol { get; set; }
         public string Title { get; set; }
         public string Icon { get; set; }
         public string Action { get; set; }

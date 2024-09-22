@@ -43,7 +43,6 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Inicio.Controllers
                 {
                     HttpContext.Session.SetString("UsuarioLogin", JsonConvert.SerializeObject(loginDto));
                     string redirectUrl = Url.Action(WebSiteConstans.JOMA_WEBSITE_ACCION_INDEX, WebSiteConstans.JOMA_WEBSITE_AREA_CONTROLLER_DASHBOARD, new { area = WebSiteConstans.JOMA_WEBSITE_AREA_INICIO })!;
-                    //DomainParameters.JOMA_CACHE_KEY = $"{loginDto.NombreRol}_{loginDto.Usuario}";
                     return this.CrearRespuestaExitosa(redirectUrl);
                 }
             }

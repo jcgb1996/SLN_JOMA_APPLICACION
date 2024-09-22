@@ -51,6 +51,9 @@ namespace COM.JOMA.EMP.DOMAIN.Parameters
         public static bool CACHE_ENABLE_CONF_SERVIDORCORREO_COMPANIA { get; set; }
         #endregion
 
+
+        public static bool CACHE_ENABLE_MENU_ROL { get; set; }
+
     }
 
 

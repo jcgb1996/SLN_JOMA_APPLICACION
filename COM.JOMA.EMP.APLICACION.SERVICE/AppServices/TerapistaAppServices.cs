@@ -149,6 +149,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                             x.FechaNacimiento = terapistaAppDto.FechaNacimiento;
                             x.Estado = terapistaAppDto.Estado;
                             x.Genero = terapistaAppDto.Genero;
+                            x.IdRol = terapistaAppDto.IdRol;
                         }
                     });
                     await cacheCrossCuttingService.RemoveAsync($"{DomainConstants.JOMA_CACHE_KEY_TERAPISTAS}_{terapistaReqtDto.RucEmpresa}");

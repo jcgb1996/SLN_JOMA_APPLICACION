@@ -250,7 +250,7 @@ var Terapista = {
 
         var formDataObj = Site.GetObjetoFormularioById(id);
         formDataObj.NombreTerapia = $('#IdTipoTerapia option:selected').text();
-        formDataObj.NombreRol = "UsuarioRegular";
+        formDataObj.NombreRol = $('#IdRol option:selected').text();
         formDataObj.Estado = formDataObj.Estado == "99" ? 0 : formDataObj.Estado;
 
 

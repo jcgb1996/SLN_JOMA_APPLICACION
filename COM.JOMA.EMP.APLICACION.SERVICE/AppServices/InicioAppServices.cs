@@ -61,6 +61,32 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
             }
 
         }
+
+
+        public async Task<List<MenuAppDto>> GetOpcionesMenuPorIdRol(long IdRol)
+        {
+            string seccion = string.Empty;
+            try
+            {
+                seccion = "CONSULTAR MENU POR ID USUARIO";
+                var ListMenuQueryDtos = await LoginQueryServices.GetOpcionesMenuPorRol(IdRol);
+                var menus = BuildMenuHierarchy(ListMenuQueryDtos);
+                List<MenuAppDto> menuAppDtos = menus.MapToMenuAppDto();
+                return menuAppDtos;
+            }
+            catch (JOMAException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                var CodigoSeguimiento = logService.AddLog(this.GetCaller(), $"{DomainParameters.APP_NOMBRE}", $"{seccion}: {JOMAUtilities.ExceptionToString(ex)}");
+                var Mensaje = globalDictionary.GenerarMensajeErrorGenerico(CodigoSeguimiento);
+                throw new Exception(Mensaje);
+            }
+
+        }
+
         public async Task<LoginAppResultDto> LoginCompania(LoginReqAppDto login)
         {
             LoginAppResultDto? loginAppResultDto = new();
@@ -77,8 +103,18 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 if (loginDto.Error) throw new JOMAException(loginDto.MensajeError);
 
                 seccion = "CONSULTAR MENU POR ID USUARIO";
-                var MenuAppDto = await GetOpcionesMenuPorIdUsuario(loginDto.Id);
-                loginDto.OpcionesMenu = MenuAppDto;
+                List<MenuAppDto> menuAppDtos = null;
+                if (DomainParameters.CACHE_ENABLE_MENU_ROL)
+                {
+                    menuAppDtos = await GetOpcionesMenuPorIdRol(loginDto.IdRol);
+
+                }
+                else
+                {
+                    menuAppDtos = await GetOpcionesMenuPorIdUsuario(loginDto.Id);
+
+                }
+                loginDto.OpcionesMenu = menuAppDtos;
                 return loginDto;
             }
             catch (JOMAException)

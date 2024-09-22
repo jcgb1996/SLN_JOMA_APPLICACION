@@ -79,7 +79,6 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Trabajador.Controllers
                 terapistaReqDto.IdEmpresa = loginDto.Id;
                 terapistaReqDto.UsuarioCreacion = loginDto.Usuario;
                 terapistaReqDto.RucEmpresa = loginDto.Ruc;
-                terapistaReqDto.IdRol = 2;
                 var Registrado = await terapistaAppServices.EditarTerapista(terapistaReqDto);
                 return this.CrearRespuestaExitosa(Registrado);
             }

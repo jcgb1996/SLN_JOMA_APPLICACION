@@ -109,6 +109,7 @@ try
     DomainParameters.CACHE_TIEMPO_EXP_CMB_SUCURSAL_COMPANIA = 600; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial (tiempo en segundos)
     DomainParameters.CACHE_ENABLE_CMB_SUCURSALES_COMPANIA = true; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial (tiempo en segundos)
     DomainParameters.CACHE_ENABLE_CMB_ROL_COMPANIA = true; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial (tiempo en segundos)
+    DomainParameters.CACHE_ENABLE_MENU_ROL = true; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial (tiempo en segundos)
     DomainParameters.CACHE_TIEMPO_EXP_CMB_ROL_COMPANIA = 600; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial (tiempo en segundos)
 
     builder.Services.AddSingleton<LogCrossCuttingService>();
