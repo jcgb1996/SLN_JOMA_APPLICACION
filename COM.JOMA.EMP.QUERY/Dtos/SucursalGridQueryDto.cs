@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace COM.JOMA.EMP.QUERY.Dtos
 {
-    public class SucursalQueryDto
+    public class SucursalGridQueryDto
     {
         public int Id { get; set; }
         public string Nombre { get; set; }

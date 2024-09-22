@@ -6,6 +6,7 @@ using COM.JOMA.EMP.APLICACION.SERVICE.Constants;
 using COM.JOMA.EMP.CROSSCUTTING.ICrossCuttingServices;
 using COM.JOMA.EMP.DOMAIN;
 using COM.JOMA.EMP.DOMAIN.Constants;
+using COM.JOMA.EMP.DOMAIN.Entities;
 using COM.JOMA.EMP.DOMAIN.Tools;
 using COM.JOMA.EMP.QUERY.Dtos;
 using Microsoft.AspNetCore.Mvc;
@@ -33,38 +34,28 @@ namespace SLN_JOMA_APPLICACION.Areas.Administracion.Controllers
 		public async Task<IActionResult> GetSucursales(string search)
 		{
 
-			try
-			{
-				string? draw = Request.Form.ContainsKey("draw") ? Request.Form["draw"][0] : null;
-				short startRec = Request.Form.ContainsKey("start") ? Convert.ToInt16(Request.Form["start"][0]) : (short)0;
-				short pagTam = Request.Form.ContainsKey("length") ? Convert.ToInt16(Request.Form["length"][0]) : (short)0;
-				var pagIdx = (startRec / (pagTam == 0 ? 1 : pagTam));
-				var loginDto = GetUsuarioSesion();
-				var LstSucursal = await consultasAppServices.GetSucursalesPorIdCompania(loginDto.IdCompania);
-				return this.CrearRespuestaExitosa(string.Empty, new
-				{
-					draw = Convert.ToInt32(draw),
-					recordsTotal = LstSucursal.FirstOrDefault()?.Maxrowcount ?? 0,
-					recordsFiltered = LstSucursal.FirstOrDefault()?.Maxrowcount ?? 0,
-					data = LstSucursal
-				});
-
-
-
-			}
-			catch (JOMAException ex)
-			{
-				return this.CrearRespuestaError(ex.Message, JOMAStatusCode.BadRequest);
-			}
-			catch (Exception ex)
-			{
-				return this.CrearRespuestaError(ex.Message.ToString(), JOMAStatusCode.InternalServerError, ex.Message);
-			}
-			finally
-			{
-				logService.GuardarLogs();
-			}
-		}
+            try
+            {
+                var loginDto = GetUsuarioSesion();
+                var LstTerapista = await sucursalAppServices.GetSucursalesXRuc(loginDto.Ruc);
+                return this.CrearRespuestaExitosa(string.Empty, new
+                {
+                    data = LstTerapista
+                });
+            }
+            catch (JOMAException ex)
+            {
+                return this.CrearRespuestaError(ex.Message, JOMAStatusCode.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                return this.CrearRespuestaError(ex.Message.ToString(), JOMAStatusCode.InternalServerError, ex.Message);
+            }
+            finally
+            {
+                logService.GuardarLogs();
+            }
+        }
 
 
 		[HttpGet]
@@ -72,8 +63,9 @@ namespace SLN_JOMA_APPLICACION.Areas.Administracion.Controllers
 		{
 			try
 			{
-				var Sucursal = await consultasAppServices.GetSucursalesXId(IdSucursal);
-				return PartialView("ModalSucursalPartialView");
+                var loginDto = GetUsuarioSesion();
+                var sucursal = await sucursalAppServices.GetSucursalesPorId(IdSucursal, loginDto.Ruc);
+                return PartialView("ModalSucursalPartialView");
 			}
 			catch (JOMAException ex)
 			{

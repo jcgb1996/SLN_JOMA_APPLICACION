@@ -17,6 +17,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
         public DbSet<MenuQueryDto> ventanaLoginQueryDto { get; set; }
         public DbSet<MailRecuperarContrasenaQueryDto> mailRecuperarContrasenaQueryDto { get; set; }
         public DbSet<TerapistasGridQueryDto> lstTerapistasEmpresaQueryDto { get; set; }
+        public DbSet<SucursalGridQueryDto> lstSucursalesQueryDto { get; set; }
         public DbSet<TipoTerapiaQueryDto> lstTipoTerapiaQueryDto { get; set; }
         public DbSet<SucursalQueryDto> sucursalQueryDto { get; set; }
         public DbSet<ValidaTerapistaQueryDto> validaTerapistaQueryDto { get; set; }
@@ -31,6 +32,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
             modelBuilder.Entity<MenuQueryDto>().HasNoKey().ToView(null);
             modelBuilder.Entity<MailRecuperarContrasenaQueryDto>().HasNoKey().ToView(null);
             modelBuilder.Entity<TerapistasGridQueryDto>().HasNoKey().ToView(null);
+            modelBuilder.Entity<SucursalGridQueryDto>().HasNoKey().ToView(null);//
             modelBuilder.Entity<TipoTerapiaQueryDto>().HasNoKey().ToView(null);
             modelBuilder.Entity<ValidaTerapistaQueryDto>().HasNoKey().ToView(null);
             modelBuilder.Entity<TerapistaQueryDto>().HasNoKey().ToView(null);

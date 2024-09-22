@@ -1,6 +1,7 @@
 ﻿using COM.JOMA.EMP.APLICACION.Dto;
 using COM.JOMA.EMP.APLICACION.Dto.Request.Administracion.SucursalDto;
 using COM.JOMA.EMP.APLICACION.Dto.Request.Administracion.TerapistaDto;
+using COM.JOMA.EMP.QUERY.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,8 @@ namespace COM.JOMA.EMP.APLICACION.Interfaces
     {
         public Task<JOMAResponse> RegistrarSucursal(SucursalReqDto sucursalReqDto);
         public Task<JOMAResponse> EditarSucursal(EditSucursalReqDto sucursalReqDto);
-        public Task<(bool, bool)> ValidaSucursalXCedulaXRucEmpresaXCorreo(string Cedula, string RucEmpresa, string Correo);
+        public Task<SucursalQueryDto> GetSucursalesPorId(long IdSucursal, long Ruc);
+        public Task<(bool, bool)> ValidaSucursalXCedulaXRucXCorreo(string Cedula, string Ruc, string Correo);
+        public Task<List<SucursalGridQueryDto>> GetSucursalesXRuc(string Ruc);
     }
 }

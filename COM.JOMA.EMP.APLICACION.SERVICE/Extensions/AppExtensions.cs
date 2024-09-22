@@ -291,6 +291,18 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.Extensions
             return mapper.Map<Sucursal>(obj);
         }
 
+        internal static SucursalQueryDto MapToSucursalGridReqDto(this SucursalGridQueryDto obj)
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<SucursalGridQueryDto, SucursalQueryDto>();
+            });
+
+            var mapper = configuration.CreateMapper();
+
+            return mapper.Map<SucursalQueryDto>(obj);
+        }
+
         internal static TerapistaQueryDto MapTerapistasEmpresaQueryDto(this TerapistasGridQueryDto obj)
         {
             var configuration = new MapperConfiguration(cfg =>

@@ -8,6 +8,7 @@ using COM.JOMA.EMP.CROSSCUTTING.Contants;
 using COM.JOMA.EMP.CROSSCUTTING.ICrossCuttingServices;
 using COM.JOMA.EMP.DOMAIN;
 using COM.JOMA.EMP.DOMAIN.Constants;
+using COM.JOMA.EMP.DOMAIN.Entities;
 using COM.JOMA.EMP.DOMAIN.Extensions;
 using COM.JOMA.EMP.DOMAIN.JomaExtensions;
 using COM.JOMA.EMP.DOMAIN.Parameters;
@@ -22,15 +23,79 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
     {
         protected ISucursalQueryService sucursalQueryServices;
         protected ICacheCrossCuttingService cacheCrossCuttingService;
-        public SucursalAppServices(ILogCrossCuttingService logService, GlobalDictionaryDto globalDictionary, ISucursalQueryService sucursalQueryServices, ICacheCrossCuttingService cacheCrossCuttingService) : base(logService, globalDictionary)
+        protected IConsultasAppServices consultasAppServices;
+        public SucursalAppServices(ILogCrossCuttingService logService, GlobalDictionaryDto globalDictionary, ISucursalQueryService sucursalQueryServices, IConsultasAppServices consultasAppServices, ICacheCrossCuttingService cacheCrossCuttingService) : base(logService, globalDictionary)
         {
             this.sucursalQueryServices = sucursalQueryServices;
             this.cacheCrossCuttingService = cacheCrossCuttingService;
+            this.consultasAppServices = consultasAppServices;
         }
+
+        #region Metodos ayudantes
+        public async Task<List<SucursalGridQueryDto>?> ObtenerCacheListSucursalesAsync(string Ruc)
+        {
+            List<SucursalGridQueryDto>? sucursalQueryDtos = null;
+            if (DomainParameters.CACHE_ENABLE_SUCURSALES_COMPANIA)
+                sucursalQueryDtos = await cacheCrossCuttingService.GetObjectAsync<List<SucursalGridQueryDto>>($"{DomainConstants.JOMA_CACHE_KEY_SUCURSAL}_{Ruc}");
+
+            return sucursalQueryDtos;
+
+        }
+        private async Task<List<SucursalGridQueryDto>> ActualizarCacheSucursalAsync(string Ruc)
+        {
+            List<SucursalGridQueryDto>? sucursalQueryDtos = await sucursalQueryServices.GetSucursalesXRucEmpresa(Ruc);
+            if (DomainParameters.CACHE_ENABLE_SUCURSALES_COMPANIA)
+                await cacheCrossCuttingService.AddObjectAsync($"{DomainConstants.JOMA_CACHE_KEY_SUCURSAL} _ {Ruc}", sucursalQueryDtos, DomainParameters.CACHE_TIEMPO_EXP_SUCURSAL_COMPANIA);
+
+            return sucursalQueryDtos;
+        }
+        #endregion
+
 
         public async Task<JOMAResponse> EditarSucursal(EditSucursalReqDto sucursalReqDto)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<SucursalQueryDto> GetSucursalesPorId(long IdSucursal, string Ruc)
+        {
+            string seccion = string.Empty;
+            try
+            {
+                List<SucursalGridQueryDto>? LstsucursalQueryDtos = null;
+                SucursalQueryDto? sucursalQueryDto = null;
+
+                seccion = "VERIFICAR SI EXISTE RUC COMPANIA";
+                var Compania = await consultasAppServices.GetCompaniaXidXRuc(0, Ruc);//aqui hay que cambiar
+                if (Compania == null) throw new JOMAException($"Compania no implementada");
+
+                seccion = "VERIFICAR SI HAY DATOS EN CACHE";
+                if (DomainParameters.CACHE_ENABLE_TERAPISTAS_COMPANIA)
+                    LstsucursalQueryDtos = await cacheCrossCuttingService.GetObjectAsync<List<SucursalGridQueryDto>>($"{DomainConstants.JOMA_CACHE_KEY_SUCURSAL}_{Ruc}");
+
+                seccion = "PROCESO DE CONSULTA";
+                if (LstsucursalQueryDtos == null)
+                {
+                    seccion = "CONSULTAR EN BASE";
+                    sucursalQueryDto = await sucursalQueryServices.GetSucursalesXIdXIdEmpresa(IdSucursal, Compania.Id);
+                    return sucursalQueryDto;
+                }
+
+                seccion = "PROCESO DE CONSULTA TERAPISTA EN CACHE";
+                return LstsucursalQueryDtos.First(x => x.Id == IdSucursal).MapToSucursalGridReqDto();
+
+            }
+            catch (JOMAException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                var CodigoSeguimiento = logService.AddLog(this.GetCaller(), $"{DomainParameters.APP_NOMBRE}", $"{seccion}: {JOMAUtilities.ExceptionToString(ex)}");
+                var Mensaje = globalDictionary.GenerarMensajeErrorGenerico(CodigoSeguimiento);
+                throw new Exception(Mensaje);
+            }
+
         }
 
         public async Task<JOMAResponse> RegistrarSucursal(SucursalReqDto sucursalReqDto)
@@ -42,7 +107,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 if (!AppUtilities.ValidarCedulaEcuatoriana(sucursalReqDto.CedulaRepresentante)) throw new JOMAException($"La cedula {sucursalReqDto.CedulaRepresentante} no corresponde a una cedula ecuatoriona");
 
                 seccion = "REGISTRAR PACIENTE";
-                var TerapistaXCedula = await ValidaSucursalXCedulaXRucEmpresaXCorreo(sucursalReqDto.CedulaRepresentante, sucursalReqDto.RUC, sucursalReqDto.Email);
+                var TerapistaXCedula = await ValidaSucursalXCedulaXRucXCorreo(sucursalReqDto.CedulaRepresentante, sucursalReqDto.RUC, sucursalReqDto.Email);
 
                 if (TerapistaXCedula.Item1 && TerapistaXCedula.Item2) throw new JOMAException($"los datos de cedula: {sucursalReqDto.CedulaRepresentante} y correo: {sucursalReqDto.Email} ya se encuentran registrados en el sistema");
                 if (TerapistaXCedula.Item1) throw new JOMAException($"El terapista con cedula {sucursalReqDto.CedulaRepresentante} ya se encuentra registrado");
@@ -71,33 +136,34 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
             }
         }
 
-        public async Task<(bool, bool)> ValidaSucursalXCedulaXRucEmpresaXCorreo(string Cedula, string RucEmpresa, string Correo)
+
+        public async Task<(bool, bool)> ValidaSucursalXCedulaXRucXCorreo(string Cedula, string Ruc, string Correo)
         {
             string seccion = string.Empty;
             try
             {
-                List<TerapistasEmpresaQueryDto>? LstterapistaQueryDtos = null;
-                //TerapistaXcedulaXRucEmpresaQueryDto? terapistaQueryDtos = null;
+                //List<TerapistasEmpresaQueryDto>? LstterapistaQueryDtos = null;
+                ////TerapistaXcedulaXRucEmpresaQueryDto? terapistaQueryDtos = null;
 
-                seccion = "VERIFICAR SI EXISTE RUC COMPANIA";
-                var Compania = await consultasAppServices.GetCompaniaXidXRuc(0, RucEmpresa);
-                if (Compania == null) throw new JOMAException($"Compania no implementada");
+                //seccion = "VERIFICAR SI EXISTE RUC COMPANIA";
+                //var Compania = await consultasAppServices.GetCompaniaXidXRuc(0, RucEmpresa);
+                //if (Compania == null) throw new JOMAException($"Compania no implementada");
 
-                seccion = "VERIFICAR SI HAY DATOS EN CACHE";
-                if (DomainParameters.CACHE_ENABLE_TERAPISTAS_COMPANIA)
-                    LstterapistaQueryDtos = await cacheCrossCuttingService.GetObjectAsync<List<TerapistasEmpresaQueryDto>>($"{DomainConstants.JOMA_CACHE_KEY_TERAPISTAS}_{RucEmpresa}");
+                //seccion = "VERIFICAR SI HAY DATOS EN CACHE";
+                //if (DomainParameters.CACHE_ENABLE_TERAPISTAS_COMPANIA)
+                //    LstterapistaQueryDtos = await cacheCrossCuttingService.GetObjectAsync<List<TerapistasEmpresaQueryDto>>($"{DomainConstants.JOMA_CACHE_KEY_TERAPISTAS}_{RucEmpresa}");
 
-                seccion = "PROCESO DE CONSULTA";
-                if (LstterapistaQueryDtos == null)
-                {
-                    seccion = "CONSULTAR EN BASE";
-                    var terapistaQueryDtos = await terapistaQueryServices.ValidaTerapistaXCedulaXCorreo(Cedula, RucEmpresa, Correo);
+                //seccion = "PROCESO DE CONSULTA";
+                //if (LstterapistaQueryDtos == null)
+                //{
+                //    seccion = "CONSULTAR EN BASE";
+                //    var terapistaQueryDtos = await terapistaQueryServices.ValidaTerapistaXCedulaXCorreo(Cedula, RucEmpresa, Correo);
 
-                    return (terapistaQueryDtos.ExisteUsuario, terapistaQueryDtos.ExisteCorreo);
-                }
+                //    return (terapistaQueryDtos.ExisteUsuario, terapistaQueryDtos.ExisteCorreo);
+                //}
 
-                seccion = "PROCESO DE CONSULTA TERAPISTA EN CACHE";
-                return (LstterapistaQueryDtos.Any(x => x.Cedula == Cedula), LstterapistaQueryDtos.Any(x => x.Email == Correo));
+                //seccion = "PROCESO DE CONSULTA TERAPISTA EN CACHE";
+                return (true, false);
             }
             catch (JOMAException)
             {
@@ -106,6 +172,38 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
             catch (Exception ex)
             {
                 throw;
+            }
+        }
+
+        public async Task<List<SucursalGridQueryDto>> GetSucursalesXRuc(string Ruc)
+        {
+            string seccion = string.Empty;
+            try
+            {
+                seccion = "VERIFICAR SI EXISTE RUC COMPANIA";
+                var Compania = await consultasAppServices.GetCompaniaXidXRuc(0, Ruc);
+                if (Compania == null) throw new JOMAException($"Compania {Ruc} no implementada");//hay que cambiar lo de compañia porque e
+
+                seccion = "VERIFICAR SI HAY DATOS EN CACHE";
+                List<SucursalGridQueryDto>? sucursalQueryDtos = await ObtenerCacheListSucursalesAsync(Ruc);
+
+
+                if (sucursalQueryDtos == null)
+                {
+                    seccion = "PROCESO DE CONSULTA";
+                    return await ActualizarCacheSucursalAsync(Ruc);
+                }
+                return sucursalQueryDtos;
+            }
+            catch (JOMAException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                var CodigoSeguimiento = logService.AddLog(this.GetCaller(), $"{DomainParameters.APP_NOMBRE}", $"{seccion}: {JOMAUtilities.ExceptionToString(ex)}");
+                var Mensaje = globalDictionary.GenerarMensajeErrorGenerico(CodigoSeguimiento);
+                throw new Exception(Mensaje);
             }
         }
     }
