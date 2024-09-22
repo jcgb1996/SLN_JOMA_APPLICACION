@@ -9,6 +9,17 @@ namespace COM.JOMA.EMP.APLICACION.Dto.Request.Mail
     public class EnvioMailEnLineaBienvenidaAppDto
     {
         /// <summary>
+        /// Identificación de la compañia a la cual pertenece el usuairo
+        /// Origen: `JOMA`
+        /// 
+        /// `Obligatorio`
+        ///  
+        /// </summary>
+        /// <example>0950763711001</example>
+        public string? Ruc { get; set; }
+
+
+        /// <summary>
         /// Identificación de la compañia
         /// Origen: `JOMA`
         /// 
@@ -26,5 +37,6 @@ namespace COM.JOMA.EMP.APLICACION.Dto.Request.Mail
         /// </summary>
         /// <example>JM_NOMBREAPELLIDO</example>
         public string Usuario { get; set; }
+
     }
 }

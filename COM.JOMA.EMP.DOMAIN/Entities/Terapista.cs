@@ -20,5 +20,6 @@
         public string TelefonoContactoEmergencia { get; set; }
         public string Direccion { get; set; }
         public int IdTipoTerapia { get; set; }
+        public bool Estado { get; set; }
     }
 }

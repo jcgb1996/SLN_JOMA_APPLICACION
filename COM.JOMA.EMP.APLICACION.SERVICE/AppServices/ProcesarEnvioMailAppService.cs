@@ -15,6 +15,7 @@ using COM.JOMA.EMP.DOMAIN.Tools;
 using COM.JOMA.EMP.DOMAIN.Utilities;
 using COM.JOMA.EMP.QUERY.Dtos;
 using COM.JOMA.EMP.QUERY.Interfaces;
+using System.Diagnostics;
 using System.IO.Compression;
 using System.Net;
 using System.Net.Mail;
@@ -101,6 +102,10 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                         }
                         break;
                     case JOMATipoMail.CorreoBienvenida:
+                        {
+                            MailCorrecto = true;
+                        }
+                        break;
                     case JOMATipoMail.RecuperacionContrasena:
                         {
 
@@ -200,11 +205,14 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                     else
                         ActualizarMailEnvio(EnvioMail, ConfigCorreo, JOMAEstadoMail.Enviado, $"Correo enviado a => [{EnvioMail.Destinatario}]");
 
+
+                    logService.AddLog(this.GetCaller(), $"{DomainParameters.APP_NOMBRE}", $"Correo enviado a => [{EnvioMail.Destinatario}]");
                     CorreoFueEnviado = true;
                 }
                 catch (Exception ex)
                 {
                     string mensaje_err = JOMAConversions.ExceptionToString(ex);
+                    logService.AddLog(this.GetCaller(), $"{DomainParameters.APP_NOMBRE}", $"Id Mail => [{EnvioMail.IdMail}] {mensaje_err}", CrossCuttingLogLevel.Error);
                     if (ErrorEsCorreoInvalido(mensaje_err))
                     {
                         if (EnvioMail.IdMail == 0)
@@ -231,7 +239,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                     ActualizarMailEnvio(EnvioMail, ConfigCorreo, JOMAEstadoMail.CorreoNoValido, mensaje_err);
                 else
                     ActualizarMailEnvio(EnvioMail, ConfigCorreo, JOMAEstadoMail.ErrorDeConexion, mensaje_err);
-                logService.AddLog(this.GetCaller(), EnvioMail.NombreLog, $"Id Mail => [{EnvioMail.IdMail}] {mensaje_err}", CrossCuttingLogLevel.Error);
+                logService.AddLog(this.GetCaller(), $"{DomainParameters.APP_NOMBRE}", $"Id Mail => [{EnvioMail.IdMail}] {mensaje_err}", CrossCuttingLogLevel.Error);
                 mensaje = mensaje_err;
                 CorreoFueEnviado = false;
                 Errorgenerico = true;

@@ -16,7 +16,6 @@ namespace COM.JOMA.EMP.APLICACION.Dto.Request.Administracion.TerapistaDto
         public string Contrasena
         {
             get =>
-                // Asignar la lógica especificada para la contraseña
                 _contrasena = JOMACrypto.CifrarClave(
                     AppUtilities.GenerarContrasenaAleatoria(),
                     DomainConstants.JOMA_KEYENCRIPTA,
@@ -29,13 +28,14 @@ namespace COM.JOMA.EMP.APLICACION.Dto.Request.Administracion.TerapistaDto
         {
             get
             {
-                string nombresCompletos = $"{Nombre}";
-                string userJoma = AppUtilities.ReemplezarTildes(nombresCompletos.Trim()).Replace(" ", "").ToLower();
-                string usrCedula = Cedula.Length >= 10 ? Cedula.Substring(0, 5) : Cedula;
-                var usuarioJoma = $"JM_{userJoma.ToUpper()}_{usrCedula}";
-                return _nombreUsuario = usuarioJoma;
+                string primerNombre = AppUtilities.ReemplezarTildes(Nombre.Split(new char[] { ' ' })[0].Trim()).ToLower();
+                string primerApellido = AppUtilities.ReemplezarTildes(Apellido.Split(new char[] { ' ' })[0].Trim()).ToLower();
+                string primerosCincoCedula = Cedula.Length >= 5 ? Cedula.Substring(0, 5) : Cedula;
+                var usuario = $"{primerNombre}.{primerApellido}.{primerosCincoCedula}";
+                return _nombreUsuario = usuario;
             }
             set => _nombreUsuario = value;
         }
+
     }
 }

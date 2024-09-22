@@ -1,5 +1,6 @@
 ﻿using COM.JOMA.EMP.APLICACION.Dto;
 using COM.JOMA.EMP.APLICACION.Dto.Request.Administracion.TerapistaDto;
+using COM.JOMA.EMP.APLICACION.Dto.Request.Mail;
 using COM.JOMA.EMP.APLICACION.Interfaces;
 using COM.JOMA.EMP.APLICACION.SERVICE.Extensions;
 using COM.JOMA.EMP.APLICACION.Utilities;
@@ -14,7 +15,6 @@ using COM.JOMA.EMP.DOMAIN.Tools;
 using COM.JOMA.EMP.DOMAIN.Utilities;
 using COM.JOMA.EMP.QUERY.Dtos;
 using COM.JOMA.EMP.QUERY.Interfaces;
-using static System.Collections.Specialized.BitVector32;
 
 namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
 {
@@ -22,16 +22,19 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
     {
         protected ITerapistaQueryServices terapistaQueryServices;
         protected IConsultasAppServices consultasAppServices;
+        protected IEnvioMailEnLineaAppServices envioMailEnLineaAppServices;
         protected ICacheCrossCuttingService cacheCrossCuttingService;
-        public TerapistaAppServices(ILogCrossCuttingService logService, GlobalDictionaryDto globalDictionary, ITerapistaQueryServices terapistaQueryServices, IConsultasAppServices consultasAppServices, ICacheCrossCuttingService cacheCrossCuttingService) : base(logService, globalDictionary)
+        public TerapistaAppServices(ILogCrossCuttingService logService, GlobalDictionaryDto globalDictionary, ITerapistaQueryServices terapistaQueryServices,
+            IConsultasAppServices consultasAppServices, ICacheCrossCuttingService cacheCrossCuttingService, IEnvioMailEnLineaAppServices envioMailEnLineaAppServices) : base(logService, globalDictionary)
         {
             this.terapistaQueryServices = terapistaQueryServices;
             this.consultasAppServices = consultasAppServices;
             this.cacheCrossCuttingService = cacheCrossCuttingService;
+            this.envioMailEnLineaAppServices = envioMailEnLineaAppServices;
         }
 
         #region Metodos ayudantes
-        public async Task<List<TerapistasGridQueryDto>?> ObtenerCacheListTerapistasAsync(string RucEmpresa)
+        private async Task<List<TerapistasGridQueryDto>?> ObtenerCacheListTerapistasAsync(string RucEmpresa)
         {
             List<TerapistasGridQueryDto>? terapistaQueryDtos = null;
             if (DomainParameters.CACHE_ENABLE_TERAPISTAS_COMPANIA)
@@ -82,6 +85,13 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
 
                 }
 
+                seccion = "PROCESO ENVIO CORREO BIENVENIDA";
+                await envioMailEnLineaAppServices.EnviarCorreoBienvenida(new EnvioMailEnLineaBienvenidaAppDto()
+                {
+                    Cedula = terapistaReqtDto.Cedula,
+                    Ruc = terapistaReqtDto.RucEmpresa,
+                    Usuario = terapistaReqtDto.NombreUsuario
+                });
                 /* Aqui va el proceso del correo de bienvenida */
 
                 seccion = "RETRONAR RESPUESTA";
@@ -128,14 +138,17 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                             x.Nombre = terapistaAppDto.Nombre;
                             x.Apellido = terapistaAppDto.Apellido;
                             x.Email = terapistaAppDto.Email;
-                            x.NombreTerapia = terapistaAppDto.Nombre;
-                            x.NombreRol = terapistaAppDto.NombreTerapia;
+                            x.NombreTerapia = terapistaAppDto.NombreTerapia;
+                            x.NombreRol = terapistaAppDto.NombreRol;
                             x.Estado = terapistaAppDto.Estado;
                             x.Direccion = terapistaAppDto.Direccion;
                             x.TelefonoContactoEmergencia = terapistaAppDto.TelefonoContactoEmergencia;
                             x.TelefonoContacto = terapistaAppDto.TelefonoContacto;
                             x.IdSucursal = terapistaAppDto.IdSucursal;
                             x.IdTipoTerapia = terapistaAppDto.IdTipoTerapia;
+                            x.FechaNacimiento = terapistaAppDto.FechaNacimiento;
+                            x.Estado = terapistaAppDto.Estado;
+                            x.Genero = terapistaAppDto.Genero;
                         }
                     });
                     await cacheCrossCuttingService.RemoveAsync($"{DomainConstants.JOMA_CACHE_KEY_TERAPISTAS}_{terapistaReqtDto.RucEmpresa}");
@@ -264,6 +277,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 throw new Exception(Mensaje);
             }
         }
+
 
     }
 }

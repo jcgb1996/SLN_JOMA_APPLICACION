@@ -1,10 +1,11 @@
 ﻿@model COM.JOMA.EMP.QUERY.Dtos.TerapistaQueryDto
+@{
+    string disabled = Model.Id > 0 ? "" : "disabled='disabled'";
+    int Estado = Model.Estado == 0 ? 99 : Model.Estado;
+}
 
 
 <style>
-    /* .form-control, .form-select {
-                                    height: 56px !important;
-                                } */
 
     .select2-selection, .select2-selection {
         height: 56px !important; /* Ajusta según el tamaño deseado */
@@ -124,6 +125,15 @@
                             </div>
                         </div>
 
+                        <div class="col-xl-4 col-md-4 col-sm-4 col-12">
+                            <div class="form-floating">
+                                <select id="Estado" name="Estado" data-bgcolor="blue" data-bgcolor-variation="light" class="form-select select2 select2-with-menu-bg" placeholder="Estado" required>
+                                </select>
+                                <label for="Estado"></label>
+                                <div class="invalid-feedback">Por favor, seleccione un estado</div>
+                            </div>
+                        </div>
+
                         <div class="col-12">
                             <div class="form-floating">
                                 <textarea class="form-control" name="Direccion" value="@Model.Direccion" placeholder="Dirección" id="Direccion" style="height: 100px;" required></textarea>
@@ -151,7 +161,9 @@
         Terapista.InitSelect2('IdSucursal', 'Seleccione una Sucursal', Terapista.CmbSucursales, '@Model.IdSucursal');
         Terapista.InitSelect2('Genero', 'Seleccione un género', Terapista.CmbGenero, '@Model.Genero');
         Terapista.InitSelect2('IdTipoTerapia', 'Seleccione un tipo', Terapista.CmbTipoTerapista, '@Model.IdTipoTerapia');
+        Terapista.InitSelect2('Estado', 'Seleccione un Estado', Terapista.CmbEstado, '@Estado');
         Terapista.AsiganarValorDireccion('@Model.Direccion');
+        Terapista.InitDataPicker();
     </script>
 
 }

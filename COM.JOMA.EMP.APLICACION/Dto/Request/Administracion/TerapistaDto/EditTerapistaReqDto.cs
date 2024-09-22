@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 
 namespace COM.JOMA.EMP.APLICACION.Dto.Request.Administracion.TerapistaDto
 {
-    public class EditTerapistaReqDto: TerapistaReqDto
+    public class EditTerapistaReqDto : TerapistaReqDto
     {
-       public long IdTerapista { get; set; }
+        public long IdTerapista { get; set; }
+        public int Estado { get; set; }
     }
 }

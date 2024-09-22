@@ -50,5 +50,29 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 throw ex;
             }
         }
+
+        public async Task<MailBienvenidaQueryDto> ConsultarMailBienvenida(long IdEmpresa)
+        {
+            try
+            {
+                using (var scope = serviceProvider.CreateScope())
+                {
+                    var jomaQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>();
+                    return await jomaQueryContext.ConsultarMailBienvenida(IdEmpresa);
+                }
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception($"SQL Error: {sqlEx.Message} Error Number: {sqlEx.Number}");
+            }
+            catch (TimeoutException timeoutEx)
+            {
+                throw new Exception($"Timeout Error: {timeoutEx.Message}");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

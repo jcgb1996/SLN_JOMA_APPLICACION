@@ -21,6 +21,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
         public DbSet<SucursalQueryDto> sucursalQueryDto { get; set; }
         public DbSet<ValidaTerapistaQueryDto> validaTerapistaQueryDto { get; set; }
         public DbSet<TerapistaQueryDto> terapistaQueryDto { get; set; }
+        public DbSet<MailBienvenidaQueryDto> mailBienvenidaQueryDto { get; set; }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder)
         {
@@ -34,6 +35,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
             modelBuilder.Entity<TipoTerapiaQueryDto>().HasNoKey().ToView(null);
             modelBuilder.Entity<ValidaTerapistaQueryDto>().HasNoKey().ToView(null);
             modelBuilder.Entity<TerapistaQueryDto>().HasNoKey().ToView(null);
+            modelBuilder.Entity<MailBienvenidaQueryDto>().HasNoKey().ToView(null);
         }
     }
 }
