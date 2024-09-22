@@ -46,90 +46,90 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
 
         }
 
-        public async Task<SucursalQueryDto> GetSucursalesXIdCompañia(long IdSucursal)
-        {
-            try
-            {
-                using (var scope = serviceProvider.CreateScope())
-                {
-                    using (var edocQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
-                    {
-                        var resultado = await edocQueryContext.GetSucursalesXIdEmpresa(IdSucursal);
-                        return resultado.FirstOrDefault();
-                    };
-                };
+        //public async Task<SucursalQueryDto> GetSucursalesXIdCompañia(long IdSucursal)
+        //{
+        //    try
+        //    {
+        //        using (var scope = serviceProvider.CreateScope())
+        //        {
+        //            using (var edocQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
+        //            {
+        //                var resultado = await edocQueryContext.GetSucursalesXRuc(IdSucursal);
+        //                return resultado.FirstOrDefault();
+        //            };
+        //        };
 
-            }
-            catch (SqlException sqlEx)
-            {
-                throw new Exception($"SQL Error: {sqlEx.Message} Error Number: {sqlEx.Number}");
-            }
-            catch (TimeoutException timeoutEx)
-            {
-                throw new Exception($"Timeout Error: {timeoutEx.Message}");
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+        //    }
+        //    catch (SqlException sqlEx)
+        //    {
+        //        throw new Exception($"SQL Error: {sqlEx.Message} Error Number: {sqlEx.Number}");
+        //    }
+        //    catch (TimeoutException timeoutEx)
+        //    {
+        //        throw new Exception($"Timeout Error: {timeoutEx.Message}");
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
 
-        public async Task<List<SucursalQueryDto>> GetSucursalesXIdEmpresa(long IdSucursal)
-        {
-            try
-            {
-                using (var scope = serviceProvider.CreateScope())
-                {
-                    using (var edocQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
-                    {
-                        var resultado = await edocQueryContext.GetSucursalesXIdEmpresa(IdSucursal);
-                        return resultado;
-                    };
-                };
+        //public async Task<List<SucursalQueryDto>> GetSucursalesXIdEmpresa(long IdSucursal)
+        //{
+        //    try
+        //    {
+        //        using (var scope = serviceProvider.CreateScope())
+        //        {
+        //            using (var edocQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
+        //            {
+        //                var resultado = await edocQueryContext.GetSucursalesXIdEmpresa(IdSucursal);
+        //                return resultado;
+        //            };
+        //        };
 
-            }
-            catch (SqlException sqlEx)
-            {
-                throw new Exception($"SQL Error: {sqlEx.Message} Error Number: {sqlEx.Number}");
-            }
-            catch (TimeoutException timeoutEx)
-            {
-                throw new Exception($"Timeout Error: {timeoutEx.Message}");
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-        public async Task<List<SucursalQueryDto>> GetSucursalesPorId(long IdCompania)
-        {
-            try
-            {
-                using (var scope = serviceProvider.CreateScope())
-                {
-                    using (var edocQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
-                    {
-                        return await edocQueryContext.GetSucursalesXIdEmpresa(IdCompania);
-                    };
-                };
-
-
+        //    }
+        //    catch (SqlException sqlEx)
+        //    {
+        //        throw new Exception($"SQL Error: {sqlEx.Message} Error Number: {sqlEx.Number}");
+        //    }
+        //    catch (TimeoutException timeoutEx)
+        //    {
+        //        throw new Exception($"Timeout Error: {timeoutEx.Message}");
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
+        //public async Task<List<SucursalQueryDto>> GetSucursalesPorId(long IdCompania)
+        //{
+        //    try
+        //    {
+        //        using (var scope = serviceProvider.CreateScope())
+        //        {
+        //            using (var edocQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
+        //            {
+        //                return await edocQueryContext.GetSucursalesXIdEmpresa(IdCompania);
+        //            };
+        //        };
 
 
-            }
-            catch (SqlException sqlEx)
-            {
-                throw new Exception($"SQL Error: {sqlEx.Message} Error Number: {sqlEx.Number}");
-            }
-            catch (TimeoutException timeoutEx)
-            {
-                throw new Exception($"Timeout Error: {timeoutEx.Message}");
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+
+
+        //    }
+        //    catch (SqlException sqlEx)
+        //    {
+        //        throw new Exception($"SQL Error: {sqlEx.Message} Error Number: {sqlEx.Number}");
+        //    }
+        //    catch (TimeoutException timeoutEx)
+        //    {
+        //        throw new Exception($"Timeout Error: {timeoutEx.Message}");
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
         public async Task<List<TipoTerapiaQueryDto>> GetTipoTerapiasXIdEmpresa(long IdEmpresa)
         {
             try
@@ -161,6 +161,6 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
             }
         }
 
-        
+   
     }
 }

@@ -14,7 +14,7 @@ namespace COM.JOMA.EMP.APLICACION.Interfaces
     {
         public Task<JOMAResponse> RegistrarSucursal(SucursalReqDto sucursalReqDto);
         public Task<JOMAResponse> EditarSucursal(EditSucursalReqDto sucursalReqDto);
-        public Task<SucursalQueryDto> GetSucursalesPorId(long IdSucursal, long Ruc);
+        public Task<SucursalQueryDto> GetSucursalesPorId(long IdSucursal, string Ruc);
         public Task<(bool, bool)> ValidaSucursalXCedulaXRucXCorreo(string Cedula, string Ruc, string Correo);
         public Task<List<SucursalGridQueryDto>> GetSucursalesXRuc(string Ruc);
     }

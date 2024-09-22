@@ -83,7 +83,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 if (sucursalQueryDtos == null)
                 {
                     seccion = "CONSULTAR EN BASE";
-                    sucursalQueryDtos = await consultasQueryServices.GetSucursalesPorId(IdCompania);
+                    //sucursalQueryDtos = await consultasQueryServices.GetSucursalesPorId(IdCompania);
                     seccion = "GUARDAR DATOS EN CACHE";
                     if (DomainParameters.CACHE_ENABLE_SUCURSALES_COMPANIA)
                         await cacheCrossCuttingService.AddObjectAsync($"{DomainConstants.JOMA_CACHE_KEY_SUCURSAL}_{DomainParameters.JOMA_CACHE_KEY}", sucursalQueryDtos, DomainParameters.CACHE_TIEMPO_EXP_SUCURSAL_COMPANIA);

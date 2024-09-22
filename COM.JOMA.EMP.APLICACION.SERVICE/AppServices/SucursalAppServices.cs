@@ -43,7 +43,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
         }
         private async Task<List<SucursalGridQueryDto>> ActualizarCacheSucursalAsync(string Ruc)
         {
-            List<SucursalGridQueryDto>? sucursalQueryDtos = await sucursalQueryServices.GetSucursalesXRucEmpresa(Ruc);
+            List<SucursalGridQueryDto>? sucursalQueryDtos = await sucursalQueryServices.GetSucursalesXRuc(Ruc);
             if (DomainParameters.CACHE_ENABLE_SUCURSALES_COMPANIA)
                 await cacheCrossCuttingService.AddObjectAsync($"{DomainConstants.JOMA_CACHE_KEY_SUCURSAL} _ {Ruc}", sucursalQueryDtos, DomainParameters.CACHE_TIEMPO_EXP_SUCURSAL_COMPANIA);
 

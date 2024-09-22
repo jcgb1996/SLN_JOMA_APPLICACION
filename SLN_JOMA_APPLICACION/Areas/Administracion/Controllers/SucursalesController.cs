@@ -7,6 +7,7 @@ using COM.JOMA.EMP.CROSSCUTTING.ICrossCuttingServices;
 using COM.JOMA.EMP.DOMAIN;
 using COM.JOMA.EMP.DOMAIN.Constants;
 using COM.JOMA.EMP.DOMAIN.Entities;
+using COM.JOMA.EMP.DOMAIN.JomaExtensions;
 using COM.JOMA.EMP.DOMAIN.Tools;
 using COM.JOMA.EMP.QUERY.Dtos;
 using Microsoft.AspNetCore.Mvc;
@@ -28,9 +29,36 @@ namespace SLN_JOMA_APPLICACION.Areas.Administracion.Controllers
 
 		public IActionResult Index()
 		{
-			return View();
-		}
-		[HttpPost]
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditarSucursal([FromBody] EditSucursalReqDto sucursalReqDto)
+        {
+            try
+            {
+                var loginDto = GetUsuarioSesion();
+                sucursalReqDto.IdEmpresa = loginDto.Id;
+                sucursalReqDto.UsuarioCreacion = loginDto.Usuario;
+                sucursalReqDto.RUC = loginDto.Ruc;
+                var Registrado = await sucursalAppServices.EditarSucursal(sucursalReqDto);
+                return this.CrearRespuestaExitosa(Registrado);
+            }
+            catch (JOMAException ex)
+            {
+                return this.CrearRespuestaError(ex.Message, JOMAStatusCode.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                return this.CrearRespuestaError(ex.Message.ToString(), JOMAStatusCode.InternalServerError, ex.Message);
+            }
+            finally
+            {
+                logService.GuardarLogs();
+            }
+        }
+
+        [HttpPost]
 		public async Task<IActionResult> GetSucursales(string search)
 		{
 
@@ -61,56 +89,35 @@ namespace SLN_JOMA_APPLICACION.Areas.Administracion.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetDatosSucursal(long IdSucursal)
 		{
-			try
-			{
+            try
+            {
                 var loginDto = GetUsuarioSesion();
                 var sucursal = await sucursalAppServices.GetSucursalesPorId(IdSucursal, loginDto.Ruc);
-                return PartialView("ModalSucursalPartialView");
-			}
-			catch (JOMAException ex)
-			{
-				return this.CrearRespuestaError(ex.Message, JOMAStatusCode.BadRequest);
-			}
-			catch (Exception ex)
-			{
-				return this.CrearRespuestaError(ex.Message.ToString(), JOMAStatusCode.InternalServerError, ex.Message);
-			}
-			finally
-			{
-				logService.GuardarLogs();
-			}
-		}
+                return PartialView("ModalSucursalPartialView", sucursal);
+            }
+            catch (JOMAException ex)
+            {
+                return this.CrearRespuestaError(ex.Message, JOMAStatusCode.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                return this.CrearRespuestaError(ex.Message.ToString(), JOMAStatusCode.InternalServerError, ex.Message);
+            }
+            finally
+            {
+                logService.GuardarLogs();
+            }
+        }
 
 		[HttpPost]
-		public IActionResult InactivarSucursal(long IdSucursal)
+		public async Task<IActionResult> GuardarSucursal([FromBody] SaveSucursalReqDto sucursalReqDto)
 		{
-			try
-			{
-				return this.CrearRespuestaExitosa();
-			}
-			catch (JOMAException ex)
-			{
-				return this.CrearRespuestaError(ex.Message, JOMAStatusCode.BadRequest);
-			}
-			catch (Exception ex)
-			{
-				return this.CrearRespuestaError(ex.Message.ToString(), JOMAStatusCode.InternalServerError, ex.Message);
-			}
-			finally
-			{
-				logService.GuardarLogs();
-			}
-		}
-
-		[HttpPost]
-		public async Task<IActionResult> GuardarSucursal([FromBody] SucursalReqDto sucursalReqDto)
-		{
-			try
-			{
+            try
+            {
                 var loginDto = GetUsuarioSesion();
-                sucursalReqDto.IdEmpresa = loginDto.Id;
                 sucursalReqDto.UsuarioCreacion = loginDto.Usuario;
                 sucursalReqDto.RUC = loginDto.Ruc;
+                sucursalReqDto.IdEmpresa = loginDto.Id;
                 var Registrado = await sucursalAppServices.RegistrarSucursal(sucursalReqDto);
                 return this.CrearRespuestaExitosa(Registrado);
             }
@@ -127,5 +134,24 @@ namespace SLN_JOMA_APPLICACION.Areas.Administracion.Controllers
                 logService.GuardarLogs();
             }
         }
-	}
+        public async Task<IActionResult> ModalNuevaSucursal()
+        {
+            try
+            {
+                return PartialView("ModalSucursalPartialView");
+            }
+            catch (JOMAException ex)
+            {
+                return this.CrearRespuestaError(ex.Message, JOMAStatusCode.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                return this.CrearRespuestaError(ex.Message.ToString(), JOMAStatusCode.InternalServerError, ex.Message);
+            }
+            finally
+            {
+                logService.GuardarLogs();
+            }
+        }
+    }
 }
