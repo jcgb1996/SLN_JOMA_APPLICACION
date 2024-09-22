@@ -93,7 +93,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 throw;
             }
         }
-        public async Task<List<TerapistasGridQueryDto>> GetTerapistasXRucEmpresa(string RucEmpresa)
+        public async Task<List<TerapistaQueryDto>> GetTerapistasXRucEmpresa(string RucEmpresa)
         {
             try
             {

@@ -9,12 +9,16 @@ namespace COM.JOMA.EMP.QUERY.Interfaces
 {
     public interface IConsultasQueryServices
     {
-        public Task<EmpresaQueryDtos> GetCompaniaXidXRuc(long IdCompania, string Ruc);
         /*Revisar con alan si este metodo queda en desuso GetSucursalesXIdCompañia*/
-        public Task<SucursalQueryDto> GetSucursalesXIdCompañia(long IdSucursal);
-        public Task<List<SucursalQueryDto>> GetSucursalesXIdEmpresa(long IdEmpresa);
-        public Task<List<SucursalQueryDto>> GetSucursalesPorId(long IdCompania);
-        public Task<List<TipoTerapiaQueryDto>> GetTipoTerapiasXIdEmpresa(long IdEmpresa);
-        
+        Task<SucursalQueryDto> GetSucursalesXIdCompañia(long IdSucursal);
+        Task<List<SucursalQueryDto>> GetSucursalesPorId(long IdCompania);
+
+        #region  METODOS DE CATALAGO (Combos)
+        Task<List<RolQueryDto>> GetRolesXIdEmpresa(long IdEmpresa);
+        Task<List<TipoTerapiaQueryDto>> GetTipoTerapiasXIdEmpresa(long IdEmpresa);
+        Task<List<SucursalQueryDto>> GetSucursalesXIdEmpresa(long IdEmpresa);
+        Task<EmpresaQueryDtos> GetCompaniaXidXRuc(long IdCompania, string Ruc);
+
+        #endregion
     }
 }

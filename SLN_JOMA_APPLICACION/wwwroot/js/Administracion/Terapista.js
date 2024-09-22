@@ -6,6 +6,7 @@ var Terapista = {
     CmbTipoTerapista: "",
     CmbSucursales: "",
     CmbEstado: "",
+    CmbRol: "",
 
     Init: function (UrlBase, Controller) {
         debugger;
@@ -338,6 +339,7 @@ var Terapista = {
         Terapista.Limpiar("Genero");
         Terapista.Limpiar("IdTipoTerapia");
         Terapista.Limpiar("Estado");
+        Terapista.Limpiar("IdRol");
     },
 
     Limpiar: function (id) {
@@ -350,6 +352,7 @@ var Terapista = {
         Terapista.InitSelect2('Genero', 'Seleccione un género', Terapista.CmbGenero);
         Terapista.InitSelect2('IdTipoTerapia', 'Seleccione un tipo', Terapista.CmbTipoTerapista);
         Terapista.InitSelect2('Estado', 'Seleccione un Estado', Terapista.CmbEstado, 1);
+        Terapista.InitSelect2('IdRol', 'Seleccione un Rol', Terapista.CmbRol, 1);
         Terapista.InitDataPicker();
         $("#ModalTerapista").modal('show');
     },

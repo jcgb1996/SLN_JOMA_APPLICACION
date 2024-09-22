@@ -19,9 +19,6 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Trabajador.Controllers
         protected ITerapistaAppServices terapistaAppServices;
         protected IConsultasAppServices consultasAppServices;
         protected IEnvioMailEnLineaAppServices envioMailEnLineaAppServices;
-
-
-
         public TerapistasController(ILogCrossCuttingService logService, GlobalDictionaryDto globalDictionary, ITerapistaAppServices terapistaAppServices,
             IConsultasAppServices consultasAppServices, IEnvioMailEnLineaAppServices envioMailEnLineaAppServices) : base(logService, globalDictionary)
         {
@@ -29,7 +26,6 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Trabajador.Controllers
             this.consultasAppServices = consultasAppServices;
             this.envioMailEnLineaAppServices = envioMailEnLineaAppServices;
         }
-
         public async Task<IActionResult> IndexAsync()
         {
             var loginDto = GetUsuarioSesion();
@@ -37,10 +33,12 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Trabajador.Controllers
             var CmbEstado = JOMAExtensions.GetGeneros<JOMAEstado>();
             var CmbTipoServicio = await consultasAppServices.GetTipoTerapiasXIdEmpresa(loginDto.IdCompania);
             var CmbSucursales = await consultasAppServices.GetSucursalesPorIdEmpresa(loginDto.IdCompania);
+            var CmbRol = await consultasAppServices.GetRolesXIdEmpresa(loginDto.IdCompania);
             ViewData["CmgGenero"] = CmbGenero;
             ViewData["CbmTipoTerapias"] = CmbTipoServicio;
             ViewData["CmbSucursales"] = CmbSucursales;
             ViewData["CmbEstado"] = CmbEstado;
+            ViewData["CmbRol"] = CmbRol;
             return View();
         }
 
@@ -176,30 +174,5 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Trabajador.Controllers
                 logService.GuardarLogs();
             }
         }
-
-        [HttpGet]
-        public async Task<IActionResult> ModalNuevoTerapista()
-        {
-            try
-            {
-                return PartialView("ModalTerapistaPartialView");
-            }
-            catch (JOMAException ex)
-            {
-                return this.CrearRespuestaError(ex.Message, JOMAStatusCode.BadRequest);
-            }
-            catch (Exception ex)
-            {
-                return this.CrearRespuestaError(ex.Message.ToString(), JOMAStatusCode.InternalServerError, ex.Message);
-            }
-            finally
-            {
-                logService.GuardarLogs();
-            }
-        }
-
-
-
-
     }
 }

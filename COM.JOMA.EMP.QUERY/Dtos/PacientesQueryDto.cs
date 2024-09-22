@@ -8,10 +8,21 @@ namespace COM.JOMA.EMP.QUERY.Dtos
 {
     public class PacientesQueryDto
     {
-        public string Nombre { get; set; }
-        public string Apellido { get; set; }
-        public string Terapista { get; set; }
-        public string Contacto { get; set; }
-        public string Cedula { get; set; }
+        public long Id { get; set; }
+        public string NombresApellidosPaciente { get; set; }
+        public DateTime? FechaNacimiento { get; set; }
+        public int? Edad { get; set; }
+        public string Escuela { get; set; }
+        public string Curso { get; set; }
+        public string CedulaPaciente { get; set; }
+        public string DireccionDomiciliaria { get; set; }
+        public long? TelefonoMadre { get; set; }
+        public long? TelefonoPadre { get; set; }
+        public string NombreMadre { get; set; }
+        public string NombrePadre { get; set; }
+        public string RepresentanteLegal { get; set; }
+        public int? EdadRepresentante { get; set; }
+        public string CedulaRepresentante { get; set; }
+        public bool Estado { get; set; }
     }
 }

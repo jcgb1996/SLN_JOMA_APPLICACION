@@ -83,8 +83,8 @@ try
     builder.Services.AddScoped<IPacienteQueryServices, PacienteQueryServices>();
     builder.Services.AddScoped<ITerapistaAppServices, TerapistaAppServices>();
     builder.Services.AddScoped<ITerapistaQueryServices, TerapistaQueryServices>();
-    builder.Services.AddScoped<ISucursalAppServices, SucursalAppServices>();//Añadi yo
-    builder.Services.AddScoped<ISucursalQueryService, SucursalQueryServices>();//---
+    builder.Services.AddScoped<ISucursalAppServices, SucursalAppServices>();
+    builder.Services.AddScoped<ISucursalQueryService, SucursalQueryServices>();
     builder.Services.AddScoped<IConsultasAppServices, ConsultasAppServices>();
     builder.Services.AddScoped<IConsultasQueryServices, ConsultasQueryServices>();
     builder.Services.AddScoped<ICacheCrossCuttingService, CacheCrossCuttingService>();
@@ -104,12 +104,12 @@ try
     DomainParameters.MAIL_INTERVALO_TIEMPOESPERAENVIOMAIL = 1;//cambiar este valor, por el que se va a traer desde la configuración inicial
     DomainParameters.CACHE_ENABLE_CONF_SERVIDORCORREO_COMPANIA = true;//cambiar este valor, por el que se va a traer desde la configuración inicial
     DomainParameters.CACHE_TIEMPO_EXP_CONF_SERVIDORCORREO_COMPANIA = 600;//cambiar este valor, por el que se va a traer desde la configuración inicial
-    DomainParameters.CACHE_TIEMPO_EXP_TIPOTERAPIAS_COMPANIA = 600;//cambiar este valor, por el que se va a traer desde la configuración inicial
+    DomainParameters.CACHE_TIEMPO_EXP_CMB_TIPOTERAPIAS_COMPANIA = 600;//cambiar este valor, por el que se va a traer desde la configuración inicial
     DomainParameters.CACHE_ENABLE_TIPOTERAPIAS_COMPANIA = true;//cambiar este valor, por el que se va a traer desde la configuración inicial
-
-
-    DomainParameters.CACHE_TIEMPO_EXP_SUCURSAL_COMPANIA = 600; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial (tiempo en segundos)
-    DomainParameters.CACHE_ENABLE_SUCURSALES_COMPANIA = true;
+    DomainParameters.CACHE_TIEMPO_EXP_CMB_SUCURSAL_COMPANIA = 600; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial (tiempo en segundos)
+    DomainParameters.CACHE_ENABLE_CMB_SUCURSALES_COMPANIA = true; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial (tiempo en segundos)
+    DomainParameters.CACHE_ENABLE_CMB_ROL_COMPANIA = true; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial (tiempo en segundos)
+    DomainParameters.CACHE_TIEMPO_EXP_CMB_ROL_COMPANIA = 600; //cambiar este valor, por el valor ue se va a traer desde la configuración inicial (tiempo en segundos)
 
     builder.Services.AddSingleton<LogCrossCuttingService>();
     builder.Services.AddScoped<GlobalDictionaryDto>();

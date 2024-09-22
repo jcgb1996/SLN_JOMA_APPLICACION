@@ -6,16 +6,19 @@
     var jsonCmbGenero = string.Empty;
     var jsonCmbSucursales = string.Empty;
     var jsonCmbEstado = string.Empty;
+    var jsonCmbRol = string.Empty;
 
     var CmbGenero = ViewData["CmgGenero"] as List<(string Description, int Value)>;
     var CmbEstado = ViewData["CmbEstado"] as List<(string Description, int Value)>;
     var CbmTipoTerapias = ViewData["CbmTipoTerapias"] as List<TipoTerapiaQueryDto>;
     var CmbSucursales = ViewData["CmbSucursales"] as List<SucursalQueryDto>;
+    var CmbRol = ViewData["CmbRol"] as List<RolQueryDto>;
 
     if (CmbGenero != null) jsonCmbGenero = Newtonsoft.Json.JsonConvert.SerializeObject(CmbGenero);
     if (CmbEstado != null) jsonCmbEstado = Newtonsoft.Json.JsonConvert.SerializeObject(CmbEstado);
     if (CbmTipoTerapias != null) jsonCbmTipoTerapias = Newtonsoft.Json.JsonConvert.SerializeObject(CbmTipoTerapias);
     if (CmbSucursales != null) jsonCmbSucursales = Newtonsoft.Json.JsonConvert.SerializeObject(CmbSucursales);
+    if (CmbRol != null) jsonCmbRol = Newtonsoft.Json.JsonConvert.SerializeObject(CmbRol);
 }
 
 <style>
@@ -100,6 +103,20 @@
             Terapista.CmbSucursales = Terapista.CmbSucursales.map(function (item) {
                 return {
                     id: item.Id,
+                    text: item.Nombre
+                };
+            });
+        </script>
+    }
+
+    if (!string.IsNullOrEmpty(jsonCmbRol))
+    {
+
+        <script type="text/javascript">
+            Terapista.CmbRol = @Html.Raw(jsonCmbRol);
+            Terapista.CmbRol = Terapista.CmbRol.map(function (item) {
+                return {
+                    id: item.id,
                     text: item.Nombre
                 };
             });

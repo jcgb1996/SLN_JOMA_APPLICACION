@@ -25,11 +25,17 @@
                 <h1 class="modal-title card-title text-center p-0 fs-4" id="">Registo de un Terapista</h1>
                 <button type="button" class="btn-close" id="CerrarModal" data-bs-dismiss="modal" onclick="Site.limpiarFormularioById('RegistrarTerapista',event);" aria-label="Close"></button>
             </div>
+
             <div class="modal-body pt-1 pb-1">
                 <div class="card-body">
                     <div class="pt-4 pb-2">
                         <h1 class="card-title text-center pb-0 fs-8">Terapista</h1>
                         <p class="text-center fw-medium">Ingrese los datos personales</p>
+                    </div>
+                    <div class="alert customize-alert alert-dismissible border-warning text-warning rounded-pill fade show remove-close-icon" role="alert">
+                        <div class="d-flex align-items-center  me-3 me-md-0">
+                            <i class="ti ti-info-circle fs-5 me-2 text-warning"></i>Al terapista registrado le llegara por correo las credenciales temporales para que pueda iniciar sesión
+                        </div>
                     </div>
 
                     <form class="row g-3 needs-validation" id="RegistrarTerapista" novalidate>
@@ -134,6 +140,15 @@
                             </div>
                         </div>
 
+                        <div class="col-xl-4 col-md-4 col-sm-4 col-12">
+                            <div class="form-floating">
+                                <select id="IdRol" name="IdRol" data-bgcolor="blue" data-bgcolor-variation="light" class="form-select select2 select2-with-menu-bg" placeholder="Rol" required>
+                                </select>
+                                <label for="IdRol"></label>
+                                <div class="invalid-feedback">Por favor, seleccione un Rol</div>
+                            </div>
+                        </div>
+
                         <div class="col-12">
                             <div class="form-floating">
                                 <textarea class="form-control" name="Direccion" value="@Model.Direccion" placeholder="Dirección" id="Direccion" style="height: 100px;" required></textarea>
@@ -162,6 +177,7 @@
         Terapista.InitSelect2('Genero', 'Seleccione un género', Terapista.CmbGenero, '@Model.Genero');
         Terapista.InitSelect2('IdTipoTerapia', 'Seleccione un tipo', Terapista.CmbTipoTerapista, '@Model.IdTipoTerapia');
         Terapista.InitSelect2('Estado', 'Seleccione un Estado', Terapista.CmbEstado, '@Estado');
+        Terapista.InitSelect2('IdRol', 'Seleccione un Rol', Terapista.CmbRol, '@Model.IdRol');
         Terapista.AsiganarValorDireccion('@Model.Direccion');
         Terapista.InitDataPicker();
     </script>

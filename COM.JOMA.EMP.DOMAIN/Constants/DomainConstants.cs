@@ -24,15 +24,19 @@ namespace COM.JOMA.EMP.DOMAIN.Constants
         public const string EDOC_CULTUREINFO = "es-EC";
         public const string JOMA_PREFIJO_CACHE = "JOMA_";
         public const string JOMA_CACHE_KEY_TERAPISTAS = "CACHE_KEY_TERAPISTAS_";
-        public const string JOMA_CACHE_KEY_TIPOTERAPIAS = "CACHE_KEY_TIPOTERAPIAS_";
         public const string JOMA_CACHE_KEY_DATOS_COMPANIA = "CACHE_KEY_DATOS_COMPANIA";
         public const string JOMA_CACHE_KEY_OTP = "CACHE_KEY_OTP_";
 
 
         public const string EDOC_CACHE_KEY_CONFIGSERVIDORCORREOCOMPANIA = "JOMA_CACHE_KEY_CONFIG_SERVIDOR_CORREO_COMPANIA";
 
-        public const string JOMA_CACHE_KEY_SUCURSAL = "CACHE_KEY_SUCURSAL_";
 
+
+        #region CONSTANTES PARA LOS CATALOGOS
+        public const string JOMA_CACHE_KEY_CMB_ROLES = "CACHE_KEY_TIPOTERAPIAS_";
+        public const string JOMA_CACHE_KEY_CMB_TIPOTERAPIAS = "CACHE_KEY_TIPOTERAPIAS_";
+        public const string JOMA_CACHE_KEY_CMB_SUCURSAL = "CACHE_KEY_SUCURSAL_";
+        #endregion
 
     }
 }

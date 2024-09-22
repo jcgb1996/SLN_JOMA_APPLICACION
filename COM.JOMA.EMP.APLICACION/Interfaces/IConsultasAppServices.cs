@@ -10,10 +10,14 @@ namespace COM.JOMA.EMP.APLICACION.Interfaces
     public interface IConsultasAppServices
     {
         public void GetPacientes(long IdCompania);
-        public Task<List<SucursalQueryDto>> GetSucursalesPorIdCompania(long IdCompania);
-        public Task<SucursalQueryDto> GetSucursalesXId(long IdSucursal);
-        public Task<EmpresaQueryDtos> GetCompaniaXidXRuc(long IdCompania, string Ruc);
-        public Task<List<TipoTerapiaQueryDto>> GetTipoTerapiasXIdEmpresa(long IdEmpresa);
-        public Task<List<SucursalQueryDto>> GetSucursalesPorIdEmpresa(long IdEmpresa);
+        Task<List<SucursalQueryDto>> GetSucursalesPorIdCompania(long IdCompania);
+        Task<SucursalQueryDto> GetSucursalesXId(long IdSucursal);
+
+        #region  METODOS DE CATALAGO (Comobos)
+        Task<List<SucursalQueryDto>> GetSucursalesPorIdEmpresa(long IdEmpresa);
+        Task<List<RolQueryDto>> GetRolesXIdEmpresa(long IdEmpresa);
+        Task<List<TipoTerapiaQueryDto>> GetTipoTerapiasXIdEmpresa(long IdEmpresa);
+        Task<EmpresaQueryDtos> GetCompaniaXidXRuc(long IdCompania, string Ruc);
+        #endregion
     }
 }
