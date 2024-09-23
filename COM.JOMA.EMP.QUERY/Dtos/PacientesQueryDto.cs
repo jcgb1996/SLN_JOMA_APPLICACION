@@ -23,6 +23,7 @@ namespace COM.JOMA.EMP.QUERY.Dtos
         public string RepresentanteLegal { get; set; }
         public int? EdadRepresentante { get; set; }
         public string CedulaRepresentante { get; set; }
+        public string CorreoNotificacion { get; set; }
         public bool Estado { get; set; }
     }
 }

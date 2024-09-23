@@ -71,5 +71,32 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Administracion.Controllers
                 logService.GuardarLogs();
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> GetPacientes(string search)
+        {
+            try
+            {
+                var loginDto = GetUsuarioSesion();
+                var LstTerapista = await PacienteAppServices.GetPacientesXRucEmpresa(loginDto.Ruc);
+                return this.CrearRespuestaExitosa(string.Empty, new
+                {
+                    data = LstTerapista
+                });
+            }
+            catch (JOMAException ex)
+            {
+                return this.CrearRespuestaError(ex.Message, JOMAStatusCode.BadRequest);
+            }
+            catch (Exception ex)
+            {
+                return this.CrearRespuestaError(ex.Message.ToString(), JOMAStatusCode.InternalServerError, ex.Message);
+            }
+            finally
+            {
+                logService.GuardarLogs();
+            }
+        }
+
     }
 }

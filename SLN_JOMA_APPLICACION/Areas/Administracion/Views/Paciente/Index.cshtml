@@ -3,155 +3,40 @@
     var Controller = $"{WebSiteConstans.JOMA_WEBSITE_AREA_ADMINISTRACION}/{WebSiteConstans.JOMA_WEBSITE_AREA_CONTROLLER_PACIENTES}";
 }
 
+
+<style>
+    .table td {
+        padding: 5px !important; /* Elimina el padding de las celdas */
+    }
+    .select2-selection, .select2-selection {
+        height: 56px !important; /* Ajusta según el tamaño deseado */
+    }
+
+    table#DataTablePacientes td {
+        font-size: 11px !important;
+        padding: 5px 8px !important;
+        vertical-align: middle !important;
+    }
+</style>
+
 <section class="section">
+    <div id="ContenteModal">
+        @await Html.PartialAsync("ModalPacientePartialView")
+    </div>
     <div class="row">
         <div class="col-lg-12">
-
             <div class="card">
+
                 <div class="card-body">
-                    <div class="pt-4 pb-2">
-                        <h5 class="card-title text-center pb-0 fs-8">Paciente</h5>
-                        <p class="text-center fw-medium">Ingrese los datos del paciente</p>
-                    </div>
-                   @*  <div class="alert customize-alert alert-dismissible border-warning text-warning rounded-pill fade show remove-close-icon" role="alert">
-                        <div class="d-flex align-items-center  me-3 me-md-0">
-                            <i class="ti ti-info-circle fs-5 me-2 text-warning"></i> Para editar un paciente, ingrese la cédula.
-                        </div>
-                    </div> *@
-                    <form class="row g-3 needs-validation" id="RegistrarPaciente" novalidate="">
 
-
-                        <!-- Campo Nombres y Apellidos -->
-                        <div class="col-xl-4 col-md-4 col-sm-4 col-12 mb-3">
-                            <div class="form-floating">
-                                <input type="text" name="NombresApellidos" class="form-control" id="NombresApellidos" placeholder="Nombres y Apellidos" required>
-                                <label for="NombresApellidos">Nombres y Apellidos</label>
-                                <div class="invalid-feedback">Por favor, ingrese los nombres y apellidos!</div>
-                            </div>
-                        </div>
-
-                        <!-- Campo Fecha de Nacimiento -->
-                        <div class="col-xl-4 col-md-4 col-sm-4 col-12 mb-3">
-                            <div class="form-floating">
-                                <input type="date" class="form-control" placeholder="Fecha de Nacimiento" id="FechaNacimiento" required>
-                                <label for="FechaNacimiento">Fecha de Nacimiento</label>
-                                <div class="invalid-feedback">Por favor, seleccione la fecha de nacimiento!</div>
-                            </div>
-                        </div>
-
-                        <!-- Campo Edad -->
-                        <div class="col-xl-4 col-md-4 col-sm-4 col-12 mb-3">
-                            <div class="form-floating">
-                                <input type="number" name="Edad" class="form-control" id="Edad" placeholder="Edad" required>
-                                <label for="Edad">Edad</label>
-                                <div class="invalid-feedback">Por favor, ingrese la edad!</div>
-                            </div>
-                        </div>
-
-                        <!-- Campo Escuela -->
-                        <div class="col-xl-4 col-md-4 col-sm-4 col-12 mb-3">
-                            <div class="form-floating">
-                                <input type="text" name="Escuela" class="form-control" id="Escuela" placeholder="Escuela" required>
-                                <label for="Escuela">Escuela</label>
-                                <div class="invalid-feedback">Por favor, ingrese el nombre de la escuela!</div>
-                            </div>
-                        </div>
-                        <!-- Campo Nivel -->
-                        <div class="col-xl-4 col-md-4 col-sm-4 col-12 mb-3">
-                            <div class="form-floating">
-                                <input type="text" name="Curso" class="form-control" id="Curso" placeholder="Curso" required>
-                                <label for="Curso">Curso</label>
-                                <div class="invalid-feedback">Por favor, ingrese el Curso escolar!</div>
-                            </div>
-                        </div>
-                        <!-- Campo Cédula del Niño -->
-                        <div class="col-xl-4 col-md-4 col-sm-4 col-12 mb-3">
-                            <div class="form-floating">
-                                <input type="text" name="CedulaNino" class="form-control" id="CedulaNino" placeholder="Cédula del Niño" required>
-                                <label for="CedulaNino">Cédula del Niño</label>
-                                <div class="invalid-feedback">Por favor, ingrese la cédula del niño!</div>
-                            </div>
-                        </div>
-
-
-                        <!-- Campo Dirección Domiciliaria -->
-                        <div class="col-12">
-                            <div class="form-floating  mb-3">
-                                <input type="text" name="DireccionDomiciliaria" class="form-control" id="DireccionDomiciliaria" placeholder="Dirección Domiciliaria" required>
-                                <label for="DireccionDomiciliaria">Dirección Domiciliaria</label>
-                                <div class="invalid-feedback">Por favor, ingrese la dirección domiciliaria!</div>
-                            </div>
-                        </div>
-
-
-                        <!-- Campo Teléfono de los Representantes -->
-                        <div class="col-xl-6 col-md-6 col-sm-6 col-12 mb-3">
-                            <div class="form-floating">
-                                <input type="number" name="TelefonoMadre" class="form-control" id="TelefonoMadre" placeholder="Teléfono de la Madre" required>
-                                <label for="TelefonoMadre">Teléfono de la Madre</label>
-                                <div class="invalid-feedback">Por favor, ingrese el teléfono de la madre!</div>
-                            </div>
-                        </div>
-
-                        <div class="col-xl-6 col-md-6 col-sm-6 col-12 mb-3">
-                            <div class="form-floating">
-                                <input type="number" name="TelefonoPadre" class="form-control" id="TelefonoPadre" placeholder="Teléfono del Padre" required>
-                                <label for="TelefonoPadre">Teléfono del Padre</label>
-                                <div class="invalid-feedback">Por favor, ingrese el teléfono del padre!</div>
-                            </div>
-                        </div>
-
-                        <!-- Campo Nombre de la Madre -->
-                        <div class="col-xl-6 col-md-6 col-sm-6 col-12 mb-3">
-                            <div class="form-floating">
-                                <input type="text" name="NombreMadre" class="form-control" id="NombreMadre" placeholder="Nombre de la Madre" required>
-                                <label for="NombreMadre">Nombre de la Madre</label>
-                                <div class="invalid-feedback">Por favor, ingrese el nombre de la madre!</div>
-                            </div>
-                        </div>
-
-                        <!-- Campo Nombre del Padre -->
-                        <div class="col-xl-6 col-md-6 col-sm-6 col-12 mb-3">
-                            <div class="form-floating">
-                                <input type="text" name="NombrePadre" class="form-control" id="NombrePadre" placeholder="Nombre del Padre" required>
-                                <label for="NombrePadre">Nombre del Padre</label>
-                                <div class="invalid-feedback">Por favor, ingrese el nombre del padre!</div>
-                            </div>
-                        </div>
-
-                        <!-- Campo Representante Legal -->
-                        <div class="col-xl-4 col-md-4 col-sm-4 col-12 mb-3">
-                            <div class="form-floating">
-                                <input type="text" name="RepresentanteLegal" class="form-control" id="RepresentanteLegal" placeholder="Representante Legal" required>
-                                <label for="RepresentanteLegal">Representante Legal</label>
-                                <div class="invalid-feedback">Por favor, ingrese el nombre del representante legal!</div>
-                            </div>
-                        </div>
-
-                        <!-- Campo Edad del Representante Legal -->
-                        <div class="col-xl-4 col-md-4 col-sm-4 col-12 mb-3">
-                            <div class="form-floating">
-                                <input type="number" name="EdadRepresentante" class="form-control" id="EdadRepresentante" placeholder="Edad del Representante Legal" required>
-                                <label for="EdadRepresentante">Edad del Representante Legal</label>
-                                <div class="invalid-feedback">Por favor, ingrese la edad del representante legal!</div>
-                            </div>
-                        </div>
-
-
-                        <!-- Campo Cédula del Representante Legal -->
-                        <div class="col-xl-4 col-md-4 col-sm-4 col-12 mb-3">
-                            <div class="form-floating">
-                                <input type="text" name="CedulaRepresentante" class="form-control" id="CedulaRepresentante" placeholder="Cédula del Representante Legal" required>
-                                <label for="CedulaRepresentante">Cédula del Representante Legal</label>
-                                <div class="invalid-feedback">Por favor, ingrese la cédula del representante legal!</div>
-                            </div>
-                        </div>
-
-
-
-                    </form>
-
-
+                    <h1 class="card-title text-center pb-0 fs-8">Pacientes</h1>
+                    <p class="text-center fw-medium">Pacientes Registrados</p>
+                    <table id="DataTablePacientes" class="table table-striped table-bordered w-100" style="width:100%">
+                        <thead>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

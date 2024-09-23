@@ -1,4 +1,5 @@
 ﻿using COM.JOMA.EMP.DOMAIN.Entities;
+using COM.JOMA.EMP.QUERY.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace COM.JOMA.EMP.QUERY.Interfaces
     {
         public bool RegistrarPaciente(Paciente paciente);
         public bool ActualizarPaciente(Paciente paciente);
+        Task<List<PacientesQueryDto>> GetPacientesXIdEmpresa(long IdEmpresa);
     }
 }
