@@ -175,9 +175,9 @@
 @if (Model.Id > 0)
 {
     <script type="text/javascript">
-        Terapista.InitSelect2('Estado', 'Seleccione un Estado', Terapista.CmbEstado, '@Estado');
-        Terapista.AsiganarValorDireccion('@Model.DireccionDomiciliaria');
-        Terapista.InitDataPicker();
+        Paciente.InitSelect2('Estado', 'Seleccione un Estado', Terapista.CmbEstado, '@Estado');
+        Paciente.AsiganarValorDireccion('@Model.DireccionDomiciliaria');
+        Paciente.InitDataPicker();
     </script>
 
 }

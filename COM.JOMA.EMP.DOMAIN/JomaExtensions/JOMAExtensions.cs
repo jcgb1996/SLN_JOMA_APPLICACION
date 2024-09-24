@@ -68,7 +68,7 @@ namespace COM.JOMA.EMP.DOMAIN.JomaExtensions
                 .GetCustomAttribute<TAttribute>();
         }
 
-        public static List<(string Description, int Value)> GetGeneros<T>() where T : Enum
+        public static List<(string Description, int Value)> GetEnumsList<T>() where T : Enum
         {
             var result = new List<(string Description, int Value)>();
             foreach (var value in Enum.GetValues(typeof(T)))

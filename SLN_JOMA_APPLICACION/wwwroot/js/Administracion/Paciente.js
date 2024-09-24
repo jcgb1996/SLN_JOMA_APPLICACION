@@ -2,6 +2,7 @@
 var CONTROLERNAME_PACIENTE = ""
 
 var Paciente = {
+    CmbEstado: "",
 
     Init: function (UrlBase, Controller) {
         debugger;
@@ -184,13 +185,9 @@ var Paciente = {
         });
     },
     NuevoPaciente: function () {
-        //Terapista.LimpiarComponentes();
-        //Terapista.InitSelect2('IdSucursal', 'Seleccione una Sucursal', Terapista.CmbSucursales);
-        //Terapista.InitSelect2('Genero', 'Seleccione un género', Terapista.CmbGenero);
-        //Terapista.InitSelect2('IdTipoTerapia', 'Seleccione un tipo', Terapista.CmbTipoTerapista);
-        //Terapista.InitSelect2('Estado', 'Seleccione un Estado', Terapista.CmbEstado, 1);
-        //Terapista.InitSelect2('IdRol', 'Seleccione un Rol', Terapista.CmbRol, 1);
-        //Terapista.InitDataPicker();
+        Paciente.LimpiarComponentes();
+        Paciente.InitSelect2('Estado', 'Seleccione un Estado', Paciente.CmbEstado, 1);
+        Paciente.InitDataPicker();
         $("#ModalPaciente").modal('show');
     },
     GuardarDatos: function (event, id, idPaciente) {
@@ -227,4 +224,43 @@ var Paciente = {
         });
 
     },
+    InitSelect2: function (id, placeholder, Data, values) {
+        if (!Data || Data.length === 0) {
+            Data = [{
+                id: '',
+                text: 'No hay datos que mostrar'
+            }];
+        }
+
+        $("#" + id).select2({
+            placeholder: placeholder,
+            dropdownParent: $("#ModalTerapista"),
+            width: '100%',
+            language: {
+                noResults: function () {
+                    return "No se encontraron resultados";
+                }
+            },
+            data: Data.map(function (terapia) {
+                return {
+                    id: terapia.id || '',
+                    text: terapia.Nombre || terapia.text
+                };
+            })
+        });
+
+        if (values) {
+            $("#" + id).val(values).trigger('change');
+        }
+    },
+    LimpiarComponentes: function () {
+        Paciente.Limpiar("Estado");
+    },
+    Limpiar: function (id) {
+        var $select = $('#' + id).select2();
+        $select.empty();
+    },
+    AsiganarValorDireccion: function (Direccion) {
+        $("#DireccionDomiciliaria").val(Direccion).trigger('change');
+    }
 };

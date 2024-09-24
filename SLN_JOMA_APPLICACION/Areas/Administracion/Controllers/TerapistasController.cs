@@ -29,8 +29,8 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Trabajador.Controllers
         public async Task<IActionResult> IndexAsync()
         {
             var loginDto = GetUsuarioSesion();
-            var CmbGenero = JOMAExtensions.GetGeneros<JOMAGenero>();
-            var CmbEstado = JOMAExtensions.GetGeneros<JOMAEstado>();
+            var CmbGenero = JOMAExtensions.GetEnumsList<JOMAGenero>();
+            var CmbEstado = JOMAExtensions.GetEnumsList<JOMAEstado>();
             var CmbTipoServicio = await consultasAppServices.GetTipoTerapiasXIdEmpresa(loginDto.IdCompania);
             var CmbSucursales = await consultasAppServices.GetSucursalesPorIdEmpresa(loginDto.IdCompania);
             var CmbRol = await consultasAppServices.GetRolesXIdEmpresa(loginDto.IdCompania);
@@ -47,7 +47,6 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Trabajador.Controllers
         {
             try
             {
-                var cont = terapistaReqDto.Contrasena;
                 var loginDto = GetUsuarioSesion();
                 terapistaReqDto.IdEmpresa = loginDto.Id;
                 terapistaReqDto.UsuarioCreacion = loginDto.Usuario;

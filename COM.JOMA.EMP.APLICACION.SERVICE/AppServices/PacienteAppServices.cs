@@ -61,7 +61,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
 
                 seccion = "REGISTRAR PACIENTE";
                 var Editado = pacienteQueryServices.ActualizarPaciente(Paciente);
-                if (!Editado) new JOMAException($"No se pudo registrar al paciente {pacienteReqtDto.CedulaNino}");
+                if (!Editado) new JOMAException($"No se pudo registrar al paciente {pacienteReqtDto.CedulaPaciente}");
 
                 seccion = "RETRONAR RESPUESTA";
                 return new();
@@ -77,7 +77,7 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 throw new Exception(Mensaje);
             }
         }
-        public async Task<JOMAResponse> RegistrarPacienteAsync(SavePacienteReqDto pacienteReqtDto)
+        public async Task<JOMAResponse> RegistrarPaciente(SavePacienteReqDto pacienteReqtDto)
         {
             string seccion = string.Empty;
             try

@@ -1,11 +1,13 @@
 ﻿using COM.JOMA.EMP.APLICACION.Dto.Request.Administracion;
 using COM.JOMA.EMP.APLICACION.Dto.Request.Administracion.PacienteDto;
+using COM.JOMA.EMP.APLICACION.Dto.Request.Administracion.TerapistaDto;
 using COM.JOMA.EMP.APLICACION.Interfaces;
 using COM.JOMA.EMP.APLICACION.SERVICE.AppServices;
 using COM.JOMA.EMP.APLICACION.SERVICE.Constants;
 using COM.JOMA.EMP.CROSSCUTTING.ICrossCuttingServices;
 using COM.JOMA.EMP.DOMAIN;
 using COM.JOMA.EMP.DOMAIN.Constants;
+using COM.JOMA.EMP.DOMAIN.JomaExtensions;
 using COM.JOMA.EMP.DOMAIN.Tools;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -25,15 +27,20 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Administracion.Controllers
 
         public IActionResult Index()
         {
+            var CmbEstado = JOMAExtensions.GetEnumsList<JOMAEstado>();
+            ViewData["CmbEstado"] = CmbEstado;
             return View();
         }
 
         [HttpPost]
-        public IActionResult GuardarPaciente([FromBody] SavePacienteReqDto pacienteReqDto)
+        public async Task<IActionResult> GuardarPaciente([FromBody] SavePacienteReqDto pacienteReqDto)
         {
             try
             {
-                var Registrado = PacienteAppServices.RegistrarPacienteAsync(pacienteReqDto);
+                var loginDto = GetUsuarioSesion();
+                pacienteReqDto.RucEmpresa = loginDto.Ruc;
+                pacienteReqDto.UsuarioCreacion = loginDto.Usuario;
+                var Registrado = await PacienteAppServices.RegistrarPaciente(pacienteReqDto);
                 return this.CrearRespuestaExitosa(Registrado);
             }
             catch (JOMAException ex)
