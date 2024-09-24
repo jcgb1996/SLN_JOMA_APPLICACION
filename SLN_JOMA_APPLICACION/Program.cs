@@ -44,10 +44,10 @@ try
     #region INJECT DATABASE
 
 
-    //var BR_DataSource = JOMACrypto.CifrarClave(JOMAConversions.DBNullToString(settings.GSEDOC_BR.DataSource), DomainConstants.JOMA_KEYENCRIPTA, DomainConstants.JOMA_SALTO);
-    //var BR_InitialCatalog = JOMACrypto.CifrarClave(JOMAConversions.DBNullToString(settings.GSEDOC_BR.InitialCatalog), DomainConstants.JOMA_KEYENCRIPTA, DomainConstants.JOMA_SALTO);
-    //var BR_UserId = JOMACrypto.CifrarClave(JOMAConversions.DBNullToString(settings.GSEDOC_BR.UserId), DomainConstants.JOMA_KEYENCRIPTA, DomainConstants.JOMA_SALTO);
-    //var password = JOMACrypto.CifrarClave(settings.GSEDOC_BR.Password, DomainConstants.JOMA_KEYENCRIPTA, DomainConstants.JOMA_SALTO);
+    var BR_DataSource = JOMACrypto.DescifrarClave(JOMAConversions.DBNullToString(settings.GSEDOC_BR.DataSource), DomainConstants.JOMA_KEYENCRIPTA, DomainConstants.JOMA_SALTO);
+    var BR_InitialCatalog = JOMACrypto.DescifrarClave(JOMAConversions.DBNullToString(settings.GSEDOC_BR.InitialCatalog), DomainConstants.JOMA_KEYENCRIPTA, DomainConstants.JOMA_SALTO);
+    var BR_UserId = JOMACrypto.DescifrarClave(JOMAConversions.DBNullToString(settings.GSEDOC_BR.UserId), DomainConstants.JOMA_KEYENCRIPTA, DomainConstants.JOMA_SALTO);
+    var password = JOMACrypto.DescifrarClave(settings.GSEDOC_BR.Password, DomainConstants.JOMA_KEYENCRIPTA, DomainConstants.JOMA_SALTO);
 
     builder.Services.AddDatabase(
         settings.GSEDOC_BR.DataSource,

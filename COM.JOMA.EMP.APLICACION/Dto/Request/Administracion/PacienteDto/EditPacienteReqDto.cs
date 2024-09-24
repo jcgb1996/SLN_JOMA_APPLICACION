@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace COM.JOMA.EMP.APLICACION.Dto.Request.Administracion.PacienteDto
 {
-    public class EditarPacienteReqDto : PacienteReqtDto
+    public class EditPacienteReqDto : PacienteReqtDto
     {
         public long IdPaciente { get; set; }
     }

@@ -48,11 +48,11 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.Extensions
             return mapper.Map<Paciente>(obj);
         }
 
-        internal static Paciente MapToEditarPacienteReqDto(this EditarPacienteReqDto obj)
+        internal static Paciente MapToEditarPacienteReqDto(this EditPacienteReqDto obj)
         {
             var configuration = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<EditarPacienteReqDto, Paciente>();
+                cfg.CreateMap<EditPacienteReqDto, Paciente>();
             });
 
             var mapper = configuration.CreateMapper();
@@ -319,6 +319,35 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.Extensions
             var mapper = configuration.CreateMapper();
 
             return mapper.Map<TerapistaQueryDto>(obj);
+        }
+
+        internal static PacientesQueryDto MapPacientesQueryDto(this SavePacienteReqDto obj, long idPaciente)
+        {
+            var configuration = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<SavePacienteReqDto, PacientesQueryDto>()
+                 .ForMember(dest => dest.Id, act => act.MapFrom(src => idPaciente))
+                 .ForMember(dest => dest.NombresApellidosPaciente, act => act.MapFrom(src => src.NombresApellidosPaciente))
+                 .ForMember(dest => dest.FechaNacimiento, act => act.MapFrom(src => src.FechaNacimiento))
+                 .ForMember(dest => dest.Edad, act => act.MapFrom(src => src.Edad))
+                 .ForMember(dest => dest.Escuela, act => act.MapFrom(src => src.Escuela))
+                 .ForMember(dest => dest.Curso, act => act.MapFrom(src => src.Curso))
+                 .ForMember(dest => dest.CedulaPaciente, act => act.MapFrom(src => src.CedulaPaciente))
+                 .ForMember(dest => dest.DireccionDomiciliaria, act => act.MapFrom(src => src.DireccionDomiciliaria))
+                 .ForMember(dest => dest.TelefonoMadre, act => act.MapFrom(src => src.TelefonoMadre))
+                 .ForMember(dest => dest.TelefonoPadre, act => act.MapFrom(src => src.TelefonoPadre))
+                 .ForMember(dest => dest.NombreMadre, act => act.MapFrom(src => src.NombreMadre))
+                 .ForMember(dest => dest.NombrePadre, act => act.MapFrom(src => src.NombrePadre))
+                 .ForMember(dest => dest.RepresentanteLegal, act => act.MapFrom(src => src.RepresentanteLegal))
+                 .ForMember(dest => dest.EdadRepresentante, act => act.MapFrom(src => src.EdadRepresentante))
+                 .ForMember(dest => dest.CedulaRepresentante, act => act.MapFrom(src => src.CedulaRepresentante))
+                 .ForMember(dest => dest.CorreoNotificacion, act => act.MapFrom(src => src.CorreoNotificacion))
+                 .ForMember(dest => dest.Estado, act => act.MapFrom(src => src.Estado));
+            });
+
+            var mapper = configuration.CreateMapper();
+
+            return mapper.Map<PacientesQueryDto>(obj);
         }
 
     }

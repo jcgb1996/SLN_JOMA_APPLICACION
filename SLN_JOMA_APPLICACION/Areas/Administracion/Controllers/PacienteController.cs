@@ -29,11 +29,11 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Administracion.Controllers
         }
 
         [HttpPost]
-        public IActionResult GuardarPaciente([FromBody] PacienteReqtDto pacienteReqDto)
+        public IActionResult GuardarPaciente([FromBody] SavePacienteReqDto pacienteReqDto)
         {
             try
             {
-                var Registrado = PacienteAppServices.RegistrarPaciente(pacienteReqDto);
+                var Registrado = PacienteAppServices.RegistrarPacienteAsync(pacienteReqDto);
                 return this.CrearRespuestaExitosa(Registrado);
             }
             catch (JOMAException ex)
@@ -51,7 +51,7 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Administracion.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditarPaciente([FromBody] EditarPacienteReqDto pacienteReqDto)
+        public IActionResult EditarPaciente([FromBody] EditPacienteReqDto pacienteReqDto)
         {
             try
             {

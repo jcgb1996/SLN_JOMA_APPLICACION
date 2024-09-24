@@ -23,6 +23,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
         public DbSet<MailBienvenidaQueryDto> mailBienvenidaQueryDto { get; set; }
         public DbSet<RolQueryDto> rolQueryDto { get; set; }
         public DbSet<PacientesQueryDto> pacientesQueryDto { get; set; }
+        public DbSet<ValidaPacienteQueryDto> validaPacienteQueryDto { get; set; }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder)
         {
@@ -38,6 +39,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.Model
             modelBuilder.Entity<MailBienvenidaQueryDto>().HasNoKey().ToView(null);
             modelBuilder.Entity<RolQueryDto>().HasNoKey().ToView(null);
             modelBuilder.Entity<PacientesQueryDto>().HasNoKey().ToView(null);
+            modelBuilder.Entity<ValidaPacienteQueryDto>().HasNoKey().ToView(null);
         }
     }
 }

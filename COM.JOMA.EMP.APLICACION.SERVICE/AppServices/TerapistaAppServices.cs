@@ -78,8 +78,8 @@ namespace COM.JOMA.EMP.APLICACION.SERVICE.AppServices
                 if (LstterapistaQueryDtos != null)
                 {
                     seccion = "ACTUALIZAR LA CACHE";
-                    var terapistaAppDto = terapistaReqtDto.MapTerapistaQueryDto(IdTerapista);
-                    LstterapistaQueryDtos.Add(terapistaAppDto);
+                    var terapistaQueryDto = terapistaReqtDto.MapTerapistaQueryDto(IdTerapista);
+                    LstterapistaQueryDtos.Add(terapistaQueryDto);
                     await cacheCrossCuttingService.RemoveAsync($"{DomainConstants.JOMA_CACHE_KEY_TERAPISTAS}_{terapistaReqtDto.RucEmpresa}");
                     await cacheCrossCuttingService.AddObjectAsync($"{DomainConstants.JOMA_CACHE_KEY_TERAPISTAS}_{terapistaReqtDto.RucEmpresa}", LstterapistaQueryDtos, DomainParameters.CACHE_TIEMPO_EXP_TERAPISTA_COMPANIA);
 

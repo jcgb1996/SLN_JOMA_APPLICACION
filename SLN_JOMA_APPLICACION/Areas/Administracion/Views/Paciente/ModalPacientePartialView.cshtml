@@ -1,4 +1,9 @@
-﻿<div class="modal fade" id="ModalPaciente" tabindex="-1" aria-labelledby="ModalPaciente" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+﻿@model COM.JOMA.EMP.QUERY.Dtos.PacientesQueryDto
+@{
+    long Estado = !Model.Estado ? 99 : Convert.ToInt64(Model.Estado);
+}
+
+<div class="modal fade" id="ModalPaciente" tabindex="-1" aria-labelledby="ModalPaciente" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-header modal-colored-header bg-primary text-white pt-2 pb-2 m-0">
@@ -142,6 +147,15 @@
                                 </div>
                             </div>
 
+                            <div class="col-xl-4 col-md-4 col-sm-4 col-12">
+                                <div class="form-floating">
+                                    <select id="Estado" name="Estado" data-bgcolor="blue" data-bgcolor-variation="light" class="form-select select2 select2-with-menu-bg" placeholder="Estado" required>
+                                    </select>
+                                    <label for="Estado"></label>
+                                    <div class="invalid-feedback">Por favor, seleccione un estado</div>
+                                </div>
+                            </div>
+
 
 
                         </form>
@@ -152,9 +166,18 @@
             </div>
             <div class="modal-footer">
                 <button type="button" onclick="Site.limpiarFormularioById('RegistrarPaciente');" data-bs-dismiss="modal" class="btn btn-secondary">Cancelar</button>
-                <button type="button" onclick="Paciente.GuardarDatos(event,'RegistrarPaciente');" class="btn btn-primary">Guardar</button>
-                @* @Model.Id *@
+                <button type="button" onclick="Paciente.GuardarDatos(event,'RegistrarPaciente',  @Model.Id);" class="btn btn-primary">Guardar</button>
             </div>
         </div>
     </div>
 </div>
+
+@if (Model.Id > 0)
+{
+    <script type="text/javascript">
+        Terapista.InitSelect2('Estado', 'Seleccione un Estado', Terapista.CmbEstado, '@Estado');
+        Terapista.AsiganarValorDireccion('@Model.DireccionDomiciliaria');
+        Terapista.InitDataPicker();
+    </script>
+
+}

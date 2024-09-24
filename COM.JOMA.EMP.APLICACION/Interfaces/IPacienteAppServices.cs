@@ -6,8 +6,8 @@ namespace COM.JOMA.EMP.APLICACION.Interfaces
 {
     public interface IPacienteAppServices
     {
-        JOMAResponse RegistrarPaciente(PacienteReqtDto pacienteReqtDto);
-        JOMAResponse ActualizarPaciente(EditarPacienteReqDto pacienteReqtDto);
+        JOMAResponse RegistrarPacienteAsync(SavePacienteReqDto pacienteReqtDto);
+        JOMAResponse ActualizarPaciente(EditPacienteReqDto pacienteReqtDto);
         Task<List<PacientesQueryDto>> GetPacientesXRucEmpresa(string RucEmpresa);
     }
 }

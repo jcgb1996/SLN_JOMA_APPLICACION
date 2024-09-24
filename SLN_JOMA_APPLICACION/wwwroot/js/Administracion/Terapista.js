@@ -14,7 +14,6 @@ var Terapista = {
         CONTROLERNAME_TERAPISTA = Controller;
         Terapista.GetTerapistas();
     },
-
     GetTerapistas: function () {
         debugger;
         $.ajax({
@@ -184,7 +183,6 @@ var Terapista = {
             }
         });
     },
-
     procesarDatos: function (datos) {
         // Aquí puedes agregar cualquier lógica de procesamiento de datos necesaria
         // Por ejemplo, podrías querer modificar, agregar o eliminar ciertos campos
@@ -194,7 +192,6 @@ var Terapista = {
             return item;
         });
     },
-
     InitSelect2: function (id, placeholder, Data, values) {
         if (!Data || Data.length === 0) {
             Data = [{
@@ -224,7 +221,6 @@ var Terapista = {
             $("#" + id).val(values).trigger('change');
         }
     },
-
     InitDataPicker: function () {
         $('.datepicker').datepicker({
             language: 'es',
@@ -242,7 +238,6 @@ var Terapista = {
             }
         });
     },
-
     GuardarDatos: function (id, event, idTerapista) {
         debugger;
         if (!Site.ValidarForumarioById(id, event))
@@ -333,7 +328,6 @@ var Terapista = {
             }
         });
     },
-
     LimpiarComponentes: function () {
         Terapista.Limpiar("IdSucursal");
         Terapista.Limpiar("Genero");
@@ -341,7 +335,6 @@ var Terapista = {
         Terapista.Limpiar("Estado");
         Terapista.Limpiar("IdRol");
     },
-
     Limpiar: function (id) {
         var $select = $('#' + id).select2();
         $select.empty();

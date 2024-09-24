@@ -18,7 +18,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
         {
         }
 
-        public bool RegistrarPaciente(Paciente paciente)
+        public async Task<long> RegistrarPaciente(Paciente paciente)
         {
             try
             {
@@ -26,8 +26,7 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 {
                     using (var jomaQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
                     {
-                        return jomaQueryContext.InsertarPaciente(paciente);
-                        //return new LoginQueryDto();
+                        return await jomaQueryContext.InsertarPaciente(paciente);
                     };
                 };
             }
@@ -44,7 +43,6 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 throw;
             }
         }
-
         public bool ActualizarPaciente(Paciente paciente)
         {
             try
@@ -70,7 +68,6 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 throw;
             }
         }
-
         public Task<List<PacientesQueryDto>> GetPacientesXIdEmpresa(long IdEmpresa) 
         {
             try
@@ -96,5 +93,33 @@ namespace COM.JOMA.EMP.QUERY.SERVICE.QueryService
                 throw;
             }
         }
+
+        public async Task<ValidaPacienteQueryDto> ValidarCedulaPacienteCorreoNotificacionXIdEmpresa(string Cedula, string CorreoNotificacion, long IdEmpresa)
+        {
+            try
+            {
+                using (var scope = serviceProvider.CreateScope())
+                {
+                    using (var edocQueryContext = scope.ServiceProvider.GetRequiredService<JomaQueryContext>())
+                    {
+                        return await edocQueryContext.ValidarCedulaPacienteXIdEmpresa(Cedula, CorreoNotificacion, IdEmpresa);
+                    };
+                };
+            }
+            catch (SqlException sqlEx)
+            {
+                throw new Exception($"SQL Error: {sqlEx.Message} Error Number: {sqlEx.Number}");
+            }
+            catch (TimeoutException timeoutEx)
+            {
+                throw new Exception($"Timeout Error: {timeoutEx.Message}");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        
     }
 }

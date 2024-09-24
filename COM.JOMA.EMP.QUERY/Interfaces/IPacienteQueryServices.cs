@@ -10,8 +10,9 @@ namespace COM.JOMA.EMP.QUERY.Interfaces
 {
     public interface IPacienteQueryServices
     {
-        public bool RegistrarPaciente(Paciente paciente);
-        public bool ActualizarPaciente(Paciente paciente);
+        Task<long> RegistrarPaciente(Paciente paciente);
+        bool ActualizarPaciente(Paciente paciente);
         Task<List<PacientesQueryDto>> GetPacientesXIdEmpresa(long IdEmpresa);
+        Task<ValidaPacienteQueryDto> ValidarCedulaPacienteCorreoNotificacionXIdEmpresa(string Cedula, string CorreoNotificacion, long IdEmpresa);
     }
 }

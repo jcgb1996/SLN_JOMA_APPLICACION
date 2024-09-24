@@ -193,10 +193,13 @@ var Paciente = {
         //Terapista.InitDataPicker();
         $("#ModalPaciente").modal('show');
     },
-    GuardarDatos: function (event, id) {
+    GuardarDatos: function (event, id, idPaciente) {
         debugger;
         if (!Site.ValidarForumarioById(id, event))
             return;
+
+
+        formDataObj.Estado = formDataObj.Estado == "99" ? 0 : formDataObj.Estado;
 
         var formDataObj = Site.GetObjetoFormularioById(id);
         Site.IniciarLoading();
@@ -210,6 +213,7 @@ var Paciente = {
                 Site.CerrarLoading();
                 if (response && response.success) {
                     Site.mostrarNotificacion(response.message, 1);
+                    Paciente.GetPacientes();  
                 } else if (response && response.message) {
                     Site.mostrarNotificacion("Error al guardar los datos: " + response.message, 2);
                 } else {
@@ -217,6 +221,7 @@ var Paciente = {
                 }
             },
             error: function (result) {
+                Site.CerrarLoading();
                 Site.AjaxError(result);
             }
         });
