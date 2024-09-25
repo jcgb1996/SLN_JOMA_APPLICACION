@@ -27,8 +27,10 @@ namespace SLN_COM_JOMA_APPLICACION.Areas.Administracion.Controllers
 
         public IActionResult Index()
         {
+            var CmbGenero = JOMAExtensions.GetEnumsList<JOMAGenero>();
             var CmbEstado = JOMAExtensions.GetEnumsList<JOMAEstado>();
             ViewData["CmbEstado"] = CmbEstado;
+            ViewData["CmbGenero"] = CmbGenero;
             return View();
         }
 

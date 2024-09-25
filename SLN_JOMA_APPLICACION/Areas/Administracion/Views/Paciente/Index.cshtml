@@ -3,8 +3,13 @@
 @{
     var Controller = $"{WebSiteConstans.JOMA_WEBSITE_AREA_ADMINISTRACION}/{WebSiteConstans.JOMA_WEBSITE_AREA_CONTROLLER_PACIENTES}";
     var jsonCmbEstado = string.Empty;
+    var jsonCmbGenero = string.Empty;
+
     var CmbEstado = ViewData["CmbEstado"] as List<(string Description, int Value)>;
+    var CmbGenero = ViewData["CmbGenero"] as List<(string Description, int Value)>;
+
     if (CmbEstado != null) jsonCmbEstado = Newtonsoft.Json.JsonConvert.SerializeObject(CmbEstado);
+    if (CmbGenero != null) jsonCmbGenero = Newtonsoft.Json.JsonConvert.SerializeObject(CmbGenero);
 }
 
 
@@ -12,6 +17,7 @@
     .table td {
         padding: 5px !important; /* Elimina el padding de las celdas */
     }
+
     .select2-selection, .select2-selection {
         height: 56px !important; /* Ajusta según el tamaño deseado */
     }
@@ -50,6 +56,19 @@
 <script src="~/js/Administracion/Paciente.js"></script>
 @{
 
+    if (!string.IsNullOrEmpty(jsonCmbGenero))
+    {
+        <script type="text/javascript">
+            Paciente.CmbGenero = @Html.Raw(jsonCmbGenero);
+            Paciente.CmbGenero = Paciente.CmbGenero.map(function (item) {
+                return {
+                    id: item.Item2,
+                    text: item.Item1
+                };
+            });
+        </script>
+    }
+
     if (!string.IsNullOrEmpty(jsonCmbEstado))
     {
         <script type="text/javascript">
@@ -64,5 +83,8 @@
     }
 }
 <script>
-    Paciente.Init('@Url.Content("~/")', '@Controller');
+    $(document).ready(function () {
+        debugger; 
+        Paciente.Init('@Url.Content("~/")', '@Controller');
+    });
 </script>

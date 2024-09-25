@@ -3,6 +3,7 @@ var CONTROLERNAME_PACIENTE = ""
 
 var Paciente = {
     CmbEstado: "",
+    CmbGenero: "",
 
     Init: function (UrlBase, Controller) {
         debugger;
@@ -131,7 +132,7 @@ var Paciente = {
                     ],
                     buttons: [
                         {
-                            text: '<i title="Nuevo Terapsita" class="fa fa-plus-circle"></i> Nuevo Terapista',
+                            text: '<i title="Nuevo Terapsita" class="fa fa-plus-circle"></i> Nuevo paciente',
                             className: 'btn waves-effect waves-light btn-primary',
                             action: function (e, dt, node, config) {
                                 Paciente.NuevoPaciente();
@@ -187,6 +188,7 @@ var Paciente = {
     NuevoPaciente: function () {
         Paciente.LimpiarComponentes();
         Paciente.InitSelect2('Estado', 'Seleccione un Estado', Paciente.CmbEstado, 1);
+        Paciente.InitSelect2('Genero', 'Seleccione un Estado', Paciente.CmbGenero, 1);
         Paciente.InitDataPicker();
         $("#ModalPaciente").modal('show');
     },
@@ -210,7 +212,7 @@ var Paciente = {
                 Site.CerrarLoading();
                 if (response && response.success) {
                     Site.mostrarNotificacion(response.message, 1);
-                    Paciente.GetPacientes();  
+                    Paciente.GetPacientes();
                 } else if (response && response.message) {
                     Site.mostrarNotificacion("Error al guardar los datos: " + response.message, 2);
                 } else {
@@ -224,6 +226,24 @@ var Paciente = {
         });
 
     },
+
+    InitDataPicker: function () {
+        $('.datepicker').datepicker({
+            language: 'es',
+            format: 'yyyy-mm-dd',
+            clearBtn: false,
+            todayHighlight: false,
+            daysOfWeekHighlighted: "0,6",
+            autoclose: true,
+            todayBtn: "linked",
+            title: "Selecciona una fecha",
+            uiLibrary: 'bootstrap5'
+        }).on('show', function (e) {
+            if ($(this).val() === '0001-01-01' || $(this).val() === '') {
+                $(this).datepicker('update', ''); // Limpia el valor si es inválido
+            }
+        });
+    },
     InitSelect2: function (id, placeholder, Data, values) {
         if (!Data || Data.length === 0) {
             Data = [{
@@ -234,7 +254,7 @@ var Paciente = {
 
         $("#" + id).select2({
             placeholder: placeholder,
-            dropdownParent: $("#ModalTerapista"),
+            dropdownParent: $("#ModalPaciente"),
             width: '100%',
             language: {
                 noResults: function () {
@@ -255,6 +275,7 @@ var Paciente = {
     },
     LimpiarComponentes: function () {
         Paciente.Limpiar("Estado");
+        Paciente.Limpiar("Genero");
     },
     Limpiar: function (id) {
         var $select = $('#' + id).select2();

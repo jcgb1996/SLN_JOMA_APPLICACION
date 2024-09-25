@@ -22,52 +22,63 @@
 
 
                             <!-- Campo Nombres y Apellidos -->
-                            <div class="col-xl-4 col-md-4 col-sm-4 col-12 mb-3">
+                            <div class="col-xl-4 col-md-6 col-sm-12 col-12">
                                 <div class="form-floating">
-                                    <input type="text" name="NombresApellidos" class="form-control" id="NombresApellidos" placeholder="Nombres y Apellidos" required>
+                                    <input type="text" name="NombresApellidos" value="@Model.NombresApellidosPaciente" class="form-control" id="NombresApellidos" placeholder="Nombres y Apellidos" required>
                                     <label for="NombresApellidos">Nombres y Apellidos</label>
                                     <div class="invalid-feedback">Por favor, ingrese los nombres y apellidos!</div>
                                 </div>
                             </div>
 
-                            <!-- Campo Fecha de Nacimiento -->
-                            <div class="col-xl-4 col-md-4 col-sm-4 col-12 mb-3">
+                            <div class="col-xl-4 col-md-4 col-sm-4 col-12">
                                 <div class="form-floating">
-                                    <input type="date" class="form-control" placeholder="Fecha de Nacimiento" id="FechaNacimiento" required>
-                                    <label for="FechaNacimiento">Fecha de Nacimiento</label>
-                                    <div class="invalid-feedback">Por favor, seleccione la fecha de nacimiento!</div>
+                                    <input type="text" name="FechaNacimiento" value="@Model.FechaNacimiento.ToString("yyyy-MM-dd")" id="FechaNacimiento" class="form-control datepicker" placeholder="Fecha nacimiento" required>
+                                    <label for="FechaNacimiento">Fecha Nacimiento</label>
+                                    <div class="invalid-feedback">Por favor, seleccione su fecha de nacimiento.</div>
                                 </div>
                             </div>
 
+
                             <!-- Campo Edad -->
-                            <div class="col-xl-4 col-md-4 col-sm-4 col-12 mb-3">
+                            <div class="col-xl-4 col-md-6 col-sm-12 col-12">
                                 <div class="form-floating">
-                                    <input type="number" name="Edad" class="form-control" id="Edad" placeholder="Edad" required>
+                                    <input type="number" name="Edad" class="form-control" id="Edad" value="@Model.Edad" placeholder="Edad" required>
                                     <label for="Edad">Edad</label>
                                     <div class="invalid-feedback">Por favor, ingrese la edad!</div>
                                 </div>
                             </div>
 
-                            <!-- Campo Escuela -->
-                            <div class="col-xl-4 col-md-4 col-sm-4 col-12 mb-3">
+                            <!-- Campo Genero -->
+                            <div class="col-xl-4 col-md-6 col-sm-12 col-12">
                                 <div class="form-floating">
-                                    <input type="text" name="Escuela" class="form-control" id="Escuela" placeholder="Escuela" required>
+                                    <select id="Genero" name="Genero" data-bgcolor="blue" data-bgcolor-variation="light" class="form-select select2 select2-with-menu-bg" placeholder="Genero" required>
+                                    </select>
+
+                                    <label for="Genero"></label>
+                                    <div class="invalid-feedback">Por favor, seleccione un género.</div>
+                                </div>
+                            </div>
+
+                            <!-- Campo Escuela -->
+                            <div class="col-xl-4 col-md-6 col-sm-12 col-12">
+                                <div class="form-floating">
+                                    <input type="text" name="Escuela" class="form-control" id="Escuela" value="@Model.Escuela" placeholder="Escuela" required>
                                     <label for="Escuela">Escuela</label>
                                     <div class="invalid-feedback">Por favor, ingrese el nombre de la escuela!</div>
                                 </div>
                             </div>
                             <!-- Campo Nivel -->
-                            <div class="col-xl-4 col-md-4 col-sm-4 col-12 mb-3">
+                            <div class="col-xl-4 col-md-6 col-sm-12 col-12">
                                 <div class="form-floating">
-                                    <input type="text" name="Curso" class="form-control" id="Curso" placeholder="Curso" required>
+                                    <input type="text" name="Curso" class="form-control" id="Curso" value="@Model.Curso" placeholder="Curso" required>
                                     <label for="Curso">Curso</label>
                                     <div class="invalid-feedback">Por favor, ingrese el Curso escolar!</div>
                                 </div>
                             </div>
                             <!-- Campo Cédula del Niño -->
-                            <div class="col-xl-4 col-md-4 col-sm-4 col-12 mb-3">
+                            <div class="col-xl-4 col-md-6 col-sm-12 col-12">
                                 <div class="form-floating">
-                                    <input type="text" name="CedulaNino" class="form-control" id="CedulaNino" placeholder="Cédula del Niño" required>
+                                    <input type="text" name="CedulaNino" class="form-control" id="CedulaNino" value="@Model.CedulaPaciente" placeholder="Cédula del Niño" required>
                                     <label for="CedulaNino">Cédula del Niño</label>
                                     <div class="invalid-feedback">Por favor, ingrese la cédula del niño!</div>
                                 </div>
@@ -75,9 +86,9 @@
 
 
                             <!-- Campo Dirección Domiciliaria -->
-                            <div class="col-12">
+                            <div class="col-xl-8 col-md-6 col-sm-12 col-12">
                                 <div class="form-floating  mb-3">
-                                    <input type="text" name="DireccionDomiciliaria" class="form-control" id="DireccionDomiciliaria" placeholder="Dirección Domiciliaria" required>
+                                    <input type="text" name="DireccionDomiciliaria" class="form-control" value="@Model.DireccionDomiciliaria" id="DireccionDomiciliaria" placeholder="Dirección Domiciliaria" required>
                                     <label for="DireccionDomiciliaria">Dirección Domiciliaria</label>
                                     <div class="invalid-feedback">Por favor, ingrese la dirección domiciliaria!</div>
                                 </div>
@@ -85,53 +96,53 @@
 
 
                             <!-- Campo Teléfono de los Representantes -->
-                            <div class="col-xl-6 col-md-6 col-sm-6 col-12 mb-3">
+                            <div class="col-xl-4 col-md-6 col-sm-12 col-12">
                                 <div class="form-floating">
-                                    <input type="number" name="TelefonoMadre" class="form-control" id="TelefonoMadre" placeholder="Teléfono de la Madre" required>
+                                    <input type="number" name="TelefonoMadre" class="form-control" id="TelefonoMadre" value="@Model.TelefonoMadre" placeholder="Teléfono de la Madre" required>
                                     <label for="TelefonoMadre">Teléfono de la Madre</label>
                                     <div class="invalid-feedback">Por favor, ingrese el teléfono de la madre!</div>
                                 </div>
                             </div>
 
-                            <div class="col-xl-6 col-md-6 col-sm-6 col-12 mb-3">
+                            <div class="col-xl-4 col-md-6 col-sm-12 col-12">
                                 <div class="form-floating">
-                                    <input type="number" name="TelefonoPadre" class="form-control" id="TelefonoPadre" placeholder="Teléfono del Padre" required>
+                                    <input type="number" name="TelefonoPadre" class="form-control" id="TelefonoPadre" value="@Model.TelefonoPadre" placeholder="Teléfono del Padre" required>
                                     <label for="TelefonoPadre">Teléfono del Padre</label>
                                     <div class="invalid-feedback">Por favor, ingrese el teléfono del padre!</div>
                                 </div>
                             </div>
 
                             <!-- Campo Nombre de la Madre -->
-                            <div class="col-xl-6 col-md-6 col-sm-6 col-12 mb-3">
+                            <div class="col-xl-4 col-md-6 col-sm-12 col-12">
                                 <div class="form-floating">
-                                    <input type="text" name="NombreMadre" class="form-control" id="NombreMadre" placeholder="Nombre de la Madre" required>
+                                    <input type="text" name="NombreMadre" class="form-control" id="NombreMadre" value="@Model.NombreMadre" placeholder="Nombre de la Madre" required>
                                     <label for="NombreMadre">Nombre de la Madre</label>
                                     <div class="invalid-feedback">Por favor, ingrese el nombre de la madre!</div>
                                 </div>
                             </div>
 
                             <!-- Campo Nombre del Padre -->
-                            <div class="col-xl-6 col-md-6 col-sm-6 col-12 mb-3">
+                            <div class="col-xl-4 col-md-6 col-sm-12 col-12">
                                 <div class="form-floating">
-                                    <input type="text" name="NombrePadre" class="form-control" id="NombrePadre" placeholder="Nombre del Padre" required>
+                                    <input type="text" name="NombrePadre" class="form-control" id="NombrePadre" value="@Model.NombrePadre" placeholder="Nombre del Padre" required>
                                     <label for="NombrePadre">Nombre del Padre</label>
                                     <div class="invalid-feedback">Por favor, ingrese el nombre del padre!</div>
                                 </div>
                             </div>
 
                             <!-- Campo Representante Legal -->
-                            <div class="col-xl-4 col-md-4 col-sm-4 col-12 mb-3">
+                            <div class="col-xl-4 col-md-6 col-sm-12 col-12">
                                 <div class="form-floating">
-                                    <input type="text" name="RepresentanteLegal" class="form-control" id="RepresentanteLegal" placeholder="Representante Legal" required>
+                                    <input type="text" name="RepresentanteLegal" class="form-control" id="RepresentanteLegal" value="@Model.RepresentanteLegal" placeholder="Representante Legal" required>
                                     <label for="RepresentanteLegal">Representante Legal</label>
                                     <div class="invalid-feedback">Por favor, ingrese el nombre del representante legal!</div>
                                 </div>
                             </div>
 
                             <!-- Campo Edad del Representante Legal -->
-                            <div class="col-xl-4 col-md-4 col-sm-4 col-12 mb-3">
+                            <div class="col-xl-4 col-md-6 col-sm-12 col-12">
                                 <div class="form-floating">
-                                    <input type="number" name="EdadRepresentante" class="form-control" id="EdadRepresentante" placeholder="Edad del Representante Legal" required>
+                                    <input type="number" name="EdadRepresentante" class="form-control" id="EdadRepresentante" value="@Model.EdadRepresentante" placeholder="Edad del Representante Legal" required>
                                     <label for="EdadRepresentante">Edad del Representante Legal</label>
                                     <div class="invalid-feedback">Por favor, ingrese la edad del representante legal!</div>
                                 </div>
@@ -139,15 +150,15 @@
 
 
                             <!-- Campo Cédula del Representante Legal -->
-                            <div class="col-xl-4 col-md-4 col-sm-4 col-12 mb-3">
+                            <div class="col-xl-4 col-md-6 col-sm-12 col-12">
                                 <div class="form-floating">
-                                    <input type="text" name="CedulaRepresentante" class="form-control" id="CedulaRepresentante" placeholder="Cédula del Representante Legal" required>
+                                    <input type="text" name="CedulaRepresentante" class="form-control" id="CedulaRepresentante" value="@Model.CedulaRepresentante" placeholder="Cédula del Representante Legal" required>
                                     <label for="CedulaRepresentante">Cédula del Representante Legal</label>
                                     <div class="invalid-feedback">Por favor, ingrese la cédula del representante legal!</div>
                                 </div>
                             </div>
 
-                            <div class="col-xl-4 col-md-4 col-sm-4 col-12">
+                            <div class="col-xl-4 col-md-6 col-sm-12 col-12">
                                 <div class="form-floating">
                                     <select id="Estado" name="Estado" data-bgcolor="blue" data-bgcolor-variation="light" class="form-select select2 select2-with-menu-bg" placeholder="Estado" required>
                                     </select>

@@ -209,10 +209,10 @@ var Terapista = {
                     return "No se encontraron resultados";
                 }
             },
-            data: Data.map(function (terapia) {
+            data: Data.map(function (paciente) {
                 return {
-                    id: terapia.id || '',
-                    text: terapia.Nombre || terapia.text
+                    id: paciente.id || '',
+                    text: paciente.Nombre || paciente.text
                 };
             })
         });
